@@ -1,0 +1,2 @@
+F:/client_projects/arabween/Arabween/Arabween/android/app/.cxx/RelWithDebInfo/6q624e31/armeabi-v7a/CMakeFiles/edit_cache.dir
+F:/client_projects/arabween/Arabween/Arabween/android/app/.cxx/RelWithDebInfo/6q624e31/armeabi-v7a/CMakeFiles/rebuild_cache.dir

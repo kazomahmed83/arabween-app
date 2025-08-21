@@ -1,0 +1,71 @@
+{
+  "project_info": {
+    "project_number": "447213836415",
+    "firebase_url": "https://arab-ween-app-default-rtdb.firebaseio.com",
+    "project_id": "arab-ween-app",
+    "storage_bucket": "arab-ween-app.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:447213836415:android:767883d8433ac38959474a",
+        "android_client_info": {
+          "package_name": "com.arabween"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "447213836415-jgobtfo3i95uvo1bv8e311vn2nrnt406.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.arabween",
+            "certificate_hash": "2705cd8dc96f27a69730cf3165c5c84d2c79422f"
+          }
+        },
+        {
+          "client_id": "447213836415-khoqc5oej8p0qf3lugkb9ioh5u90sttm.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.arabween",
+            "certificate_hash": "a9652cbe9aa58716d16b8288d9940b8e0c01868b"
+          }
+        },
+        {
+          "client_id": "447213836415-v7bb8umg535qb4v5kdi3ki0e2n9b3pbo.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.arabween",
+            "certificate_hash": "ba68447fa7a892ccc7c3455c2ed33d4f5cf8c694"
+          }
+        },
+        {
+          "client_id": "447213836415-nopr26adh3avs3r83gl6mfppaa3sqsto.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDedNt1MLV2v3LcNCRNVDVS2mgF3wIezgA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "447213836415-nopr26adh3avs3r83gl6mfppaa3sqsto.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "447213836415-9rt07dpvpi4mu8jd1n68igvbqp9974ej.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.arabWeen"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
