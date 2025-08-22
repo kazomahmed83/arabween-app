@@ -185,13 +185,13 @@ class SeeFullMenuScreen extends StatelessWidget {
                             trimCollapsedText: 'Show more'.tr,
                             trimExpandedText: 'Show less'.tr,
                             style: TextStyle(
-                              color: themeChange.getThem() ? AppThemeData.grey03 : AppThemeData.grey03,
-                              fontSize: 14,
+                              color: themeChange.getThem() ? AppThemeData.greyDark01 : AppThemeData.grey01,
+                              fontSize: 12,
                               fontFamily: AppThemeData.regularOpenSans,
                             ),
                             moreStyle: TextStyle(
                               color: themeChange.getThem() ? AppThemeData.red02 : AppThemeData.red02,
-                              fontSize: 14,
+                              fontSize: 12,
                               fontFamily: AppThemeData.boldOpenSans,
                             ),
                           ),
@@ -385,7 +385,7 @@ class SeeFullMenuScreen extends StatelessWidget {
                       children: [
                         Expanded(
                           child: Text(
-                            "Hours".tr,
+                            controller.businessModel.value.isBusinessOpenAllTime == true ? "Open 24/7".tr : "Hours".tr,
                             textAlign: TextAlign.start,
                             style: TextStyle(
                               color: themeChange.getThem() ? AppThemeData.greyDark01 : AppThemeData.grey01,
@@ -394,20 +394,22 @@ class SeeFullMenuScreen extends StatelessWidget {
                             ),
                           ),
                         ),
-                        InkWell(
-                          onTap: () {
-                            seeHoursFilterBottomSheet(themeChange, controller);
-                          },
-                          child: Text(
-                            "More".tr,
-                            textAlign: TextAlign.start,
-                            style: TextStyle(
-                              color: themeChange.getThem() ? AppThemeData.teal02 : AppThemeData.teal02,
-                              fontSize: 14,
-                              fontFamily: AppThemeData.boldOpenSans,
-                            ),
-                          ),
-                        )
+                        controller.businessModel.value.isBusinessOpenAllTime == true
+                            ? SizedBox()
+                            : InkWell(
+                                onTap: () {
+                                  seeHoursFilterBottomSheet(themeChange, controller);
+                                },
+                                child: Text(
+                                  "More".tr,
+                                  textAlign: TextAlign.start,
+                                  style: TextStyle(
+                                    color: themeChange.getThem() ? AppThemeData.teal02 : AppThemeData.teal02,
+                                    fontSize: 14,
+                                    fontFamily: AppThemeData.boldOpenSans,
+                                  ),
+                                ),
+                              )
                       ],
                     ),
                     SizedBox(

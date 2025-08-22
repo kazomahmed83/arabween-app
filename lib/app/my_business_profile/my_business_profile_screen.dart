@@ -554,9 +554,9 @@ class MyBusinessProfileScreen extends StatelessWidget {
                                                             textAlign: TextAlign.start,
                                                             maxLines: 2,
                                                             style: TextStyle(
-                                                              color: themeChange.getThem() ? AppThemeData.greyDark05 : AppThemeData.grey05,
+                                                              color: themeChange.getThem() ? AppThemeData.greyDark10 : AppThemeData.grey10,
                                                               fontSize: 10,
-                                                              fontFamily: AppThemeData.semiboldOpenSans,
+                                                              fontFamily: AppThemeData.boldOpenSans,
                                                             ),
                                                           ),
                                                         ),
@@ -684,53 +684,82 @@ class MyBusinessProfileScreen extends StatelessWidget {
                     children: [
                       controller.businessModel.value.businessHours == null || controller.businessModel.value.showWorkingHours == false
                           ? SizedBox()
-                          : Expanded(
-                              child: DebouncedInkWell(
-                                onTap: () {
-                                  seeHoursFilterBottomSheet(themeChange, controller);
-                                },
-                                child: Column(
-                                  children: [
-                                    ClipOval(
-                                      child: Container(
-                                        decoration: BoxDecoration(color: themeChange.getThem() ? AppThemeData.greyDark09 : AppThemeData.grey07),
+                          : controller.businessModel.value.isBusinessOpenAllTime == true
+                              ? Expanded(
+                                  child: Column(
+                                    children: [
+                                      ClipOval(
+                                          child: Container(
+                                        decoration: BoxDecoration(
+                                          color: themeChange.getThem() ? AppThemeData.greyDark09 : AppThemeData.grey07,
+                                        ),
                                         child: Padding(
                                           padding: const EdgeInsets.all(14),
                                           child: Constant.svgPictureShow("assets/icons/icon_alarm-clock.svg", AppThemeData.red02, null, null),
                                         ),
+                                      )),
+                                      SizedBox(
+                                        height: 5,
                                       ),
-                                    ),
-                                    SizedBox(height: 5),
-                                    Text(
-                                      "Hours".tr,
-                                      textAlign: TextAlign.start,
-                                      style: TextStyle(color: themeChange.getThem() ? AppThemeData.greyDark01 : AppThemeData.grey01, fontSize: 16, fontFamily: AppThemeData.boldOpenSans),
-                                    ),
-                                    controller.businessModel.value.businessHours == null
-                                        ? SizedBox()
-                                        : Padding(
-                                            padding: const EdgeInsets.only(top: 5),
-                                            child: buildStatusText(themeChange, Constant.getBusinessStatus(controller.businessModel.value.businessHours!)),
+                                      Text(
+                                        "Open 24/7".tr,
+                                        textAlign: TextAlign.start,
+                                        style: TextStyle(
+                                          color: themeChange.getThem() ? AppThemeData.greyDark01 : AppThemeData.grey01,
+                                          fontSize: 16,
+                                          fontFamily: AppThemeData.boldOpenSans,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                )
+                              : Expanded(
+                                  child: DebouncedInkWell(
+                                    onTap: () {
+                                      seeHoursFilterBottomSheet(themeChange, controller);
+                                    },
+                                    child: Column(
+                                      children: [
+                                        ClipOval(
+                                          child: Container(
+                                            decoration: BoxDecoration(color: themeChange.getThem() ? AppThemeData.greyDark09 : AppThemeData.grey07),
+                                            child: Padding(
+                                              padding: const EdgeInsets.all(14),
+                                              child: Constant.svgPictureShow("assets/icons/icon_alarm-clock.svg", AppThemeData.red02, null, null),
+                                            ),
                                           ),
-                                    SizedBox(height: 5),
-                                    controller.businessModel.value.businessHours == null
-                                        ? SizedBox()
-                                        : Text(
-                                            Constant.getTodaySingleTimeSlot(controller.businessModel.value.businessHours!).tr,
-                                            textAlign: TextAlign.start,
-                                            style: TextStyle(color: themeChange.getThem() ? AppThemeData.greyDark03 : AppThemeData.grey03, fontSize: 12, fontFamily: AppThemeData.regularOpenSans),
-                                          ),
-                                  ],
+                                        ),
+                                        SizedBox(height: 5),
+                                        Text(
+                                          "Hours".tr,
+                                          textAlign: TextAlign.start,
+                                          style: TextStyle(color: themeChange.getThem() ? AppThemeData.greyDark01 : AppThemeData.grey01, fontSize: 16, fontFamily: AppThemeData.boldOpenSans),
+                                        ),
+                                        controller.businessModel.value.businessHours == null
+                                            ? SizedBox()
+                                            : Padding(
+                                                padding: const EdgeInsets.only(top: 5),
+                                                child: buildStatusText(themeChange, Constant.getBusinessStatus(controller.businessModel.value.businessHours!)),
+                                              ),
+                                        SizedBox(height: 5),
+                                        controller.businessModel.value.businessHours == null
+                                            ? SizedBox()
+                                            : Text(
+                                                Constant.getTodaySingleTimeSlot(controller.businessModel.value.businessHours!).tr,
+                                                textAlign: TextAlign.start,
+                                                style: TextStyle(color: themeChange.getThem() ? AppThemeData.greyDark03 : AppThemeData.grey03, fontSize: 12, fontFamily: AppThemeData.regularOpenSans),
+                                              ),
+                                      ],
+                                    ),
+                                  ),
                                 ),
-                              ),
-                            ),
                       Expanded(
                         child: DebouncedInkWell(
                           onTap: () {
-                            if (controller.businessModel.value.website?.isNotEmpty == true) {
-                              Get.to(WebviewScreen(), arguments: {'url': controller.businessModel.value.website.toString()});
-                            } else {
+                            if (controller.businessModel.value.website?.isEmpty == true || controller.businessModel.value.website == '') {
                               ShowToastDialog.showToast("Website not available".tr);
+                            } else {
+                              Get.to(WebviewScreen(), arguments: {'url': controller.businessModel.value.website.toString()});
                             }
                           },
                           child: Column(
@@ -762,7 +791,11 @@ class MyBusinessProfileScreen extends StatelessWidget {
                       Expanded(
                         child: DebouncedInkWell(
                           onTap: () {
-                            Utils.dialPhoneNumber("${controller.businessModel.value.countryCode} ${controller.businessModel.value.phoneNumber}");
+                            if (controller.businessModel.value.phoneNumber?.isEmpty == true) {
+                              ShowToastDialog.showToast("Phone number not available ".tr);
+                            } else {
+                              Utils.dialPhoneNumber("${controller.businessModel.value.countryCode} ${controller.businessModel.value.phoneNumber}");
+                            }
                           },
                           child: Column(
                             children: [
@@ -909,13 +942,7 @@ class MyBusinessProfileScreen extends StatelessWidget {
                                     ],
                                   ),
                                 ),
-                                Padding(
-                                  padding: const EdgeInsets.symmetric(vertical: 14, horizontal: 0),
-                                  child: Divider(
-                                    height: 1,
-                                    color: themeChange.getThem() ? AppThemeData.greyDark08 : AppThemeData.grey08,
-                                  ),
-                                ),
+                                SizedBox(height: 16),
                               ],
                             ),
                           ),

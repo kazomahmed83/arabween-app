@@ -60,17 +60,19 @@ class ReviewUserView extends StatelessWidget {
                   userModel.fullName(),
                   textAlign: TextAlign.start,
                   style: TextStyle(
-                    color: AppThemeData.grey02,
+                    color: themeChange.getThem() ? AppThemeData.greyDark04 : AppThemeData.grey04,
                     fontSize: 14,
                     fontFamily: AppThemeData.boldOpenSans,
                   ),
                 ),
-                SizedBox(height: 5,),
+                SizedBox(
+                  height: 5,
+                ),
                 Row(
                   children: [
                     Row(
                       children: [
-                        Constant.svgPictureShow("assets/icons/icon_user-business.svg", themeChange.getThem() ? AppThemeData.greyDark05 : AppThemeData.grey05, 18, 18),
+                        Constant.svgPictureShow("assets/icons/icon_user-business.svg", themeChange.getThem() ? AppThemeData.greyDark04 : AppThemeData.grey04, 18, 18),
                         SizedBox(
                           width: 5,
                         ),
@@ -78,7 +80,7 @@ class ReviewUserView extends StatelessWidget {
                           "${userModel.followers!.length}",
                           textAlign: TextAlign.start,
                           style: TextStyle(
-                            color: themeChange.getThem() ? AppThemeData.greyDark05 : AppThemeData.grey05,
+                            color: themeChange.getThem() ? AppThemeData.greyDark04 : AppThemeData.grey04,
                             fontSize: 12,
                             fontFamily: AppThemeData.boldOpenSans,
                           ),
@@ -98,7 +100,7 @@ class ReviewUserView extends StatelessWidget {
                           "${reviewList.length}",
                           textAlign: TextAlign.start,
                           style: TextStyle(
-                            color: themeChange.getThem() ? AppThemeData.greyDark05 : AppThemeData.grey05,
+                            color: themeChange.getThem() ? AppThemeData.greyDark04 : AppThemeData.grey04,
                             fontSize: 12,
                             fontFamily: AppThemeData.boldOpenSans,
                           ),
@@ -110,7 +112,7 @@ class ReviewUserView extends StatelessWidget {
                     ),
                     Row(
                       children: [
-                        Constant.svgPictureShow("assets/icons/icon_picture.svg", themeChange.getThem() ? AppThemeData.greyDark05 : AppThemeData.grey05, 18, 18),
+                        Constant.svgPictureShow("assets/icons/icon_picture.svg", themeChange.getThem() ? AppThemeData.greyDark04 : AppThemeData.grey04, 18, 18),
                         SizedBox(
                           width: 5,
                         ),
@@ -118,7 +120,7 @@ class ReviewUserView extends StatelessWidget {
                           "${photoList.length}",
                           textAlign: TextAlign.start,
                           style: TextStyle(
-                            color: themeChange.getThem() ? AppThemeData.greyDark05 : AppThemeData.grey05,
+                            color: themeChange.getThem() ? AppThemeData.greyDark04 : AppThemeData.grey04,
                             fontSize: 12,
                             fontFamily: AppThemeData.boldOpenSans,
                           ),
