@@ -74,7 +74,7 @@ class HomeScreen extends StatelessWidget {
                                       child: Container(
                                         alignment: Alignment.center,
                                         child: Text(
-                                          'Welcome ${Constant.userModel?.firstName ?? ''}',
+                                          '${'Welcome'.tr} ${Constant.userModel?.firstName ?? ''}',
                                           maxLines: 1,
                                           style: TextStyle(fontSize: 14, color: AppThemeData.greyDark01.withAlpha(190), fontFamily: AppThemeData.semibold),
                                         ),

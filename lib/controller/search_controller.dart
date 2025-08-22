@@ -115,12 +115,16 @@ class SearchControllers extends GetxController {
         FireStoreUtils.getAllNearestBusinessName(LatLng(Constant.currentLocationLatLng!.latitude, Constant.currentLocationLatLng!.longitude), query,
                 searchRadius: double.parse(Constant.radios), isFetchPopularBusiness: false)
             .listen((value) {
+          searchBusinessList.clear();
           if (value.isNotEmpty) {
-            searchBusinessList.clear();
             searchBusinessList.addAll(value);
+            if (searchBusinessList.isNotEmpty) {
+              recentSearchHistory.clear();
+            }
           } else {
-            searchBusinessList.clear();
+            // searchBusinessList.clear();
           }
+
           log("searchBusinessList :: ${searchBusinessList.length}");
         });
       }

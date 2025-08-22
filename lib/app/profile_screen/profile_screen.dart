@@ -202,7 +202,7 @@ class ProfileScreen extends StatelessWidget {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Text(
-                                      "Share your experience",
+                                      "Share your experience".tr,
                                       textAlign: TextAlign.start,
                                       style: TextStyle(
                                         color: themeChange.getThem() ? AppThemeData.greyDark01 : AppThemeData.grey01,
@@ -392,7 +392,7 @@ class ProfileScreen extends StatelessWidget {
                                     Padding(
                                       padding: const EdgeInsets.symmetric(horizontal: 10),
                                       child: Text(
-                                        "Contributions",
+                                        "Contributions".tr,
                                         textAlign: TextAlign.start,
                                         style: TextStyle(
                                           color: themeChange.getThem() ? AppThemeData.greyDark01 : AppThemeData.grey01,
@@ -417,7 +417,7 @@ class ProfileScreen extends StatelessWidget {
                                               ),
                                               Expanded(
                                                 child: Text(
-                                                  "Review",
+                                                  "Review".tr,
                                                   textAlign: TextAlign.start,
                                                   style: TextStyle(
                                                     color: themeChange.getThem() ? AppThemeData.greyDark01 : AppThemeData.grey01,
@@ -452,7 +452,7 @@ class ProfileScreen extends StatelessWidget {
                                                 ),
                                                 Expanded(
                                                   child: Text(
-                                                    "Photos",
+                                                    "Photos".tr,
                                                     textAlign: TextAlign.start,
                                                     style: TextStyle(
                                                       color: themeChange.getThem() ? AppThemeData.greyDark01 : AppThemeData.grey01,
@@ -478,8 +478,8 @@ class ProfileScreen extends StatelessWidget {
                                           ),
                                           InkWell(
                                             onTap: () {
-                                              DashBoardController controller = Get.find();
-                                              controller.selectedIndex.value = 4;
+                                              DashBoardController controller = Get.put(DashBoardController());
+                                              controller.selectedIndex.value = 3;
                                             },
                                             child: Row(
                                               children: [
@@ -489,7 +489,7 @@ class ProfileScreen extends StatelessWidget {
                                                 ),
                                                 Expanded(
                                                   child: Text(
-                                                    "Added Business",
+                                                    "Added Business".tr,
                                                     textAlign: TextAlign.start,
                                                     style: TextStyle(
                                                       color: themeChange.getThem() ? AppThemeData.greyDark01 : AppThemeData.grey01,
@@ -515,8 +515,8 @@ class ProfileScreen extends StatelessWidget {
                                           ),
                                           InkWell(
                                             onTap: () {
-                                              DashBoardController controller = Get.find();
-                                              controller.selectedIndex.value = 3;
+                                              DashBoardController controller = Get.put(DashBoardController());
+                                              controller.selectedIndex.value = 2;
                                             },
                                             child: Row(
                                               children: [
@@ -526,7 +526,7 @@ class ProfileScreen extends StatelessWidget {
                                                 ),
                                                 Expanded(
                                                   child: Text(
-                                                    "Collections",
+                                                    "Collections".tr,
                                                     textAlign: TextAlign.start,
                                                     style: TextStyle(
                                                       color: themeChange.getThem() ? AppThemeData.greyDark01 : AppThemeData.grey01,
@@ -580,7 +580,7 @@ class ProfileScreen extends StatelessWidget {
                                           Padding(
                                             padding: const EdgeInsets.symmetric(horizontal: 10),
                                             child: Text(
-                                              "Community",
+                                              "Community".tr,
                                               textAlign: TextAlign.start,
                                               style: TextStyle(
                                                 color: themeChange.getThem() ? AppThemeData.greyDark01 : AppThemeData.grey01,
@@ -613,7 +613,7 @@ class ProfileScreen extends StatelessWidget {
                                                       ),
                                                       Expanded(
                                                         child: Text(
-                                                          "Followers",
+                                                          "Followers".tr,
                                                           textAlign: TextAlign.start,
                                                           style: TextStyle(
                                                             color: themeChange.getThem() ? AppThemeData.greyDark01 : AppThemeData.grey01,
@@ -653,7 +653,7 @@ class ProfileScreen extends StatelessWidget {
                                                       ),
                                                       Expanded(
                                                         child: Text(
-                                                          "Following",
+                                                          "Following".tr,
                                                           textAlign: TextAlign.start,
                                                           style: TextStyle(
                                                             color: themeChange.getThem() ? AppThemeData.greyDark01 : AppThemeData.grey01,
@@ -689,7 +689,7 @@ class ProfileScreen extends StatelessWidget {
                                                       ),
                                                       Expanded(
                                                         child: Text(
-                                                          "Compliments",
+                                                          "Compliments".tr,
                                                           textAlign: TextAlign.start,
                                                           style: TextStyle(
                                                             color: themeChange.getThem() ? AppThemeData.greyDark01 : AppThemeData.grey01,

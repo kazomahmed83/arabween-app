@@ -89,29 +89,32 @@ class NotificationService {
       ShowToastDialog.closeLoader();
       bool isMe = senderUserModel!.id == senderId;
       Get.to(const UserChatScreen(), arguments: {"receiverModel": isMe ? senderUserModel : receiverUserModel});
-    } else if (data['type'] == "project_chat") {
-      String isSender = data['isSender'];
-      String businessId = data['businessId'];
-      String projectId = data['projectId'];
+    }
+    // else if (data['type'] == "project_chat") {
+    //   String isSender = data['isSender'];
+    //   String businessId = data['businessId'];
+    //   String projectId = data['projectId'];
 
-      ShowToastDialog.showLoader("Please wait".tr);
-      PricingRequestModel? pricingRequestModel = await FireStoreUtils.getPricingRequestById(projectId);
-      BusinessModel? businessModel = await FireStoreUtils.getBusinessById(businessId);
-      UserModel? userModel = await FireStoreUtils.getUserProfile(pricingRequestModel!.userId.toString());
-      ShowToastDialog.closeLoader();
-      Get.to(ChatScreen(), arguments: {
-        "userModel": userModel!,
-        "businessModel": businessModel!,
-        "projectModel": pricingRequestModel,
-        "isSender": isSender == "business" ? "user" : "business",
-      });
-    } else if (data['type'] == "project_request") {
-      String businessId = data['businessId'];
-      // ignore: unused_local_variable
-      String projectId = data['projectId'];
-      BusinessModel? businessModel = await FireStoreUtils.getBusinessById(businessId);
-      Get.to(BusinessProjectListScreen(), arguments: {"businessModel": businessModel});
-    } else if (data['type'] == "review") {
+    //   ShowToastDialog.showLoader("Please wait".tr);
+    //   PricingRequestModel? pricingRequestModel = await FireStoreUtils.getPricingRequestById(projectId);
+    //   BusinessModel? businessModel = await FireStoreUtils.getBusinessById(businessId);
+    //   UserModel? userModel = await FireStoreUtils.getUserProfile(pricingRequestModel!.userId.toString());
+    //   ShowToastDialog.closeLoader();
+    //   Get.to(ChatScreen(), arguments: {
+    //     "userModel": userModel!,
+    //     "businessModel": businessModel!,
+    //     "projectModel": pricingRequestModel,
+    //     "isSender": isSender == "business" ? "user" : "business",
+    //   });
+    // }
+    // else if (data['type'] == "project_request") {
+    //   String businessId = data['businessId'];
+    //   // ignore: unused_local_variable
+    //   String projectId = data['projectId'];
+    //   BusinessModel? businessModel = await FireStoreUtils.getBusinessById(businessId);
+    //   Get.to(BusinessProjectListScreen(), arguments: {"businessModel": businessModel});
+    // }
+    else if (data['type'] == "review") {
       String businessId = data['businessId'];
       BusinessModel? businessModel = await FireStoreUtils.getBusinessById(businessId);
       Get.to(BusinessDetailsScreen(), arguments: {"businessModel": businessModel});

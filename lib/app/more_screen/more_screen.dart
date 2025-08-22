@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:provider/provider.dart';
-import 'package:arabween/app/business_project_list_screen/business_project_list_screen.dart';
 import 'package:arabween/app/chat_screen/inbox_screen.dart';
 import 'package:arabween/app/chat_screen/user_chat_screen.dart';
 import 'package:arabween/app/create_bussiness_screen/create_business_screen.dart';
@@ -158,8 +157,8 @@ class MoreScreen extends StatelessWidget {
                                   if (FireStoreUtils.getCurrentUid() != '')
                                     DebouncedInkWell(
                                       onTap: () {
-                                        DashBoardController controller = Get.find();
-                                        controller.selectedIndex.value = 3;
+                                        DashBoardController dashController = Get.put(DashBoardController());
+                                        dashController.selectedIndex.value = 2;
                                       },
                                       child: Row(
                                         children: [
@@ -354,52 +353,52 @@ class MoreScreen extends StatelessWidget {
                                                             24,
                                                           ),
                                                         ),
-                                                        SizedBox(
-                                                          width: 10,
-                                                        ),
-                                                        (businessModel.ownerId == null || businessModel.ownerId != FireStoreUtils.getCurrentUid())
-                                                            ? SizedBox()
-                                                            : StreamBuilder<int>(
-                                                                stream: controller.getLiveCount(businessModel),
-                                                                builder: (context, snapshot) {
-                                                                  if (snapshot.connectionState == ConnectionState.waiting) {
-                                                                    return Padding(
-                                                                      padding: const EdgeInsets.all(6.0),
-                                                                      child: Constant.svgPictureShow(
-                                                                        "assets/icons/icon_message-unread.svg",
-                                                                        themeChange.getThem() ? AppThemeData.greyDark04 : AppThemeData.grey04,
-                                                                        24,
-                                                                        24,
-                                                                      ),
-                                                                    );
-                                                                  } else {
-                                                                    return badges.Badge(
-                                                                      badgeContent: Text(
-                                                                        (snapshot.data ?? 0).toString(),
-                                                                        style: TextStyle(
-                                                                          color: AppThemeData.grey10,
-                                                                        ),
-                                                                      ),
-                                                                      showBadge: snapshot.data == 0 ? false : true,
-                                                                      badgeStyle: badges.BadgeStyle(badgeColor: AppThemeData.teal02),
-                                                                      child: InkWell(
-                                                                        onTap: () {
-                                                                          Get.to(BusinessProjectListScreen(), arguments: {"businessModel": businessModel});
-                                                                        },
-                                                                        child: Padding(
-                                                                          padding: const EdgeInsets.all(6.0),
-                                                                          child: Constant.svgPictureShow(
-                                                                            "assets/icons/icon_message-unread.svg",
-                                                                            themeChange.getThem() ? AppThemeData.greyDark04 : AppThemeData.grey04,
-                                                                            24,
-                                                                            24,
-                                                                          ),
-                                                                        ),
-                                                                      ),
-                                                                    );
-                                                                  }
-                                                                },
-                                                              )
+                                                        // SizedBox(
+                                                        //   width: 10,
+                                                        // ),
+                                                        // (businessModel.ownerId == null || businessModel.ownerId != FireStoreUtils.getCurrentUid())
+                                                        //     ? SizedBox()
+                                                        //     : StreamBuilder<int>(
+                                                        //         stream: controller.getLiveCount(businessModel),
+                                                        //         builder: (context, snapshot) {
+                                                        //           if (snapshot.connectionState == ConnectionState.waiting) {
+                                                        //             return Padding(
+                                                        //               padding: const EdgeInsets.all(6.0),
+                                                        //               child: Constant.svgPictureShow(
+                                                        //                 "assets/icons/icon_message-unread.svg",
+                                                        //                 themeChange.getThem() ? AppThemeData.greyDark04 : AppThemeData.grey04,
+                                                        //                 24,
+                                                        //                 24,
+                                                        //               ),
+                                                        //             );
+                                                        //           } else {
+                                                        //             return badges.Badge(
+                                                        //               badgeContent: Text(
+                                                        //                 (snapshot.data ?? 0).toString(),
+                                                        //                 style: TextStyle(
+                                                        //                   color: AppThemeData.grey10,
+                                                        //                 ),
+                                                        //               ),
+                                                        //               showBadge: snapshot.data == 0 ? false : true,
+                                                        //               badgeStyle: badges.BadgeStyle(badgeColor: AppThemeData.teal02),
+                                                        //               child: InkWell(
+                                                        //                 onTap: () {
+                                                        //                   Get.to(BusinessProjectListScreen(), arguments: {"businessModel": businessModel});
+                                                        //                 },
+                                                        //                 child: Padding(
+                                                        //                   padding: const EdgeInsets.all(6.0),
+                                                        //                   child: Constant.svgPictureShow(
+                                                        //                     "assets/icons/icon_message-unread.svg",
+                                                        //                     themeChange.getThem() ? AppThemeData.greyDark04 : AppThemeData.grey04,
+                                                        //                     24,
+                                                        //                     24,
+                                                        //                   ),
+                                                        //                 ),
+                                                        //               ),
+                                                        //             );
+                                                        //           }
+                                                        //         },
+                                                        //       )
                                                       ],
                                                     ),
                                                   ),
@@ -736,7 +735,7 @@ class MoreScreen extends StatelessWidget {
                       ),
                       SizedBox(height: 30),
                       RoundedButtonFill(
-                        title: 'I am a Customer',
+                        title: 'I am a Customer'.tr,
                         color: themeChange.getThem() ? AppThemeData.greyDark06 : AppThemeData.grey06,
                         textColor: themeChange.getThem() ? AppThemeData.grey02 : AppThemeData.grey02,
                         onPress: () {
@@ -752,7 +751,7 @@ class MoreScreen extends StatelessWidget {
                       ),
                       SizedBox(height: 10),
                       RoundedButtonFill(
-                        title: 'This is my Business',
+                        title: 'This is my Business'.tr,
                         color: themeChange.getThem() ? AppThemeData.greyDark06 : AppThemeData.grey06,
                         textColor: themeChange.getThem() ? AppThemeData.grey02 : AppThemeData.grey02,
                         onPress: () {

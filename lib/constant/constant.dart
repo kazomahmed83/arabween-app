@@ -133,12 +133,18 @@ class Constant {
     );
   }
 
-  static getFullAddress(place) {
-    return "${place.street}, ${place.locality}, ${place.administrativeArea}, ${place.country}";
-  }
+  // static String getFullAddressModel(AddressModel place) {
+  //   final parts = <String>[
+  //     if ((place.street ?? '').isNotEmpty) place.street!,
+  //     if ((place.locality ?? '').isNotEmpty) place.locality!,
+  //     if ((place.administrativeArea ?? '').isNotEmpty) place.administrativeArea!,
+  //     if ((place.country ?? '').isNotEmpty) place.country!,
+  //   ];
 
-  static getFullAddressModel(AddressModel place) {
-    return "${place.street}, ${place.locality}, ${place.administrativeArea}, ${place.country}";
+  //   return parts.join(', ');
+  // }
+  static String getFullAddressModel(AddressModel place) {
+    return place.formattedAddress ?? '';
   }
 
   static String getCategoryNames(List<CategoryModel>? categoryList) {
@@ -166,7 +172,7 @@ class Constant {
       return RichText(
         text: TextSpan(
           children: [
-            TextSpan(text: "Open", style: openStyle),
+            TextSpan(text: "Open".tr, style: openStyle),
             // TextSpan(text: " Until ${status.replaceFirst("Open until", "").trim()}", style: defaultStyle),
           ],
         ),
@@ -175,7 +181,7 @@ class Constant {
       return RichText(
         text: TextSpan(
           children: [
-            TextSpan(text: "Closed", style: closedStyle),
+            TextSpan(text: "Closed".tr, style: closedStyle),
             // TextSpan(text: " until ${status.replaceFirst("Closed until", "").trim()}", style: defaultStyle),
           ],
         ),
@@ -183,12 +189,12 @@ class Constant {
     } else if (status == "Closed") {
       return RichText(
         text: TextSpan(
-          text: "Closed",
+          text: "Closed".tr,
           style: closedStyle,
         ),
       );
     } else {
-      return Text(status, style: defaultStyle);
+      return Text(status.tr, style: defaultStyle);
     }
   }
 

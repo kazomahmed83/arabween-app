@@ -154,7 +154,7 @@ class CreateBusinessScreen extends StatelessWidget {
                                       ),
                                       SizedBox(height: 2),
                                       Text(
-                                        "Maximum\nUpload Size ${Constant.profileCoverImageSizeMb}MB".tr,
+                                        "${'Maximum\nUpload Size'.tr} ${Constant.profileCoverImageSizeMb}MB".tr,
                                         textAlign: TextAlign.center,
                                         style: TextStyle(color: AppThemeData.redDark02, fontFamily: AppThemeData.medium, fontSize: 10),
                                       ),
@@ -198,7 +198,7 @@ class CreateBusinessScreen extends StatelessWidget {
                                     ),
                                     SizedBox(height: 2),
                                     Text(
-                                      "Maximum Upload Size ${Constant.coverImageSizeMb}MB".tr,
+                                      "${'Maximum Upload Size'.tr} ${Constant.coverImageSizeMb}MB".tr,
                                       textAlign: TextAlign.center,
                                       style: TextStyle(color: AppThemeData.redDark02, fontFamily: AppThemeData.medium, fontSize: 10),
                                     ),
@@ -295,9 +295,9 @@ class CreateBusinessScreen extends StatelessWidget {
                               },
                             ),
                             TextFieldWidget(
-                              title: 'Name in arabic',
+                              title: 'Name in arabic'.tr,
                               controller: controller.arabicNameTextFieldController.value,
-                              hintText: 'Name in arabic',
+                              hintText: 'Name in arabic'.tr,
                               validator: (value) {
                                 if (value == null || value.isEmpty) {
                                   return '*';
@@ -306,9 +306,9 @@ class CreateBusinessScreen extends StatelessWidget {
                               },
                             ),
                             TextFieldWidget(
-                              title: 'SEO Slug',
+                              title: 'SEO Slug'.tr,
                               controller: controller.businessUrlTextFieldController.value,
-                              hintText: 'SEO Slug',
+                              hintText: 'SEO Slug'.tr,
                               textColor: themeChange.getThem() ? AppThemeData.greyDark01 : AppThemeData.grey01,
                               onchange: (value) {
                                 controller.businessSlug.value = controller.generateSlugAndUrl(input: value);
@@ -387,9 +387,9 @@ class CreateBusinessScreen extends StatelessWidget {
                             ),
                             const SizedBox(height: 10),
                             TextFieldWidget(
-                              title: 'Tagline',
+                              title: 'Tagline'.tr,
                               controller: controller.tagLineTextFieldController.value,
-                              hintText: 'Tagline',
+                              hintText: 'Tagline'.tr,
                               maxLine: 2,
                               validator: (value) {
                                 if (value == null || value.isEmpty) {
@@ -412,10 +412,10 @@ class CreateBusinessScreen extends StatelessWidget {
                                 }
                               },
                               child: TextFieldWidget(
-                                title: 'Category',
+                                title: 'Category'.tr,
                                 controller: controller.categoryTextFieldController.value,
                                 enable: false,
-                                hintText: 'Category',
+                                hintText: 'Category'.tr,
                                 suffix: Padding(
                                   padding: const EdgeInsets.all(8.0),
                                   child: SvgPicture.asset(
@@ -432,9 +432,9 @@ class CreateBusinessScreen extends StatelessWidget {
                               ),
                             ),
                             TextFieldWidget(
-                              title: 'Country',
+                              title: 'Country'.tr,
                               controller: controller.countryNameTextFieldController.value,
-                              hintText: 'Enter mobile number',
+                              hintText: 'Enter mobile number'.tr,
                               readOnly: true,
                               suffix: CountryCodePicker(
                                 onChanged: (value) {
@@ -464,9 +464,9 @@ class CreateBusinessScreen extends StatelessWidget {
                                 });
                               },
                               child: TextFieldWidget(
-                                title: 'Address',
+                                title: 'Address'.tr,
                                 controller: controller.addressTextFieldController.value,
-                                hintText: 'Address',
+                                hintText: 'Address'.tr,
                                 enable: false,
                                 suffix: Padding(
                                   padding: const EdgeInsets.all(8.0),
@@ -498,9 +498,9 @@ class CreateBusinessScreen extends StatelessWidget {
                                   });
                                 },
                                 child: TextFieldWidget(
-                                  title: 'Sevice Area',
+                                  title: 'Sevice Area'.tr,
                                   controller: controller.serviceAreaTextFieldController.value,
-                                  hintText: 'Sevice Area',
+                                  hintText: 'Sevice Area'.tr,
                                   enable: false,
                                   suffix: Padding(
                                     padding: const EdgeInsets.all(8.0),
@@ -518,9 +518,9 @@ class CreateBusinessScreen extends StatelessWidget {
                                 ),
                               ),
                             TextFieldWidget(
-                              title: 'Description',
+                              title: 'Description'.tr,
                               controller: controller.descriptionTextFieldController.value,
-                              hintText: 'Description',
+                              hintText: 'Description'.tr,
                               maxLine: 4,
                               validator: (value) {
                                 if (value == null || value.isEmpty) {
@@ -530,9 +530,9 @@ class CreateBusinessScreen extends StatelessWidget {
                               },
                             ),
                             TextFieldWidget(
-                              title: 'Phone No',
+                              title: 'Phone No'.tr,
                               controller: controller.phoneNumberTextFieldController.value,
-                              hintText: 'Phone No',
+                              hintText: 'Phone No'.tr,
                               inputFormatters: [FilteringTextInputFormatter.allow(RegExp('[0-9]'))],
                               validator: (value) {
                                 if (value == null || value.isEmpty) {
@@ -559,9 +559,9 @@ class CreateBusinessScreen extends StatelessWidget {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             TextFieldWidget(
-                              title: 'SEO Meta Keywords',
+                              title: 'SEO Meta Keywords'.tr,
                               controller: controller.metaKeywordsController.value,
-                              hintText: 'SEO Meta Keywords',
+                              hintText: 'SEO Meta Keywords'.tr,
                               maxLine: 4,
                               onchange: (value) {
                                 if (value.trim().isNotEmpty) {
@@ -569,7 +569,7 @@ class CreateBusinessScreen extends StatelessWidget {
                                   bool hasInvalidKeyword = rawKeywords.any((k) => k.contains(' '));
                                   if (hasInvalidKeyword) {
                                     controller.metaKeywordsList.value = [];
-                                    ShowToastDialog.showToast("Please enter keywords in a comma-separated list without spaces.");
+                                    ShowToastDialog.showToast("Please enter keywords in a comma-separated list without spaces.".tr);
                                     return;
                                   }
                                   controller.metaKeywordsList.value = rawKeywords;
@@ -582,33 +582,33 @@ class CreateBusinessScreen extends StatelessWidget {
                             ),
                             SizedBox(height: 10),
                             TextFieldWidget(
-                              title: 'Business Website Url',
+                              title: 'Business Website Url'.tr,
                               controller: controller.websiteTextFieldController.value,
-                              hintText: 'Business Website Url',
+                              hintText: 'Business Website Url'.tr,
                               suffix: IconButton(onPressed: () {}, icon: Image.asset("assets/images/website.png", height: 20, width: 20)),
                             ),
                             TextFieldWidget(
-                              title: 'Booking Website Url',
+                              title: 'Booking Website Url'.tr,
                               controller: controller.bookingLinkTextFieldController.value,
-                              hintText: 'Booking Website Url',
+                              hintText: 'Booking Website Url'.tr,
                               suffix: IconButton(onPressed: () {}, icon: Image.asset("assets/images/website.png", height: 20, width: 20)),
                             ),
                             TextFieldWidget(
-                              title: 'Facebook link',
+                              title: 'Facebook link'.tr,
                               controller: controller.fbLinkTextFieldController.value,
-                              hintText: 'Facebook link',
+                              hintText: 'Facebook link'.tr,
                               suffix: IconButton(onPressed: () {}, icon: Image.asset("assets/images/fb.png", height: 20, width: 20)),
                             ),
                             TextFieldWidget(
-                              title: 'Instagram Link',
+                              title: 'Instagram Link'.tr,
                               controller: controller.instaLinkTextFieldController.value,
-                              hintText: 'Instagram Link',
+                              hintText: 'Instagram Link'.tr,
                               suffix: IconButton(onPressed: () {}, icon: Image.asset("assets/images/insta.png", height: 20, width: 20)),
                             ),
                             TextFieldWidget(
-                              title: 'Notes for our team',
+                              title: 'Notes for our team'.tr,
                               controller: controller.notesOfTheYelpTeamTextFieldController.value,
-                              hintText: 'Provide any additional information so we can make this business’s information as accurate as possible.',
+                              hintText: 'Provide any additional information so we can make this business’s information as accurate as possible.'.tr,
                               maxLine: 5,
                             ),
                             Text(
@@ -627,7 +627,7 @@ class CreateBusinessScreen extends StatelessWidget {
                               },
                               readOnly: true,
                               controller: controller.highlightTextFieldController.value,
-                              hintText: 'Select Business Highlight',
+                              hintText: 'Select Business Highlight'.tr,
                               suffix: Padding(
                                 padding: const EdgeInsets.all(8.0),
                                 child: SvgPicture.asset(
@@ -699,7 +699,7 @@ class CreateBusinessScreen extends StatelessWidget {
                               children: [
                                 Expanded(
                                   child: Text(
-                                    "Open All the Time 24/7",
+                                    "Open All the Time 24/7".tr,
                                     textAlign: TextAlign.start,
                                     style: TextStyle(color: themeChange.getThem() ? AppThemeData.greyDark04 : AppThemeData.grey01, fontFamily: AppThemeData.medium),
                                   ),

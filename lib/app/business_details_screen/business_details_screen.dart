@@ -327,39 +327,56 @@ class BusinessDetailsScreen extends StatelessWidget {
                                                     ),
                                                     controller.businessModel.value.businessHours == null || controller.businessModel.value.showWorkingHours == false
                                                         ? SizedBox()
-                                                        : Padding(
-                                                            padding: const EdgeInsets.only(top: 5),
-                                                            child: Row(
-                                                              children: [
-                                                                Constant.buildStatusText(themeChange, Constant.getBusinessStatus(controller.businessModel.value.businessHours!), false),
-                                                                SizedBox(
-                                                                  width: 10,
-                                                                ),
-                                                                Icon(
-                                                                  Icons.circle_rounded,
-                                                                  size: 8,
-                                                                  color: themeChange.getThem() ? AppThemeData.greyDark10 : AppThemeData.grey10,
-                                                                ),
-                                                                SizedBox(
-                                                                  width: 10,
-                                                                ),
-                                                                DebouncedInkWell(
-                                                                  onTap: () {
-                                                                    seeHoursFilterBottomSheet(themeChange, controller);
-                                                                  },
-                                                                  child: Text(
-                                                                    "See hours".tr,
-                                                                    textAlign: TextAlign.start,
-                                                                    style: TextStyle(
-                                                                      color: themeChange.getThem() ? AppThemeData.teal02 : AppThemeData.teal02,
-                                                                      fontSize: 14,
-                                                                      fontFamily: AppThemeData.boldOpenSans,
+                                                        : controller.businessModel.value.isBusinessOpenAllTime == true
+                                                            ? Padding(
+                                                                padding: const EdgeInsets.only(top: 5),
+                                                                child: Row(
+                                                                  children: [
+                                                                    Text(
+                                                                      "Open 24/7".tr,
+                                                                      textAlign: TextAlign.start,
+                                                                      style: TextStyle(
+                                                                        color: themeChange.getThem() ? AppThemeData.greenDark03 : AppThemeData.greenDark03,
+                                                                        fontSize: 14,
+                                                                        fontFamily: AppThemeData.boldOpenSans,
+                                                                      ),
                                                                     ),
-                                                                  ),
+                                                                  ],
                                                                 ),
-                                                              ],
-                                                            ),
-                                                          ),
+                                                              )
+                                                            : Padding(
+                                                                padding: const EdgeInsets.only(top: 5),
+                                                                child: Row(
+                                                                  children: [
+                                                                    Constant.buildStatusText(themeChange, Constant.getBusinessStatus(controller.businessModel.value.businessHours!), false),
+                                                                    SizedBox(
+                                                                      width: 10,
+                                                                    ),
+                                                                    Icon(
+                                                                      Icons.circle_rounded,
+                                                                      size: 8,
+                                                                      color: themeChange.getThem() ? AppThemeData.greyDark10 : AppThemeData.grey10,
+                                                                    ),
+                                                                    SizedBox(
+                                                                      width: 10,
+                                                                    ),
+                                                                    DebouncedInkWell(
+                                                                      onTap: () {
+                                                                        seeHoursFilterBottomSheet(themeChange, controller);
+                                                                      },
+                                                                      child: Text(
+                                                                        "See hours".tr,
+                                                                        textAlign: TextAlign.start,
+                                                                        style: TextStyle(
+                                                                          color: themeChange.getThem() ? AppThemeData.teal02 : AppThemeData.teal02,
+                                                                          fontSize: 14,
+                                                                          fontFamily: AppThemeData.boldOpenSans,
+                                                                        ),
+                                                                      ),
+                                                                    ),
+                                                                  ],
+                                                                ),
+                                                              ),
                                                     SizedBox(height: 5),
                                                   ],
                                                 ),
@@ -508,7 +525,7 @@ class BusinessDetailsScreen extends StatelessWidget {
                 () => controller.businessModel.value.recommendUserId?.contains(FireStoreUtils.getCurrentUid()) == true
                     ? SizedBox()
                     : Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 16),
+                        padding: const EdgeInsets.only(left: 16, right: 16, top: 12),
                         child: Center(
                           child: Column(
                             children: [
@@ -1048,7 +1065,7 @@ class BusinessDetailsScreen extends StatelessWidget {
                             backgroundColor: Colors.grey[300],
                             valueColor: AlwaysStoppedAnimation<Color>(
                               star == 5
-                                  ? Colors.red
+                                  ? Colors.orange
                                   : star == 4
                                       ? Colors.orange
                                       : Colors.amber,
@@ -1071,11 +1088,11 @@ class BusinessDetailsScreen extends StatelessWidget {
   seeHoursFilterBottomSheet(themeChange, BusinessDetailsController controller) {
     Get.bottomSheet(
       DraggableScrollableSheet(
-          initialChildSize: 0.4,
+          initialChildSize: controller.businessModel.value.isBusinessOpenAllTime == true ? 0.1 : 0.4,
           // Starts at 30% of screen height
-          minChildSize: 0.4,
+          minChildSize: controller.businessModel.value.isBusinessOpenAllTime == true ? 0.1 : 0.4,
           // Minimum height (30% of screen)
-          maxChildSize: 0.9,
+          maxChildSize: controller.businessModel.value.isBusinessOpenAllTime == true ? 0.2 : 0.9,
           // Can expand up to
           shouldCloseOnMinExtent: false,
           builder: (context, scrollController) {
@@ -1086,92 +1103,148 @@ class BusinessDetailsScreen extends StatelessWidget {
                 color: themeChange.getThem() ? AppThemeData.surfaceDark50 : AppThemeData.surface50,
                 borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
               ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Row(
-                    children: [
-                      Expanded(
-                        child: Text(
-                          "Hours",
-                          style: TextStyle(
-                            color: themeChange.getThem() ? AppThemeData.greyDark01 : AppThemeData.grey01,
-                            fontSize: 22,
-                            fontFamily: AppThemeData.boldOpenSans,
+              child: controller.businessModel.value.isBusinessOpenAllTime == true
+                  ? Row(
+                      children: [
+                        Expanded(
+                          flex: 4,
+                          child: Text(
+                            "Opening Hours",
+                            style: TextStyle(
+                              color: themeChange.getThem() ? AppThemeData.greyDark01 : AppThemeData.grey01,
+                              fontSize: 20,
+                              fontFamily: AppThemeData.boldOpenSans,
+                            ),
                           ),
                         ),
-                      ),
-                      DebouncedInkWell(
-                        onTap: () {
-                          Get.back();
-                        },
-                        child: Align(
-                          alignment: Alignment.centerRight,
-                          child: SvgPicture.asset(
-                            "assets/icons/icon_close.svg",
-                            width: 20,
-                            colorFilter: ColorFilter.mode(themeChange.getThem() ? AppThemeData.greyDark01 : AppThemeData.grey01, BlendMode.srcIn),
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                  const Divider(),
-                  Expanded(
-                    child: ListView.builder(
-                      shrinkWrap: true,
-                      controller: scrollController,
-                      itemCount: controller.days.length,
-                      itemBuilder: (context, index) {
-                        final day = controller.days[index];
-                        final isToday = day == DateFormat('EEEE').format(DateTime.now());
-                        final slots = Constant.getFormattedSlots(Constant.getDayHours(
-                            controller.businessModel.value.businessHours ?? BusinessHours(sunday: [], monday: [], thursday: [], wednesday: [], tuesday: [], friday: [], saturday: []), day));
-
-                        return Padding(
-                          padding: const EdgeInsets.symmetric(vertical: 6.0),
+                        Expanded(
+                          flex: 5,
                           child: Row(
-                            crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Expanded(
-                                child: Text(
-                                  day,
-                                  style: TextStyle(
-                                    color: themeChange.getThem() ? AppThemeData.greyDark01 : AppThemeData.grey01,
-                                    fontSize: 16,
-                                    fontFamily: isToday ? AppThemeData.boldOpenSans : AppThemeData.mediumOpenSans,
-                                  ),
+                              Text(
+                                "Open 24/7".tr,
+                                style: TextStyle(
+                                  color: themeChange.getThem() ? AppThemeData.greyDark01 : AppThemeData.grey01,
+                                  fontSize: 20,
+                                  fontFamily: AppThemeData.boldOpenSans,
                                 ),
                               ),
-                              SizedBox(width: 12),
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: slots
-                                    .map((slot) => Padding(
-                                          padding: const EdgeInsets.symmetric(vertical: 5),
-                                          child: Text(
-                                            slot,
-                                            style: TextStyle(
-                                              color: slot == "Closed"
-                                                  ? AppThemeData.red02
-                                                  : themeChange.getThem()
-                                                      ? AppThemeData.greyDark01
-                                                      : AppThemeData.grey01,
-                                              fontSize: 14,
-                                              fontFamily: isToday ? AppThemeData.boldOpenSans : AppThemeData.regularOpenSans,
-                                            ),
-                                          ),
-                                        ))
-                                    .toList(),
-                              ),
+                              SizedBox(width: 10),
+                              ClipOval(
+                                  child: Container(
+                                decoration: BoxDecoration(
+                                  color: themeChange.getThem() ? AppThemeData.greyDark08 : AppThemeData.grey06,
+                                ),
+                                child: Padding(
+                                  padding: const EdgeInsets.all(14),
+                                  child: Constant.svgPictureShow("assets/icons/icon_alarm-clock.svg", AppThemeData.red02, null, null),
+                                ),
+                              )),
+                              SizedBox(width: 8),
                             ],
                           ),
-                        );
-                      },
+                        ),
+                        DebouncedInkWell(
+                          onTap: () {
+                            Get.back();
+                          },
+                          child: Align(
+                            alignment: Alignment.centerRight,
+                            child: SvgPicture.asset(
+                              "assets/icons/icon_close.svg",
+                              width: 20,
+                              colorFilter: ColorFilter.mode(themeChange.getThem() ? AppThemeData.greyDark01 : AppThemeData.grey01, BlendMode.srcIn),
+                            ),
+                          ),
+                        ),
+                      ],
+                    )
+                  : Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Row(
+                          children: [
+                            Expanded(
+                              child: Text(
+                                "Hours".tr,
+                                style: TextStyle(
+                                  color: themeChange.getThem() ? AppThemeData.greyDark01 : AppThemeData.grey01,
+                                  fontSize: 22,
+                                  fontFamily: AppThemeData.boldOpenSans,
+                                ),
+                              ),
+                            ),
+                            DebouncedInkWell(
+                              onTap: () {
+                                Get.back();
+                              },
+                              child: Align(
+                                alignment: Alignment.centerRight,
+                                child: SvgPicture.asset(
+                                  "assets/icons/icon_close.svg",
+                                  width: 20,
+                                  colorFilter: ColorFilter.mode(themeChange.getThem() ? AppThemeData.greyDark01 : AppThemeData.grey01, BlendMode.srcIn),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                        const Divider(),
+                        Expanded(
+                          child: ListView.builder(
+                            shrinkWrap: true,
+                            controller: scrollController,
+                            itemCount: controller.days.length,
+                            itemBuilder: (context, index) {
+                              final day = controller.days[index];
+                              final isToday = day == DateFormat('EEEE').format(DateTime.now());
+                              final slots = Constant.getFormattedSlots(Constant.getDayHours(
+                                  controller.businessModel.value.businessHours ?? BusinessHours(sunday: [], monday: [], thursday: [], wednesday: [], tuesday: [], friday: [], saturday: []), day));
+
+                              return Padding(
+                                padding: const EdgeInsets.symmetric(vertical: 6.0),
+                                child: Row(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Expanded(
+                                      child: Text(
+                                        day,
+                                        style: TextStyle(
+                                          color: themeChange.getThem() ? AppThemeData.greyDark01 : AppThemeData.grey01,
+                                          fontSize: 16,
+                                          fontFamily: isToday ? AppThemeData.boldOpenSans : AppThemeData.mediumOpenSans,
+                                        ),
+                                      ),
+                                    ),
+                                    SizedBox(width: 12),
+                                    Column(
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: slots
+                                          .map((slot) => Padding(
+                                                padding: const EdgeInsets.symmetric(vertical: 5),
+                                                child: Text(
+                                                  slot,
+                                                  style: TextStyle(
+                                                    color: slot == "Closed"
+                                                        ? AppThemeData.red02
+                                                        : themeChange.getThem()
+                                                            ? AppThemeData.greyDark01
+                                                            : AppThemeData.grey01,
+                                                    fontSize: 14,
+                                                    fontFamily: isToday ? AppThemeData.boldOpenSans : AppThemeData.regularOpenSans,
+                                                  ),
+                                                ),
+                                              ))
+                                          .toList(),
+                                    ),
+                                  ],
+                                ),
+                              );
+                            },
+                          ),
+                        )
+                      ],
                     ),
-                  )
-                ],
-              ),
             );
           }),
       isScrollControlled: true, // Allows BottomSheet to take full height
@@ -1375,6 +1448,13 @@ class BusinessDetailsScreen extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Padding(
+            padding: const EdgeInsets.symmetric(vertical: 10),
+            child: Container(
+              color: themeChange.getThem() ? AppThemeData.greyDark09 : AppThemeData.grey09,
+              height: 14,
+            ),
+          ),
+          Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16),
             child: Text(
               "Info".tr,
@@ -1550,9 +1630,35 @@ class BusinessDetailsScreen extends StatelessWidget {
               height: 14,
             ),
           ),
-          descWidget(controller, themeChange),
           Padding(
-            padding: const EdgeInsets.symmetric(vertical: 10),
+            padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 12),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  "Description".tr,
+                  textAlign: TextAlign.start,
+                  style: TextStyle(
+                    color: themeChange.getThem() ? AppThemeData.greyDark01 : AppThemeData.grey01,
+                    fontSize: 20,
+                    fontFamily: AppThemeData.boldOpenSans,
+                  ),
+                ),
+                SizedBox(height: 5),
+                Text(
+                  controller.businessModel.value.description ?? '',
+                  textAlign: TextAlign.start,
+                  style: TextStyle(
+                    color: themeChange.getThem() ? AppThemeData.greyDark02 : AppThemeData.grey02,
+                    fontSize: 14,
+                    fontFamily: AppThemeData.semiboldOpenSans,
+                  ),
+                ),
+              ],
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.only(top: 10, bottom: 10),
             child: Container(
               color: themeChange.getThem() ? AppThemeData.greyDark09 : AppThemeData.grey09,
               height: 14,
@@ -1703,7 +1809,7 @@ class BusinessDetailsScreen extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          "${Constant.getFullAddressModel(controller.businessModel.value.address!)}",
+                          Constant.getFullAddressModel(controller.businessModel.value.address!),
                           textAlign: TextAlign.center,
                           style: TextStyle(
                             color: themeChange.getThem() ? AppThemeData.greyDark02 : AppThemeData.grey02,
@@ -1745,79 +1851,12 @@ class BusinessDetailsScreen extends StatelessWidget {
                           ),
                         ),
                         Padding(
-                          padding: const EdgeInsets.symmetric(vertical: 14),
+                          padding: const EdgeInsets.symmetric(vertical: 14, horizontal: 0),
                           child: Divider(
                             height: 1,
                             color: themeChange.getThem() ? AppThemeData.greyDark08 : AppThemeData.grey08,
                           ),
                         ),
-                        controller.highLightList.isEmpty
-                            ? SizedBox()
-                            : Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    "Highlights from the business".tr,
-                                    textAlign: TextAlign.center,
-                                    style: TextStyle(
-                                      color: themeChange.getThem() ? AppThemeData.greyDark01 : AppThemeData.grey01,
-                                      fontSize: 20,
-                                      fontFamily: AppThemeData.boldOpenSans,
-                                    ),
-                                  ),
-                                  SizedBox(
-                                    height: 20,
-                                  ),
-                                  SizedBox(
-                                    height: Responsive.height(10, Get.context!),
-                                    child: ListView.separated(
-                                      itemCount: controller.highLightList.length,
-                                      padding: EdgeInsets.zero,
-                                      scrollDirection: Axis.horizontal,
-                                      shrinkWrap: true,
-                                      itemBuilder: (context, index) {
-                                        HighlightModel item = controller.highLightList[index];
-                                        return Padding(
-                                          padding: const EdgeInsets.only(right: 16),
-                                          child: SizedBox(
-                                            width: Responsive.width(20, Get.context!),
-                                            child: Column(
-                                              children: [
-                                                NetworkImageWidget(
-                                                  imageUrl: item.photo.toString(),
-                                                  width: 36,
-                                                  height: 36,
-                                                ),
-                                                SizedBox(
-                                                  height: 10,
-                                                ),
-                                                Text(
-                                                  item.title.toString(),
-                                                  maxLines: 2,
-                                                  textAlign: TextAlign.center,
-                                                  style: TextStyle(
-                                                    color: themeChange.getThem() ? AppThemeData.greyDark01 : AppThemeData.grey01,
-                                                    fontSize: 12,
-                                                    fontFamily: AppThemeData.semiboldOpenSans,
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                        );
-                                      },
-                                      separatorBuilder: (BuildContext context, int index) {
-                                        return Padding(
-                                          padding: const EdgeInsets.symmetric(vertical: 5),
-                                          child: Divider(
-                                            color: themeChange.getThem() ? AppThemeData.greyDark07 : AppThemeData.grey07,
-                                          ),
-                                        );
-                                      },
-                                    ),
-                                  ),
-                                ],
-                              ),
                       ],
                     ),
                   ),
@@ -1826,15 +1865,9 @@ class BusinessDetailsScreen extends StatelessWidget {
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
+                Container(color: themeChange.getThem() ? AppThemeData.greyDark09 : AppThemeData.grey09, height: 14),
                 Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 10),
-                  child: Container(
-                    color: themeChange.getThem() ? AppThemeData.greyDark09 : AppThemeData.grey09,
-                    height: 14,
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.all(14),
+                  padding: const EdgeInsets.only(left: 14, right: 14, bottom: 16, top: 16),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -1894,12 +1927,13 @@ class BusinessDetailsScreen extends StatelessWidget {
                     ],
                   ),
                 ),
+                Container(color: themeChange.getThem() ? AppThemeData.greyDark09 : AppThemeData.grey09, height: 14),
               ],
             ),
           controller.serviceList.isEmpty
               ? SizedBox()
               : Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 20),
+                  padding: const EdgeInsets.only(left: 16, right: 16, bottom: 16, top: 16),
                   child: ListView.separated(
                     itemCount: controller.serviceList.length,
                     padding: EdgeInsets.zero,
@@ -1936,6 +1970,7 @@ class BusinessDetailsScreen extends StatelessWidget {
                                         imageUrl: optionModel.icon.toString(),
                                         width: 22,
                                         height: 22,
+                                        color: themeChange.getThem() ? AppThemeData.greyDark02 : AppThemeData.grey02,
                                       ),
                                       SizedBox(
                                         width: 14,
@@ -1967,40 +2002,60 @@ class BusinessDetailsScreen extends StatelessWidget {
                     },
                   ),
                 ),
-          Container(
-            color: themeChange.getThem() ? AppThemeData.greyDark09 : AppThemeData.grey09,
-            height: 14,
-          ),
-        ],
-      ),
-    );
-  }
-
-  descWidget(BusinessDetailsController controller, themeChange) {
-    return Padding(
-      padding: const EdgeInsets.all(14),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            "Description".tr,
-            textAlign: TextAlign.start,
-            style: TextStyle(
-              color: themeChange.getThem() ? AppThemeData.greyDark01 : AppThemeData.grey01,
-              fontSize: 20,
-              fontFamily: AppThemeData.boldOpenSans,
-            ),
-          ),
-          SizedBox(height: 5),
-          Text(
-            controller.businessModel.value.description ?? '',
-            textAlign: TextAlign.start,
-            style: TextStyle(
-              color: themeChange.getThem() ? AppThemeData.greyDark02 : AppThemeData.grey02,
-              fontSize: 14,
-              fontFamily: AppThemeData.semiboldOpenSans,
-            ),
-          ),
+          if (controller.highLightList.isNotEmpty && controller.serviceList.isNotEmpty) Container(color: themeChange.getThem() ? AppThemeData.greyDark09 : AppThemeData.grey09, height: 14),
+          controller.highLightList.isEmpty
+              ? SizedBox()
+              : Padding(
+                  padding: const EdgeInsets.only(left: 16, right: 16, top: 16, bottom: 8),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        "Highlights from the business".tr,
+                        textAlign: TextAlign.center,
+                        style: TextStyle(color: themeChange.getThem() ? AppThemeData.greyDark01 : AppThemeData.grey01, fontSize: 20, fontFamily: AppThemeData.boldOpenSans),
+                      ),
+                      SizedBox(height: 20),
+                      SizedBox(
+                        height: Responsive.height(10, Get.context!),
+                        child: ListView.separated(
+                          itemCount: controller.highLightList.length,
+                          padding: EdgeInsets.zero,
+                          scrollDirection: Axis.horizontal,
+                          shrinkWrap: true,
+                          itemBuilder: (context, index) {
+                            HighlightModel item = controller.highLightList[index];
+                            return Padding(
+                              padding: const EdgeInsets.only(right: 16),
+                              child: SizedBox(
+                                width: Responsive.width(20, Get.context!),
+                                child: Column(
+                                  children: [
+                                    NetworkImageWidget(imageUrl: item.photo.toString(), width: 36, height: 36),
+                                    SizedBox(height: 10),
+                                    Text(
+                                      item.title.toString(),
+                                      maxLines: 2,
+                                      textAlign: TextAlign.center,
+                                      style: TextStyle(color: themeChange.getThem() ? AppThemeData.greyDark01 : AppThemeData.grey01, fontSize: 12, fontFamily: AppThemeData.semiboldOpenSans),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            );
+                          },
+                          separatorBuilder: (BuildContext context, int index) {
+                            return Padding(
+                              padding: const EdgeInsets.symmetric(vertical: 5),
+                              child: Divider(color: themeChange.getThem() ? AppThemeData.greyDark07 : AppThemeData.grey07),
+                            );
+                          },
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+          Container(color: themeChange.getThem() ? AppThemeData.greyDark09 : AppThemeData.grey09, height: 14),
         ],
       ),
     );

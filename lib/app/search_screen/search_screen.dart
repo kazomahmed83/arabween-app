@@ -51,8 +51,9 @@ class SearchScreen extends StatelessWidget {
                           hintText: 'Cleaner, movers, sushi, delivery, etc.',
                           focusNode: controller.focusNode1,
                           onchange: (value) {
-                            if (value.isEmpty) {
+                            if (value == '') {
                               controller.searchBusinessList.clear();
+                              controller.getSearchHistory();
                             }
                             controller.searchCategories(value.toLowerCase());
                           },
@@ -212,239 +213,237 @@ class SearchScreen extends StatelessWidget {
                                         : controller.categories.isEmpty
                                             ? controller.recentSearchHistory.isEmpty
                                                 ? SizedBox()
-                                                : controller.searchBusinessList.isNotEmpty
-                                                    ? SizedBox()
-                                                    : Expanded(
-                                                        child: Padding(
-                                                          padding: const EdgeInsets.only(top: 20),
-                                                          child: ListView(
-                                                            padding: EdgeInsets.zero,
-                                                            children: [
-                                                              Text(
-                                                                "Recently viewed businesses".tr,
-                                                                textAlign: TextAlign.start,
-                                                                style: TextStyle(
-                                                                  color: themeChange.getThem() ? AppThemeData.greyDark01 : AppThemeData.grey01,
-                                                                  fontSize: 16,
-                                                                  fontFamily: AppThemeData.boldOpenSans,
-                                                                ),
-                                                              ),
-                                                              Padding(
-                                                                padding: const EdgeInsets.symmetric(vertical: 10),
-                                                                child: Divider(),
-                                                              ),
-                                                              GridView.builder(
-                                                                shrinkWrap: true,
-                                                                physics: NeverScrollableScrollPhysics(),
-                                                                itemCount: controller.recentSearchHistory.length,
-                                                                padding: const EdgeInsets.symmetric(horizontal: 0),
-                                                                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                                                                  crossAxisCount: 2,
-                                                                  crossAxisSpacing: 10,
-                                                                  mainAxisSpacing: 10,
-                                                                  mainAxisExtent: 240,
-                                                                ),
-                                                                itemBuilder: (context, index) {
-                                                                  BusinessHistoryModel businessHistoryModel = controller.recentSearchHistory[index];
-                                                                  BusinessModel business = businessHistoryModel.business!;
-                                                                  return DebouncedInkWell(
-                                                                    onTap: () {
-                                                                      Constant.setRecentBusiness(business);
-                                                                      Get.to(BusinessDetailsScreen(), arguments: {"businessModel": business});
-                                                                    },
-                                                                    child: Container(
-                                                                      decoration: BoxDecoration(
-                                                                        border: Border.all(
-                                                                          color: themeChange.getThem() ? AppThemeData.grey03 : AppThemeData.greyDark06,
-                                                                        ),
-                                                                        borderRadius: BorderRadius.circular(8),
-                                                                        color: themeChange.getThem() ? AppThemeData.greyDark10 : AppThemeData.grey10,
-                                                                        boxShadow: [
-                                                                          BoxShadow(
-                                                                            color: Colors.black.withOpacity(0.1),
-                                                                            blurRadius: themeChange.getThem() ? 6 : 2,
-                                                                            offset: Offset(0, themeChange.getThem() ? 3 : 1),
-                                                                          ),
-                                                                        ],
+                                                : Expanded(
+                                                    child: Padding(
+                                                      padding: const EdgeInsets.only(top: 20),
+                                                      child: ListView(
+                                                        padding: EdgeInsets.zero,
+                                                        children: [
+                                                          Text(
+                                                            "Recently viewed businesses".tr,
+                                                            textAlign: TextAlign.start,
+                                                            style: TextStyle(
+                                                              color: themeChange.getThem() ? AppThemeData.greyDark01 : AppThemeData.grey01,
+                                                              fontSize: 16,
+                                                              fontFamily: AppThemeData.boldOpenSans,
+                                                            ),
+                                                          ),
+                                                          Padding(
+                                                            padding: const EdgeInsets.symmetric(vertical: 2),
+                                                            child: Divider(),
+                                                          ),
+                                                          GridView.builder(
+                                                            shrinkWrap: true,
+                                                            physics: NeverScrollableScrollPhysics(),
+                                                            itemCount: controller.recentSearchHistory.length,
+                                                            padding: const EdgeInsets.symmetric(horizontal: 0),
+                                                            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                                                              crossAxisCount: 2,
+                                                              crossAxisSpacing: 10,
+                                                              mainAxisSpacing: 10,
+                                                              mainAxisExtent: 240,
+                                                            ),
+                                                            itemBuilder: (context, index) {
+                                                              BusinessHistoryModel businessHistoryModel = controller.recentSearchHistory[index];
+                                                              BusinessModel business = businessHistoryModel.business!;
+                                                              return DebouncedInkWell(
+                                                                onTap: () {
+                                                                  Constant.setRecentBusiness(business);
+                                                                  Get.to(BusinessDetailsScreen(), arguments: {"businessModel": business});
+                                                                },
+                                                                child: Container(
+                                                                  decoration: BoxDecoration(
+                                                                    border: Border.all(
+                                                                      color: themeChange.getThem() ? AppThemeData.grey03 : AppThemeData.greyDark06,
+                                                                    ),
+                                                                    borderRadius: BorderRadius.circular(8),
+                                                                    color: themeChange.getThem() ? AppThemeData.greyDark10 : AppThemeData.grey10,
+                                                                    boxShadow: [
+                                                                      BoxShadow(
+                                                                        color: Colors.black.withOpacity(0.1),
+                                                                        blurRadius: themeChange.getThem() ? 6 : 2,
+                                                                        offset: Offset(0, themeChange.getThem() ? 3 : 1),
                                                                       ),
-                                                                      child: Stack(
+                                                                    ],
+                                                                  ),
+                                                                  child: Stack(
+                                                                    children: [
+                                                                      Column(
+                                                                        crossAxisAlignment: CrossAxisAlignment.start,
                                                                         children: [
-                                                                          Column(
-                                                                            crossAxisAlignment: CrossAxisAlignment.start,
-                                                                            children: [
-                                                                              Expanded(
-                                                                                flex: 7,
-                                                                                child: Stack(
-                                                                                  fit: StackFit.expand,
-                                                                                  children: [
-                                                                                    ClipRRect(
-                                                                                      borderRadius: BorderRadius.vertical(top: Radius.circular(8)),
-                                                                                      child: NetworkImageWidget(
-                                                                                        imageUrl: business.coverPhoto ?? '',
-                                                                                        width: double.infinity,
-                                                                                        fit: BoxFit.cover,
-                                                                                        errorWidget: Constant.svgPictureShow(
-                                                                                          "assets/icons/ic_placeholder_bussiness.svg",
-                                                                                          null,
-                                                                                          double.infinity,
-                                                                                          double.infinity,
-                                                                                        ),
-                                                                                      ),
+                                                                          Expanded(
+                                                                            flex: 7,
+                                                                            child: Stack(
+                                                                              fit: StackFit.expand,
+                                                                              children: [
+                                                                                ClipRRect(
+                                                                                  borderRadius: BorderRadius.vertical(top: Radius.circular(8)),
+                                                                                  child: NetworkImageWidget(
+                                                                                    imageUrl: business.coverPhoto ?? '',
+                                                                                    width: double.infinity,
+                                                                                    fit: BoxFit.cover,
+                                                                                    errorWidget: Constant.svgPictureShow(
+                                                                                      "assets/icons/ic_placeholder_bussiness.svg",
+                                                                                      null,
+                                                                                      double.infinity,
+                                                                                      double.infinity,
                                                                                     ),
-                                                                                    Positioned(
-                                                                                      right: 10,
-                                                                                      bottom: 8,
-                                                                                      child: Container(
-                                                                                        padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 7),
-                                                                                        decoration: ShapeDecoration(
-                                                                                          color: themeChange.getThem() ? AppThemeData.greyDark10 : AppThemeData.grey10,
-                                                                                          shape: RoundedRectangleBorder(
-                                                                                            borderRadius: BorderRadius.circular(120),
-                                                                                          ),
-                                                                                        ),
-                                                                                        child: Row(
-                                                                                          mainAxisSize: MainAxisSize.min,
-                                                                                          children: [
-                                                                                            SvgPicture.asset("assets/icons/ic_star.svg"),
-                                                                                            const SizedBox(width: 2),
-                                                                                            Text(
-                                                                                              "${Constant.calculateReview(reviewCount: business.reviewCount.toString(), reviewSum: business.reviewSum.toString())} (${business.reviewCount})",
-                                                                                              style: TextStyle(
-                                                                                                fontSize: 12,
-                                                                                                color: themeChange.getThem() ? AppThemeData.greyDark04 : AppThemeData.grey04,
-                                                                                                fontFamily: AppThemeData.medium,
-                                                                                                fontWeight: FontWeight.w600,
-                                                                                              ),
-                                                                                            ),
-                                                                                          ],
-                                                                                        ),
-                                                                                      ),
-                                                                                    ),
-                                                                                    Positioned(
-                                                                                      top: 5,
-                                                                                      right: 5,
-                                                                                      child: Container(
-                                                                                        padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 4),
-                                                                                        decoration: ShapeDecoration(
-                                                                                          color: Constant.getBusinessStatus(business.businessHours).toLowerCase() == 'open'
-                                                                                              ? AppThemeData.greenDark02
-                                                                                              : AppThemeData.red01,
-                                                                                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(4)),
-                                                                                        ),
-                                                                                        child: Text(
-                                                                                          Constant.getBusinessStatus(business.businessHours),
-                                                                                          style: TextStyle(
-                                                                                            color: AppThemeData.grey10,
-                                                                                            fontSize: 12,
-                                                                                            fontFamily: AppThemeData.mediumOpenSans,
-                                                                                          ),
-                                                                                        ),
-                                                                                      ),
-                                                                                    ),
-                                                                                  ],
-                                                                                ),
-                                                                              ),
-                                                                              Expanded(
-                                                                                flex: 4,
-                                                                                child: Padding(
-                                                                                  padding: const EdgeInsets.only(left: 12, right: 12, top: 20, bottom: 8),
-                                                                                  child: Column(
-                                                                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                                                                    mainAxisAlignment: MainAxisAlignment.end,
-                                                                                    children: [
-                                                                                      Text(
-                                                                                        business.businessName ?? 'Unnamed',
-                                                                                        maxLines: 1,
-                                                                                        overflow: TextOverflow.ellipsis,
-                                                                                        style: TextStyle(
-                                                                                          color: themeChange.getThem() ? AppThemeData.greyDark02 : AppThemeData.grey02,
-                                                                                          fontSize: 14,
-                                                                                          fontFamily: AppThemeData.boldOpenSans,
-                                                                                        ),
-                                                                                      ),
-                                                                                      SizedBox(height: 6),
-                                                                                      Row(
-                                                                                        crossAxisAlignment: CrossAxisAlignment.start,
-                                                                                        children: [
-                                                                                          if (business.businessType == 'Service Business' && business.serviceArea?.isEmpty != true)
-                                                                                            Constant.svgPictureShow(
-                                                                                              "assets/icons/icon_local-two.svg",
-                                                                                              themeChange.getThem() ? AppThemeData.greyDark01 : AppThemeData.grey01,
-                                                                                              16,
-                                                                                              16,
-                                                                                            ),
-                                                                                          if (business.businessType != 'Service Business')
-                                                                                            Constant.svgPictureShow(
-                                                                                              "assets/icons/icon_local-two.svg",
-                                                                                              themeChange.getThem() ? AppThemeData.greyDark01 : AppThemeData.grey01,
-                                                                                              16,
-                                                                                              16,
-                                                                                            ),
-                                                                                          const SizedBox(width: 5),
-                                                                                          business.businessType == 'Service Business'
-                                                                                              ? Expanded(
-                                                                                                  child: SingleChildScrollView(
-                                                                                                    scrollDirection: Axis.horizontal,
-                                                                                                    child: Text(
-                                                                                                      business.serviceArea?.join(', ') ?? "", // Converts list to comma-separated string
-                                                                                                      maxLines: 2,
-                                                                                                      overflow: TextOverflow.ellipsis,
-                                                                                                      style: TextStyle(
-                                                                                                        color: themeChange.getThem() ? AppThemeData.greyDark02 : AppThemeData.grey02,
-                                                                                                        fontSize: 12,
-                                                                                                        fontFamily: AppThemeData.regular,
-                                                                                                      ),
-                                                                                                    ),
-                                                                                                  ),
-                                                                                                )
-                                                                                              : Expanded(
-                                                                                                  child: Text(
-                                                                                                    '${business.address?.locality}',
-                                                                                                    maxLines: 1,
-                                                                                                    style: TextStyle(
-                                                                                                      color: themeChange.getThem() ? AppThemeData.greyDark02 : AppThemeData.grey02,
-                                                                                                      fontSize: 12,
-                                                                                                      fontFamily: AppThemeData.regular,
-                                                                                                    ),
-                                                                                                  ),
-                                                                                                ),
-                                                                                        ],
-                                                                                      ),
-                                                                                    ],
                                                                                   ),
                                                                                 ),
-                                                                              ),
-                                                                            ],
-                                                                          ),
-                                                                          Positioned(
-                                                                            bottom: 60,
-                                                                            left: 10,
-                                                                            child: ClipRRect(
-                                                                              borderRadius: BorderRadius.circular(50),
-                                                                              child: NetworkImageWidget(
-                                                                                imageUrl: business.profilePhoto ?? '',
-                                                                                width: 55,
-                                                                                height: 55,
-                                                                                fit: BoxFit.cover,
-                                                                                errorWidget: Constant.svgPictureShow(
-                                                                                  "assets/icons/ic_placeholder_bussiness.svg",
-                                                                                  null,
-                                                                                  45,
-                                                                                  45,
+                                                                                Positioned(
+                                                                                  right: 10,
+                                                                                  bottom: 8,
+                                                                                  child: Container(
+                                                                                    padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 7),
+                                                                                    decoration: ShapeDecoration(
+                                                                                      color: themeChange.getThem() ? AppThemeData.greyDark10 : AppThemeData.grey10,
+                                                                                      shape: RoundedRectangleBorder(
+                                                                                        borderRadius: BorderRadius.circular(120),
+                                                                                      ),
+                                                                                    ),
+                                                                                    child: Row(
+                                                                                      mainAxisSize: MainAxisSize.min,
+                                                                                      children: [
+                                                                                        SvgPicture.asset("assets/icons/ic_star.svg"),
+                                                                                        const SizedBox(width: 2),
+                                                                                        Text(
+                                                                                          "${Constant.calculateReview(reviewCount: business.reviewCount.toString(), reviewSum: business.reviewSum.toString())} (${business.reviewCount})",
+                                                                                          style: TextStyle(
+                                                                                            fontSize: 12,
+                                                                                            color: themeChange.getThem() ? AppThemeData.greyDark04 : AppThemeData.grey04,
+                                                                                            fontFamily: AppThemeData.medium,
+                                                                                            fontWeight: FontWeight.w600,
+                                                                                          ),
+                                                                                        ),
+                                                                                      ],
+                                                                                    ),
+                                                                                  ),
                                                                                 ),
+                                                                                Positioned(
+                                                                                  top: 5,
+                                                                                  right: 5,
+                                                                                  child: Container(
+                                                                                    padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 4),
+                                                                                    decoration: ShapeDecoration(
+                                                                                      color: Constant.getBusinessStatus(business.businessHours).toLowerCase() == 'open'
+                                                                                          ? AppThemeData.greenDark02
+                                                                                          : AppThemeData.red01,
+                                                                                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(4)),
+                                                                                    ),
+                                                                                    child: Text(
+                                                                                      Constant.getBusinessStatus(business.businessHours),
+                                                                                      style: TextStyle(
+                                                                                        color: AppThemeData.grey10,
+                                                                                        fontSize: 12,
+                                                                                        fontFamily: AppThemeData.mediumOpenSans,
+                                                                                      ),
+                                                                                    ),
+                                                                                  ),
+                                                                                ),
+                                                                              ],
+                                                                            ),
+                                                                          ),
+                                                                          Expanded(
+                                                                            flex: 4,
+                                                                            child: Padding(
+                                                                              padding: const EdgeInsets.only(left: 12, right: 12, top: 20, bottom: 8),
+                                                                              child: Column(
+                                                                                crossAxisAlignment: CrossAxisAlignment.start,
+                                                                                mainAxisAlignment: MainAxisAlignment.end,
+                                                                                children: [
+                                                                                  Text(
+                                                                                    business.businessName ?? 'Unnamed',
+                                                                                    maxLines: 1,
+                                                                                    overflow: TextOverflow.ellipsis,
+                                                                                    style: TextStyle(
+                                                                                      color: themeChange.getThem() ? AppThemeData.greyDark02 : AppThemeData.grey02,
+                                                                                      fontSize: 14,
+                                                                                      fontFamily: AppThemeData.boldOpenSans,
+                                                                                    ),
+                                                                                  ),
+                                                                                  SizedBox(height: 6),
+                                                                                  Row(
+                                                                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                                                                    children: [
+                                                                                      if (business.businessType == 'Service Business' && business.serviceArea?.isEmpty != true)
+                                                                                        Constant.svgPictureShow(
+                                                                                          "assets/icons/icon_local-two.svg",
+                                                                                          themeChange.getThem() ? AppThemeData.greyDark01 : AppThemeData.grey01,
+                                                                                          16,
+                                                                                          16,
+                                                                                        ),
+                                                                                      if (business.businessType != 'Service Business')
+                                                                                        Constant.svgPictureShow(
+                                                                                          "assets/icons/icon_local-two.svg",
+                                                                                          themeChange.getThem() ? AppThemeData.greyDark01 : AppThemeData.grey01,
+                                                                                          16,
+                                                                                          16,
+                                                                                        ),
+                                                                                      const SizedBox(width: 5),
+                                                                                      business.businessType == 'Service Business'
+                                                                                          ? Expanded(
+                                                                                              child: SingleChildScrollView(
+                                                                                                scrollDirection: Axis.horizontal,
+                                                                                                child: Text(
+                                                                                                  business.serviceArea?.join(', ') ?? "", // Converts list to comma-separated string
+                                                                                                  maxLines: 2,
+                                                                                                  overflow: TextOverflow.ellipsis,
+                                                                                                  style: TextStyle(
+                                                                                                    color: themeChange.getThem() ? AppThemeData.greyDark02 : AppThemeData.grey02,
+                                                                                                    fontSize: 12,
+                                                                                                    fontFamily: AppThemeData.regular,
+                                                                                                  ),
+                                                                                                ),
+                                                                                              ),
+                                                                                            )
+                                                                                          : Expanded(
+                                                                                              child: Text(
+                                                                                                '${business.address?.locality}',
+                                                                                                maxLines: 1,
+                                                                                                style: TextStyle(
+                                                                                                  color: themeChange.getThem() ? AppThemeData.greyDark02 : AppThemeData.grey02,
+                                                                                                  fontSize: 12,
+                                                                                                  fontFamily: AppThemeData.regular,
+                                                                                                ),
+                                                                                              ),
+                                                                                            ),
+                                                                                    ],
+                                                                                  ),
+                                                                                ],
                                                                               ),
                                                                             ),
                                                                           ),
                                                                         ],
                                                                       ),
-                                                                    ),
-                                                                  );
-                                                                },
-                                                              ),
-                                                            ],
+                                                                      Positioned(
+                                                                        bottom: 60,
+                                                                        left: 10,
+                                                                        child: ClipRRect(
+                                                                          borderRadius: BorderRadius.circular(50),
+                                                                          child: NetworkImageWidget(
+                                                                            imageUrl: business.profilePhoto ?? '',
+                                                                            width: 55,
+                                                                            height: 55,
+                                                                            fit: BoxFit.cover,
+                                                                            errorWidget: Constant.svgPictureShow(
+                                                                              "assets/icons/ic_placeholder_bussiness.svg",
+                                                                              null,
+                                                                              45,
+                                                                              45,
+                                                                            ),
+                                                                          ),
+                                                                        ),
+                                                                      ),
+                                                                    ],
+                                                                  ),
+                                                                ),
+                                                              );
+                                                            },
                                                           ),
-                                                        ),
-                                                      )
+                                                        ],
+                                                      ),
+                                                    ),
+                                                  )
                                             : Padding(
                                                 padding: const EdgeInsets.only(top: 10),
                                                 child: Container(

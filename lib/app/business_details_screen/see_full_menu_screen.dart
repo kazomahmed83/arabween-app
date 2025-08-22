@@ -1,3 +1,4 @@
+import 'package:arabween/widgets/debounced_inkwell.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
@@ -470,11 +471,11 @@ class SeeFullMenuScreen extends StatelessWidget {
   seeHoursFilterBottomSheet(themeChange, SeeFullMenuController controller) {
     Get.bottomSheet(
       DraggableScrollableSheet(
-          initialChildSize: 0.4,
+          initialChildSize: controller.businessModel.value.isBusinessOpenAllTime == true ? 0.1 : 0.4,
           // Starts at 30% of screen height
-          minChildSize: 0.4,
+          minChildSize: controller.businessModel.value.isBusinessOpenAllTime == true ? 0.1 : 0.4,
           // Minimum height (30% of screen)
-          maxChildSize: 0.9,
+          maxChildSize: controller.businessModel.value.isBusinessOpenAllTime == true ? 0.2 : 0.9,
           // Can expand up to
           shouldCloseOnMinExtent: false,
           builder: (context, scrollController) {
@@ -485,91 +486,147 @@ class SeeFullMenuScreen extends StatelessWidget {
                 color: themeChange.getThem() ? AppThemeData.surfaceDark50 : AppThemeData.surface50,
                 borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
               ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Row(
-                    children: [
-                      Expanded(
-                        child: Text(
-                          "Hours",
-                          style: TextStyle(
-                            color: themeChange.getThem() ? AppThemeData.greyDark01 : AppThemeData.grey01,
-                            fontSize: 22,
-                            fontFamily: AppThemeData.boldOpenSans,
+              child: controller.businessModel.value.isBusinessOpenAllTime == true
+                  ? Row(
+                      children: [
+                        Expanded(
+                          flex: 4,
+                          child: Text(
+                            "Opening Hours".tr,
+                            style: TextStyle(
+                              color: themeChange.getThem() ? AppThemeData.greyDark01 : AppThemeData.grey01,
+                              fontSize: 20,
+                              fontFamily: AppThemeData.boldOpenSans,
+                            ),
                           ),
                         ),
-                      ),
-                      InkWell(
-                        onTap: () {
-                          Get.back();
-                        },
-                        child: Align(
-                          alignment: Alignment.centerRight,
-                          child: SvgPicture.asset(
-                            "assets/icons/icon_close.svg",
-                            width: 20,
-                            colorFilter: ColorFilter.mode(themeChange.getThem() ? AppThemeData.greyDark01 : AppThemeData.grey01, BlendMode.srcIn),
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                  const Divider(),
-                  Expanded(
-                    child: ListView.builder(
-                      shrinkWrap: true,
-                      controller: scrollController,
-                      itemCount: controller.days.length,
-                      itemBuilder: (context, index) {
-                        final day = controller.days[index];
-                        final isToday = day == DateFormat('EEEE').format(DateTime.now());
-                        final slots = Constant.getFormattedSlots(Constant.getDayHours(controller.businessModel.value.businessHours!, day));
-
-                        return Padding(
-                          padding: const EdgeInsets.symmetric(vertical: 6.0),
+                        Expanded(
+                          flex: 5,
                           child: Row(
-                            crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Expanded(
-                                child: Text(
-                                  day,
-                                  style: TextStyle(
-                                    color: themeChange.getThem() ? AppThemeData.greyDark01 : AppThemeData.grey01,
-                                    fontSize: 16,
-                                    fontFamily: isToday ? AppThemeData.boldOpenSans : AppThemeData.mediumOpenSans,
-                                  ),
+                              Text(
+                                "Open 24/7".tr,
+                                style: TextStyle(
+                                  color: themeChange.getThem() ? AppThemeData.greyDark01 : AppThemeData.grey01,
+                                  fontSize: 20,
+                                  fontFamily: AppThemeData.boldOpenSans,
                                 ),
                               ),
-                              SizedBox(width: 12),
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: slots
-                                    .map((slot) => Padding(
-                                          padding: const EdgeInsets.symmetric(vertical: 5),
-                                          child: Text(
-                                            slot,
-                                            style: TextStyle(
-                                              color: slot == "Closed"
-                                                  ? AppThemeData.red02
-                                                  : themeChange.getThem()
-                                                      ? AppThemeData.greyDark01
-                                                      : AppThemeData.grey01,
-                                              fontSize: 14,
-                                              fontFamily: isToday ? AppThemeData.boldOpenSans : AppThemeData.regularOpenSans,
-                                            ),
-                                          ),
-                                        ))
-                                    .toList(),
-                              ),
+                              SizedBox(width: 10),
+                              ClipOval(
+                                  child: Container(
+                                decoration: BoxDecoration(
+                                  color: themeChange.getThem() ? AppThemeData.greyDark08 : AppThemeData.grey06,
+                                ),
+                                child: Padding(
+                                  padding: const EdgeInsets.all(14),
+                                  child: Constant.svgPictureShow("assets/icons/icon_alarm-clock.svg", AppThemeData.red02, null, null),
+                                ),
+                              )),
+                              SizedBox(width: 8),
                             ],
                           ),
-                        );
-                      },
+                        ),
+                        DebouncedInkWell(
+                          onTap: () {
+                            Get.back();
+                          },
+                          child: Align(
+                            alignment: Alignment.centerRight,
+                            child: SvgPicture.asset(
+                              "assets/icons/icon_close.svg",
+                              width: 20,
+                              colorFilter: ColorFilter.mode(themeChange.getThem() ? AppThemeData.greyDark01 : AppThemeData.grey01, BlendMode.srcIn),
+                            ),
+                          ),
+                        ),
+                      ],
+                    )
+                  : Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Row(
+                          children: [
+                            Expanded(
+                              child: Text(
+                                "Hours".tr,
+                                style: TextStyle(
+                                  color: themeChange.getThem() ? AppThemeData.greyDark01 : AppThemeData.grey01,
+                                  fontSize: 22,
+                                  fontFamily: AppThemeData.boldOpenSans,
+                                ),
+                              ),
+                            ),
+                            InkWell(
+                              onTap: () {
+                                Get.back();
+                              },
+                              child: Align(
+                                alignment: Alignment.centerRight,
+                                child: SvgPicture.asset(
+                                  "assets/icons/icon_close.svg",
+                                  width: 20,
+                                  colorFilter: ColorFilter.mode(themeChange.getThem() ? AppThemeData.greyDark01 : AppThemeData.grey01, BlendMode.srcIn),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                        const Divider(),
+                        Expanded(
+                          child: ListView.builder(
+                            shrinkWrap: true,
+                            controller: scrollController,
+                            itemCount: controller.days.length,
+                            itemBuilder: (context, index) {
+                              final day = controller.days[index];
+                              final isToday = day == DateFormat('EEEE').format(DateTime.now());
+                              final slots = Constant.getFormattedSlots(Constant.getDayHours(controller.businessModel.value.businessHours!, day));
+
+                              return Padding(
+                                padding: const EdgeInsets.symmetric(vertical: 6.0),
+                                child: Row(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Expanded(
+                                      child: Text(
+                                        day,
+                                        style: TextStyle(
+                                          color: themeChange.getThem() ? AppThemeData.greyDark01 : AppThemeData.grey01,
+                                          fontSize: 16,
+                                          fontFamily: isToday ? AppThemeData.boldOpenSans : AppThemeData.mediumOpenSans,
+                                        ),
+                                      ),
+                                    ),
+                                    SizedBox(width: 12),
+                                    Column(
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: slots
+                                          .map((slot) => Padding(
+                                                padding: const EdgeInsets.symmetric(vertical: 5),
+                                                child: Text(
+                                                  slot,
+                                                  style: TextStyle(
+                                                    color: slot == "Closed"
+                                                        ? AppThemeData.red02
+                                                        : themeChange.getThem()
+                                                            ? AppThemeData.greyDark01
+                                                            : AppThemeData.grey01,
+                                                    fontSize: 14,
+                                                    fontFamily: isToday ? AppThemeData.boldOpenSans : AppThemeData.regularOpenSans,
+                                                  ),
+                                                ),
+                                              ))
+                                          .toList(),
+                                    ),
+                                  ],
+                                ),
+                              );
+                            },
+                          ),
+                        )
+                      ],
                     ),
-                  )
-                ],
-              ),
             );
           }),
       isScrollControlled: true, // Allows BottomSheet to take full height

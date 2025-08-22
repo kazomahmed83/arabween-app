@@ -285,34 +285,54 @@ class MyBusinessProfileScreen extends StatelessWidget {
                                                       ),
                                                     ),
                                                   ),
+                                                  controller.businessModel.value.businessHours == null || controller.businessModel.value.showWorkingHours == false
+                                                      ? SizedBox()
+                                                      : controller.businessModel.value.isBusinessOpenAllTime == true
+                                                          ? Padding(
+                                                              padding: const EdgeInsets.only(top: 5),
+                                                              child: Row(
+                                                                children: [
+                                                                  Text(
+                                                                    "Open 24/7".tr,
+                                                                    textAlign: TextAlign.start,
+                                                                    style: TextStyle(
+                                                                      color: themeChange.getThem() ? AppThemeData.greenDark03 : AppThemeData.greenDark03,
+                                                                      fontSize: 14,
+                                                                      fontFamily: AppThemeData.boldOpenSans,
+                                                                    ),
+                                                                  ),
+                                                                ],
+                                                              ),
+                                                            )
+                                                          : Padding(
+                                                              padding: const EdgeInsets.only(top: 5),
+                                                              child: Row(
+                                                                children: [
+                                                                  Constant.buildStatusText(themeChange, Constant.getBusinessStatus(controller.businessModel.value.businessHours!), false),
+                                                                  SizedBox(width: 10),
+                                                                  Icon(Icons.circle_rounded, size: 8, color: themeChange.getThem() ? AppThemeData.greyDark10 : AppThemeData.grey10),
+                                                                  SizedBox(width: 10),
+                                                                  DebouncedInkWell(
+                                                                    onTap: () {
+                                                                      seeHoursFilterBottomSheet(themeChange, controller);
+                                                                    },
+                                                                    child: Text(
+                                                                      "See hours".tr,
+                                                                      textAlign: TextAlign.start,
+                                                                      style: TextStyle(
+                                                                          color: themeChange.getThem() ? AppThemeData.teal02 : AppThemeData.teal02,
+                                                                          fontSize: 14,
+                                                                          fontFamily: AppThemeData.boldOpenSans),
+                                                                    ),
+                                                                  ),
+                                                                ],
+                                                              ),
+                                                            ),
                                                 ],
                                               ),
                                             ),
                                           ],
                                         ),
-                                        controller.businessModel.value.businessHours == null || controller.businessModel.value.showWorkingHours == false
-                                            ? SizedBox()
-                                            : Padding(
-                                                padding: const EdgeInsets.only(top: 5),
-                                                child: Row(
-                                                  children: [
-                                                    Constant.buildStatusText(themeChange, Constant.getBusinessStatus(controller.businessModel.value.businessHours!), false),
-                                                    SizedBox(width: 10),
-                                                    Icon(Icons.circle_rounded, size: 8, color: themeChange.getThem() ? AppThemeData.greyDark10 : AppThemeData.grey10),
-                                                    SizedBox(width: 10),
-                                                    DebouncedInkWell(
-                                                      onTap: () {
-                                                        seeHoursFilterBottomSheet(themeChange, controller);
-                                                      },
-                                                      child: Text(
-                                                        "See hours".tr,
-                                                        textAlign: TextAlign.start,
-                                                        style: TextStyle(color: themeChange.getThem() ? AppThemeData.teal02 : AppThemeData.teal02, fontSize: 14, fontFamily: AppThemeData.boldOpenSans),
-                                                      ),
-                                                    ),
-                                                  ],
-                                                ),
-                                              ),
                                         SizedBox(height: 5),
                                         ReadMoreText(
                                           controller.businessModel.value.tagLine ?? '',
@@ -583,7 +603,7 @@ class MyBusinessProfileScreen extends StatelessWidget {
               () => controller.businessModel.value.recommendUserId!.contains(FireStoreUtils.getCurrentUid())
                   ? SizedBox()
                   : Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 16),
+                      padding: const EdgeInsets.only(left: 16, right: 16, top: 12),
                       child: Center(
                         child: Column(
                           children: [
@@ -707,7 +727,11 @@ class MyBusinessProfileScreen extends StatelessWidget {
                       Expanded(
                         child: DebouncedInkWell(
                           onTap: () {
-                            Utils.launchURL(controller.businessModel.value.website.toString());
+                            if (controller.businessModel.value.website?.isNotEmpty == true) {
+                              Get.to(WebviewScreen(), arguments: {'url': controller.businessModel.value.website.toString()});
+                            } else {
+                              ShowToastDialog.showToast("Website not available".tr);
+                            }
                           },
                           child: Column(
                             children: [
@@ -885,7 +909,13 @@ class MyBusinessProfileScreen extends StatelessWidget {
                                     ],
                                   ),
                                 ),
-                                SizedBox(height: 10),
+                                Padding(
+                                  padding: const EdgeInsets.symmetric(vertical: 14, horizontal: 0),
+                                  child: Divider(
+                                    height: 1,
+                                    color: themeChange.getThem() ? AppThemeData.greyDark08 : AppThemeData.grey08,
+                                  ),
+                                ),
                               ],
                             ),
                           ),
@@ -894,15 +924,9 @@ class MyBusinessProfileScreen extends StatelessWidget {
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
+                        Container(color: themeChange.getThem() ? AppThemeData.greyDark09 : AppThemeData.grey09, height: 14),
                         Padding(
-                          padding: const EdgeInsets.symmetric(vertical: 10),
-                          child: Container(
-                            color: themeChange.getThem() ? AppThemeData.greyDark09 : AppThemeData.grey09,
-                            height: 14,
-                          ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.all(14),
+                          padding: const EdgeInsets.only(left: 16, right: 16, bottom: 16, top: 16),
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
@@ -962,6 +986,7 @@ class MyBusinessProfileScreen extends StatelessWidget {
                             ],
                           ),
                         ),
+                        Container(color: themeChange.getThem() ? AppThemeData.greyDark09 : AppThemeData.grey09, height: 14),
                       ],
                     ),
                 ],
@@ -970,7 +995,7 @@ class MyBusinessProfileScreen extends StatelessWidget {
             controller.serviceList.isEmpty
                 ? SizedBox()
                 : Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 20),
+                    padding: const EdgeInsets.only(left: 16, right: 16, bottom: 16, top: 16),
                     child: ListView.separated(
                       itemCount: controller.serviceList.length,
                       padding: EdgeInsets.zero,
@@ -995,7 +1020,12 @@ class MyBusinessProfileScreen extends StatelessWidget {
                                   padding: const EdgeInsets.symmetric(vertical: 4),
                                   child: Row(
                                     children: [
-                                      NetworkImageWidget(imageUrl: optionModel.icon.toString(), width: 22, height: 22),
+                                      NetworkImageWidget(
+                                        imageUrl: optionModel.icon.toString(),
+                                        width: 22,
+                                        height: 22,
+                                        color: themeChange.getThem() ? AppThemeData.greyDark02 : AppThemeData.grey02,
+                                      ),
                                       SizedBox(width: 14),
                                       Text(
                                         optionModel.name.toString(),
@@ -1017,7 +1047,7 @@ class MyBusinessProfileScreen extends StatelessWidget {
                       },
                     ),
                   ),
-            if (controller.highLightList.isNotEmpty) Container(color: themeChange.getThem() ? AppThemeData.greyDark09 : AppThemeData.grey09, height: 14),
+            if (controller.highLightList.isNotEmpty && controller.serviceList.isNotEmpty) Container(color: themeChange.getThem() ? AppThemeData.greyDark09 : AppThemeData.grey09, height: 14),
             controller.highLightList.isEmpty
                 ? SizedBox()
                 : Padding(
@@ -1706,7 +1736,7 @@ class MyBusinessProfileScreen extends StatelessWidget {
               });
             },
             child: Text(
-              "Edit Business ".tr,
+              "Edit Business".tr,
               textAlign: TextAlign.start,
               style: TextStyle(color: themeChange.getThem() ? AppThemeData.tealDark02 : AppThemeData.teal02, fontSize: 16, fontFamily: AppThemeData.semiboldOpenSans),
             ),
@@ -1857,11 +1887,11 @@ class MyBusinessProfileScreen extends StatelessWidget {
   seeHoursFilterBottomSheet(themeChange, MyBusinessProfileController controller) {
     Get.bottomSheet(
       DraggableScrollableSheet(
-        initialChildSize: 0.4,
+        initialChildSize: controller.businessModel.value.isBusinessOpenAllTime == true ? 0.1 : 0.4,
         // Starts at 30% of screen height
-        minChildSize: 0.4,
+        minChildSize: controller.businessModel.value.isBusinessOpenAllTime == true ? 0.1 : 0.4,
         // Minimum height (30% of screen)
-        maxChildSize: 0.9,
+        maxChildSize: controller.businessModel.value.isBusinessOpenAllTime == true ? 0.2 : 0.9,
         // Can expand up to
         shouldCloseOnMinExtent: false,
         builder: (context, scrollController) {
@@ -1872,93 +1902,149 @@ class MyBusinessProfileScreen extends StatelessWidget {
               color: themeChange.getThem() ? AppThemeData.surfaceDark50 : AppThemeData.surface50,
               borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
             ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Row(
-                  children: [
-                    Expanded(
-                      child: Text(
-                        "Hours",
-                        style: TextStyle(color: themeChange.getThem() ? AppThemeData.greyDark01 : AppThemeData.grey01, fontSize: 22, fontFamily: AppThemeData.boldOpenSans),
+            child: controller.businessModel.value.isBusinessOpenAllTime == true
+                ? Row(
+                    children: [
+                      Expanded(
+                        flex: 4,
+                        child: Text(
+                          "Opening Hours".tr,
+                          style: TextStyle(
+                            color: themeChange.getThem() ? AppThemeData.greyDark01 : AppThemeData.grey01,
+                            fontSize: 20,
+                            fontFamily: AppThemeData.boldOpenSans,
+                          ),
+                        ),
                       ),
-                    ),
-                    DebouncedInkWell(
-                      onTap: () {
-                        Get.back();
-                      },
-                      child: Align(
+                      Expanded(
+                        flex: 5,
+                        child: Row(
+                          children: [
+                            Text(
+                              "Open 24/7".tr,
+                              style: TextStyle(
+                                color: themeChange.getThem() ? AppThemeData.greyDark01 : AppThemeData.grey01,
+                                fontSize: 20,
+                                fontFamily: AppThemeData.boldOpenSans,
+                              ),
+                            ),
+                            SizedBox(width: 10),
+                            ClipOval(
+                                child: Container(
+                              decoration: BoxDecoration(
+                                color: themeChange.getThem() ? AppThemeData.greyDark08 : AppThemeData.grey06,
+                              ),
+                              child: Padding(
+                                padding: const EdgeInsets.all(14),
+                                child: Constant.svgPictureShow("assets/icons/icon_alarm-clock.svg", AppThemeData.red02, null, null),
+                              ),
+                            )),
+                            SizedBox(width: 8),
+                          ],
+                        ),
+                      ),
+                      DebouncedInkWell(
+                        onTap: () {
+                          Get.back();
+                        },
+                        child: Align(
                           alignment: Alignment.centerRight,
                           child: SvgPicture.asset(
                             "assets/icons/icon_close.svg",
-                            width: 22,
+                            width: 20,
                             colorFilter: ColorFilter.mode(themeChange.getThem() ? AppThemeData.greyDark01 : AppThemeData.grey01, BlendMode.srcIn),
-                          )),
-                    ),
-                  ],
-                ),
-                const Divider(),
-                Expanded(
-                  child: ListView.builder(
-                    shrinkWrap: true,
-                    controller: scrollController,
-                    itemCount: controller.days.length,
-                    itemBuilder: (context, index) {
-                      final day = controller.days[index];
-                      final isToday = day == DateFormat('EEEE').format(DateTime.now());
-                      final slots = Constant.getFormattedSlots(
-                        Constant.getDayHours(
-                          controller.businessModel.value.businessHours ?? BusinessHours(sunday: [], monday: [], thursday: [], wednesday: [], tuesday: [], friday: [], saturday: []),
-                          day,
+                          ),
                         ),
-                      );
-
-                      return Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 6.0),
-                        child: Row(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Expanded(
-                              child: Text(
-                                day,
-                                style: TextStyle(
-                                  color: themeChange.getThem() ? AppThemeData.greyDark01 : AppThemeData.grey01,
-                                  fontSize: 16,
-                                  fontFamily: isToday ? AppThemeData.boldOpenSans : AppThemeData.mediumOpenSans,
-                                ),
-                              ),
+                      ),
+                    ],
+                  )
+                : Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Row(
+                        children: [
+                          Expanded(
+                            child: Text(
+                              "Hours".tr,
+                              style: TextStyle(color: themeChange.getThem() ? AppThemeData.greyDark01 : AppThemeData.grey01, fontSize: 22, fontFamily: AppThemeData.boldOpenSans),
                             ),
-                            SizedBox(width: 12),
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: slots
-                                  .map(
-                                    (slot) => Padding(
-                                      padding: const EdgeInsets.symmetric(vertical: 5),
-                                      child: Text(
-                                        slot,
-                                        style: TextStyle(
-                                          color: slot == "Closed"
-                                              ? AppThemeData.red02
-                                              : themeChange.getThem()
-                                                  ? AppThemeData.greyDark01
-                                                  : AppThemeData.grey01,
-                                          fontSize: 14,
-                                          fontFamily: isToday ? AppThemeData.boldOpenSans : AppThemeData.regularOpenSans,
-                                        ),
+                          ),
+                          DebouncedInkWell(
+                            onTap: () {
+                              Get.back();
+                            },
+                            child: Align(
+                                alignment: Alignment.centerRight,
+                                child: SvgPicture.asset(
+                                  "assets/icons/icon_close.svg",
+                                  width: 22,
+                                  colorFilter: ColorFilter.mode(themeChange.getThem() ? AppThemeData.greyDark01 : AppThemeData.grey01, BlendMode.srcIn),
+                                )),
+                          ),
+                        ],
+                      ),
+                      const Divider(),
+                      Expanded(
+                        child: ListView.builder(
+                          shrinkWrap: true,
+                          controller: scrollController,
+                          itemCount: controller.days.length,
+                          itemBuilder: (context, index) {
+                            final day = controller.days[index];
+                            final isToday = day == DateFormat('EEEE').format(DateTime.now());
+                            final slots = Constant.getFormattedSlots(
+                              Constant.getDayHours(
+                                controller.businessModel.value.businessHours ?? BusinessHours(sunday: [], monday: [], thursday: [], wednesday: [], tuesday: [], friday: [], saturday: []),
+                                day,
+                              ),
+                            );
+
+                            return Padding(
+                              padding: const EdgeInsets.symmetric(vertical: 6.0),
+                              child: Row(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Expanded(
+                                    child: Text(
+                                      day,
+                                      style: TextStyle(
+                                        color: themeChange.getThem() ? AppThemeData.greyDark01 : AppThemeData.grey01,
+                                        fontSize: 16,
+                                        fontFamily: isToday ? AppThemeData.boldOpenSans : AppThemeData.mediumOpenSans,
                                       ),
                                     ),
-                                  )
-                                  .toList(),
-                            ),
-                          ],
+                                  ),
+                                  SizedBox(width: 12),
+                                  Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: slots
+                                        .map(
+                                          (slot) => Padding(
+                                            padding: const EdgeInsets.symmetric(vertical: 5),
+                                            child: Text(
+                                              slot,
+                                              style: TextStyle(
+                                                color: slot == "Closed"
+                                                    ? AppThemeData.red02
+                                                    : themeChange.getThem()
+                                                        ? AppThemeData.greyDark01
+                                                        : AppThemeData.grey01,
+                                                fontSize: 14,
+                                                fontFamily: isToday ? AppThemeData.boldOpenSans : AppThemeData.regularOpenSans,
+                                              ),
+                                            ),
+                                          ),
+                                        )
+                                        .toList(),
+                                  ),
+                                ],
+                              ),
+                            );
+                          },
                         ),
-                      );
-                    },
+                      ),
+                    ],
                   ),
-                ),
-              ],
-            ),
           );
         },
       ),
@@ -2032,7 +2118,7 @@ class MyBusinessProfileScreen extends StatelessWidget {
                             backgroundColor: Colors.grey[300],
                             valueColor: AlwaysStoppedAnimation<Color>(
                               star == 5
-                                  ? Colors.red
+                                  ? Colors.orange
                                   : star == 4
                                       ? Colors.orange
                                       : Colors.amber,

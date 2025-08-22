@@ -43,7 +43,7 @@ class UserChatController extends GetxController {
   }
 
   sendMessage() async {
-    if(messageTextEditorController.value.text.isEmpty){
+    if (messageTextEditorController.value.text == '' || messageTextEditorController.value.text.isEmpty) {
       ShowToastDialog.showToast("Please enter a message");
       return;
     }
@@ -57,19 +57,9 @@ class UserChatController extends GetxController {
         timestamp: Timestamp.now(),
         type: "text");
 
-    await FireStoreUtils.fireStore
-        .collection(CollectionName.userChat)
-        .doc(senderUserModel.value.id.toString())
-        .collection("inbox")
-        .doc(receiverUserModel.value.id.toString())
-        .set(inboxModel.toJson());
+    await FireStoreUtils.fireStore.collection(CollectionName.userChat).doc(senderUserModel.value.id.toString()).collection("inbox").doc(receiverUserModel.value.id.toString()).set(inboxModel.toJson());
 
-    await FireStoreUtils.fireStore
-        .collection(CollectionName.userChat)
-        .doc(receiverUserModel.value.id.toString())
-        .collection("inbox")
-        .doc(senderUserModel.value.id.toString())
-        .set(inboxModel.toJson());
+    await FireStoreUtils.fireStore.collection(CollectionName.userChat).doc(receiverUserModel.value.id.toString()).collection("inbox").doc(senderUserModel.value.id.toString()).set(inboxModel.toJson());
 
     ChatModel chatModel = ChatModel(
         type: "text",
@@ -101,7 +91,7 @@ class UserChatController extends GetxController {
       "receiverId": receiverUserModel.value.id.toString(),
     };
 
-     SendNotification.sendOneNotification(
+    SendNotification.sendOneNotification(
         token: receiverUserModel.value.fcmToken.toString(), title: receiverUserModel.value.fullName(), body: messageTextEditorController.value.text, payload: playLoad);
     messageTextEditorController.value.clear();
   }
@@ -147,12 +137,7 @@ class UserChatController extends GetxController {
             log("Failed : $error");
           });
 
-          FireStoreUtils.fireStore
-              .collection(CollectionName.userChat)
-              .doc(documentSnapshot.docs[i]['receiverId'])
-              .collection("inbox")
-              .doc(documentSnapshot.docs[i]['senderId'])
-              .update({
+          FireStoreUtils.fireStore.collection(CollectionName.userChat).doc(documentSnapshot.docs[i]['receiverId']).collection("inbox").doc(documentSnapshot.docs[i]['senderId']).update({
             'seen': true,
           }).catchError((error) {
             log("Failed to add: $error");

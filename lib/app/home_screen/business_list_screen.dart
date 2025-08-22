@@ -1227,28 +1227,32 @@ class BusinessListScreen extends StatelessWidget {
                       shrinkWrap: true,
                       itemCount: controller.categoryList.length,
                       itemBuilder: (context, index) {
-                        return RadioListTile<String>(
-                          title: Text(
-                            controller.categoryList[index].name ?? '',
-                            style: TextStyle(
-                              color: themeChange.getThem() ? AppThemeData.greyDark01 : AppThemeData.grey01,
-                              fontSize: 16,
-                              fontFamily: AppThemeData.mediumOpenSans,
+                        if (controller.categoryList[index].parentCategory == null) {
+                          return RadioListTile<String>(
+                            title: Text(
+                              controller.categoryList[index].name ?? '',
+                              style: TextStyle(
+                                color: themeChange.getThem() ? AppThemeData.greyDark01 : AppThemeData.grey01,
+                                fontSize: 16,
+                                fontFamily: AppThemeData.mediumOpenSans,
+                              ),
                             ),
-                          ),
-                          value: controller.categoryList[index].name!,
-                          controlAffinity: ListTileControlAffinity.trailing,
-                          contentPadding: EdgeInsets.zero,
-                          dense: true,
-                          groupValue: controller.selectedSortOption.value,
-                          onChanged: (value) async {
-                            controller.selectedCategory.value = controller.categoryList[index];
-                            Get.back();
-                            controller.getBusiness();
-                            controller.subCategoryList.clear();
-                            controller.getSubCategory();
-                          },
-                        );
+                            value: controller.categoryList[index].name!,
+                            controlAffinity: ListTileControlAffinity.trailing,
+                            contentPadding: EdgeInsets.zero,
+                            dense: true,
+                            groupValue: controller.selectedSortOption.value,
+                            onChanged: (value) async {
+                              controller.selectedCategory.value = controller.categoryList[index];
+                              Get.back();
+                              controller.getBusiness();
+                              controller.subCategoryList.clear();
+                              controller.getSubCategory();
+                            },
+                          );
+                        } else {
+                          return SizedBox();
+                        }
                       }),
               ],
             ),
