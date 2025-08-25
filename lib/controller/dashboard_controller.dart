@@ -1,3 +1,7 @@
+import 'dart:developer';
+
+import 'package:arabween/constant/constant.dart';
+import 'package:arabween/utils/fire_store_utils.dart';
 import 'package:get/get.dart';
 import 'package:arabween/app/collection_screen/collection_screen.dart';
 import 'package:arabween/app/home_screen/home_screen.dart';
@@ -19,8 +23,12 @@ class DashBoardController extends GetxController {
       const CollectionScreen(),
       const MoreScreen(),
     ];
-
+    getAllBusiness();
     super.onInit();
+  }
+
+  getAllBusiness() async {
+    Constant.allBusinessList = await FireStoreUtils.getBusinessList();
   }
 
   DateTime? currentBackPressTime;

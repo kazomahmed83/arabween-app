@@ -1,17 +1,13 @@
 import 'dart:convert';
 import 'dart:developer';
-
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:get/get.dart';
 import 'package:arabween/app/business_details_screen/business_details_screen.dart';
-import 'package:arabween/app/business_project_list_screen/business_project_list_screen.dart';
-import 'package:arabween/app/chat_screen/chat_screen.dart';
 import 'package:arabween/app/chat_screen/user_chat_screen.dart';
 import 'package:arabween/app/other_people_screen/other_people_screen.dart';
 import 'package:arabween/constant/show_toast_dialog.dart';
 import 'package:arabween/models/business_model.dart';
-import 'package:arabween/models/pricing_request_model.dart';
 import 'package:arabween/models/user_model.dart';
 import 'package:arabween/utils/fire_store_utils.dart';
 
@@ -55,20 +51,17 @@ class NotificationService {
     }
 
     FirebaseMessaging.onMessage.listen((RemoteMessage message) {
-      log("::::::::::::onMessage:::::::::::::::::");
       if (message.notification != null) {
         log(message.notification.toString());
         // display(message);
       }
     });
     FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) async {
-      log("::::::::::::onMessageOpenedApp:::::::::::::::::");
       if (message.notification != null) {
         log(message.notification.toString());
         redirectScreen(message);
       }
     });
-    log("::::::::::::Permission authorized:::::::::::::::::");
     await FirebaseMessaging.instance.subscribeToTopic("QuicklAI");
   }
 

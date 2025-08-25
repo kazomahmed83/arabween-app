@@ -79,6 +79,8 @@ class Constant {
   static String profileCoverImageSizeMb = '15';
   static String coverImageSizeMb = '15';
 
+  static List<BusinessModel> allBusinessList = <BusinessModel>[];
+
   static Widget loader() {
     return Center(
       child: CircularProgressIndicator(color: AppThemeData.red02),

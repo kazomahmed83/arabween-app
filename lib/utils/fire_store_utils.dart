@@ -658,6 +658,22 @@ class FireStoreUtils {
     return categoryList;
   }
 
+  static Future<List<BusinessModel>> getBusinessList() async {
+    List<BusinessModel> businessList = [];
+    await fireStore.collection(CollectionName.business).where('publish', isEqualTo: true).orderBy('createdAt').get().then((value) {
+      for (var element in value.docs) {
+        try {
+          BusinessModel businessModel = BusinessModel.fromJson(element.data());
+          businessList.add(businessModel);
+        } catch (e) {
+          // If an error occurs, log it and skip the current document
+          log("####### Error parsing document with ID ${element.id}: $e");
+        }
+      }
+    });
+    return businessList;
+  }
+
   static Future<List<BusinessModel>> getOwnerBusinessListById(String uid) async {
     List<BusinessModel> categoryList = [];
     await fireStore.collection(CollectionName.business).where('ownerId', isEqualTo: uid).get().then((value) {

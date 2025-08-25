@@ -43,7 +43,6 @@ class GlobalSettingController extends GetxController {
         UserModel? userModel = await FireStoreUtils.getUserProfile(FireStoreUtils.getCurrentUid());
         userModel!.fcmToken = token;
         await FireStoreUtils.updateUser(userModel);
-        log(":::::::TOKEN:::::: $token");
       }
     });
   }

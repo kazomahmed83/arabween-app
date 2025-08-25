@@ -236,13 +236,14 @@ class SearchControllers extends GetxController {
       },
     );
 
-    await BusinessHistoryStorage.getCategoryHistoryList().then(
-      (value) {
-        if (value.isNotEmpty) {
-          recentSearchHistory.value = value;
-        }
-      },
-    );
+    final value = await BusinessHistoryStorage.getCategoryHistoryList();
+    recentSearchHistory.clear();
+    if (value.isNotEmpty) {
+      final historyIds = Constant.allBusinessList.map((h) => h.id).toSet();
+      recentSearchHistory.addAll(
+        value.where((b) => historyIds.contains(b.business?.id)),
+      );
+    }
   }
 
   setSearchHistory() {

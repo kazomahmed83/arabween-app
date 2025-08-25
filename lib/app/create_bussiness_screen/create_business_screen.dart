@@ -654,7 +654,6 @@ class CreateBusinessScreen extends StatelessWidget {
                                           return SizedBox();
                                         } else {
                                           HighlightModel model = asyncSnapshot.data ?? HighlightModel();
-                                          log("asyncSnapshot.data :::: ${model.name}");
                                           return Padding(
                                             padding: const EdgeInsets.only(right: 16),
                                             child: SizedBox(
