@@ -742,7 +742,7 @@ class MyBusinessProfileScreen extends StatelessWidget {
                                                 child: buildStatusText(themeChange, Constant.getBusinessStatus(controller.businessModel.value.businessHours!)),
                                               ),
                                         SizedBox(height: 5),
-                                        controller.businessModel.value.businessHours == null
+                                        controller.businessModel.value.businessHours == null || Constant.getBusinessStatus(controller.businessModel.value.businessHours!) == 'Closed'
                                             ? SizedBox()
                                             : Text(
                                                 Constant.getTodaySingleTimeSlot(controller.businessModel.value.businessHours!).tr,
@@ -1019,10 +1019,73 @@ class MyBusinessProfileScreen extends StatelessWidget {
                 ],
               ),
             ),
+            if (controller.businessModel.value.fbLink?.isEmpty == true)
+              if (controller.highLightList.isNotEmpty && controller.serviceList.isNotEmpty)
+                Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 14),
+                  child: Divider(color: themeChange.getThem() ? AppThemeData.greyDark07 : AppThemeData.grey07),
+                ),
+            controller.highLightList.isEmpty == true
+                ? SizedBox()
+                : Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 16, vertical: controller.businessModel.value.fbLink?.isEmpty == true ? 0 : 16),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          "Highlights from the business".tr,
+                          textAlign: TextAlign.center,
+                          style: TextStyle(color: themeChange.getThem() ? AppThemeData.greyDark01 : AppThemeData.grey01, fontSize: 20, fontFamily: AppThemeData.boldOpenSans),
+                        ),
+                        SizedBox(height: 20),
+                        SizedBox(
+                          height: 80,
+                          child: ListView.separated(
+                            itemCount: controller.highLightList.length,
+                            padding: EdgeInsets.zero,
+                            scrollDirection: Axis.horizontal,
+                            shrinkWrap: true,
+                            itemBuilder: (context, index) {
+                              HighlightModel item = controller.highLightList[index];
+                              return Padding(
+                                padding: const EdgeInsets.only(right: 16),
+                                child: SizedBox(
+                                  width: Responsive.width(20, Get.context!),
+                                  child: Column(
+                                    children: [
+                                      NetworkImageWidget(imageUrl: item.photo.toString(), width: 36, height: 36),
+                                      SizedBox(height: 10),
+                                      Text(
+                                        item.title.toString(),
+                                        maxLines: 2,
+                                        textAlign: TextAlign.center,
+                                        style: TextStyle(color: themeChange.getThem() ? AppThemeData.greyDark01 : AppThemeData.grey01, fontSize: 12, fontFamily: AppThemeData.semiboldOpenSans),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              );
+                            },
+                            separatorBuilder: (BuildContext context, int index) {
+                              return Padding(
+                                padding: const EdgeInsets.symmetric(vertical: 5),
+                                child: Divider(color: themeChange.getThem() ? AppThemeData.greyDark07 : AppThemeData.grey07),
+                              );
+                            },
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+            if (controller.serviceList.isNotEmpty)
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 14),
+                child: Divider(color: themeChange.getThem() ? AppThemeData.greyDark07 : AppThemeData.grey07),
+              ),
             controller.serviceList.isEmpty
                 ? SizedBox()
                 : Padding(
-                    padding: const EdgeInsets.only(left: 16, right: 16, bottom: 16, top: 16),
+                    padding: const EdgeInsets.only(left: 16, right: 16, bottom: 16, top: 8),
                     child: ListView.separated(
                       itemCount: controller.serviceList.length,
                       padding: EdgeInsets.zero,
@@ -1074,60 +1137,10 @@ class MyBusinessProfileScreen extends StatelessWidget {
                       },
                     ),
                   ),
-            if (controller.highLightList.isNotEmpty && controller.serviceList.isNotEmpty) Container(color: themeChange.getThem() ? AppThemeData.greyDark09 : AppThemeData.grey09, height: 14),
-            controller.highLightList.isEmpty
-                ? SizedBox()
-                : Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 20),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          "Highlights from the business".tr,
-                          textAlign: TextAlign.center,
-                          style: TextStyle(color: themeChange.getThem() ? AppThemeData.greyDark01 : AppThemeData.grey01, fontSize: 20, fontFamily: AppThemeData.boldOpenSans),
-                        ),
-                        SizedBox(height: 20),
-                        SizedBox(
-                          height: Responsive.height(10, Get.context!),
-                          child: ListView.separated(
-                            itemCount: controller.highLightList.length,
-                            padding: EdgeInsets.zero,
-                            scrollDirection: Axis.horizontal,
-                            shrinkWrap: true,
-                            itemBuilder: (context, index) {
-                              HighlightModel item = controller.highLightList[index];
-                              return Padding(
-                                padding: const EdgeInsets.only(right: 16),
-                                child: SizedBox(
-                                  width: Responsive.width(20, Get.context!),
-                                  child: Column(
-                                    children: [
-                                      NetworkImageWidget(imageUrl: item.photo.toString(), width: 36, height: 36),
-                                      SizedBox(height: 10),
-                                      Text(
-                                        item.title.toString(),
-                                        maxLines: 2,
-                                        textAlign: TextAlign.center,
-                                        style: TextStyle(color: themeChange.getThem() ? AppThemeData.greyDark01 : AppThemeData.grey01, fontSize: 12, fontFamily: AppThemeData.semiboldOpenSans),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              );
-                            },
-                            separatorBuilder: (BuildContext context, int index) {
-                              return Padding(
-                                padding: const EdgeInsets.symmetric(vertical: 5),
-                                child: Divider(color: themeChange.getThem() ? AppThemeData.greyDark07 : AppThemeData.grey07),
-                              );
-                            },
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-            Container(color: themeChange.getThem() ? AppThemeData.greyDark09 : AppThemeData.grey09, height: 14),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 0),
+              child: Container(color: themeChange.getThem() ? AppThemeData.greyDark09 : AppThemeData.grey09, height: 14),
+            ),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 20),
               child: Column(

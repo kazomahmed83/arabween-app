@@ -339,6 +339,18 @@ class CreateBusinessScreen extends StatelessWidget {
                               ),
                             ),
                             SizedBox(height: 5),
+                            TextFieldWidget(
+                              title: 'Tagline'.tr,
+                              controller: controller.tagLineTextFieldController.value,
+                              hintText: 'Tagline'.tr,
+                              maxLine: 2,
+                              validator: (value) {
+                                if (value == null || value.isEmpty) {
+                                  return '*';
+                                }
+                                return null;
+                              },
+                            ),
                             Text(
                               'Business Type'.tr,
                               style: TextStyle(fontFamily: AppThemeData.boldOpenSans, fontSize: 14, color: themeChange.getThem() ? AppThemeData.greyDark01 : AppThemeData.grey01),
@@ -386,51 +398,40 @@ class CreateBusinessScreen extends StatelessWidget {
                               ),
                             ),
                             const SizedBox(height: 10),
-                            TextFieldWidget(
-                              title: 'Tagline'.tr,
-                              controller: controller.tagLineTextFieldController.value,
-                              hintText: 'Tagline'.tr,
-                              maxLine: 2,
-                              validator: (value) {
-                                if (value == null || value.isEmpty) {
-                                  return '*';
-                                }
-                                return null;
-                              },
-                            ),
-                            DebouncedInkWell(
-                              onTap: () async {
-                                final result = await Get.to(() => CategorySelectionScreen(), arguments: {"selectedCategories": controller.selectedCategory});
-
-                                if (result is List<CategoryModel> && result.isNotEmpty) {
-                                  final existingIds = controller.selectedCategory.map((e) => e.name).toSet();
-                                  final newCategories = result.where((e) => !existingIds.contains(e.name)).toList();
-                                  controller.selectedCategory.addAll(newCategories);
-                                  controller.selectedCategory.sort((a, b) => (a.name ?? '').compareTo(b.name ?? ''));
-                                  final text = controller.selectedCategory.map((e) => e.name ?? '').where((name) => name.isNotEmpty).join(', ');
-                                  controller.categoryTextFieldController.value.text = text;
-                                }
-                              },
-                              child: TextFieldWidget(
-                                title: 'Category'.tr,
-                                controller: controller.categoryTextFieldController.value,
-                                enable: false,
-                                hintText: 'Category'.tr,
-                                suffix: Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: SvgPicture.asset(
-                                    "assets/icons/icon_right.svg",
-                                    colorFilter: ColorFilter.mode(themeChange.getThem() ? AppThemeData.greyDark05 : AppThemeData.grey05, BlendMode.srcIn),
-                                  ),
-                                ),
-                                validator: (value) {
-                                  if (value == null || value.isEmpty) {
-                                    return '*';
-                                  }
-                                  return null;
+                            if (controller.selectedBusinessType.value == 'Service Business')
+                              DebouncedInkWell(
+                                onTap: () {
+                                  Get.to(() => const EditServiceAddressScreen())?.then((value) {
+                                    ShowToastDialog.closeLoader();
+                                    if (value is List<String> && value.isNotEmpty) {
+                                      controller.selectedServiceArea
+                                        ..clear()
+                                        ..addAll(value)
+                                        ..sort(); // Default alphabetical sort
+                                      controller.serviceAreaTextFieldController.value.text = controller.selectedServiceArea.join(', ');
+                                    }
+                                  });
                                 },
+                                child: TextFieldWidget(
+                                  title: 'Sevice Area'.tr,
+                                  controller: controller.serviceAreaTextFieldController.value,
+                                  hintText: 'Sevice Area'.tr,
+                                  enable: false,
+                                  suffix: Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: SvgPicture.asset(
+                                      "assets/icons/icon_right.svg",
+                                      colorFilter: ColorFilter.mode(themeChange.getThem() ? AppThemeData.greyDark05 : AppThemeData.grey05, BlendMode.srcIn),
+                                    ),
+                                  ),
+                                  validator: (value) {
+                                    if (value == null || value.isEmpty) {
+                                      return '*';
+                                    }
+                                    return null;
+                                  },
+                                ),
                               ),
-                            ),
                             TextFieldWidget(
                               title: 'Country'.tr,
                               controller: controller.countryNameTextFieldController.value,
@@ -483,40 +484,39 @@ class CreateBusinessScreen extends StatelessWidget {
                                 },
                               ),
                             ),
-                            if (controller.selectedBusinessType.value == 'Service Business')
-                              DebouncedInkWell(
-                                onTap: () {
-                                  Get.to(() => const EditServiceAddressScreen())?.then((value) {
-                                    ShowToastDialog.closeLoader();
-                                    if (value is List<String> && value.isNotEmpty) {
-                                      controller.selectedServiceArea
-                                        ..clear()
-                                        ..addAll(value)
-                                        ..sort(); // Default alphabetical sort
-                                      controller.serviceAreaTextFieldController.value.text = controller.selectedServiceArea.join(', ');
-                                    }
-                                  });
-                                },
-                                child: TextFieldWidget(
-                                  title: 'Sevice Area'.tr,
-                                  controller: controller.serviceAreaTextFieldController.value,
-                                  hintText: 'Sevice Area'.tr,
-                                  enable: false,
-                                  suffix: Padding(
-                                    padding: const EdgeInsets.all(8.0),
-                                    child: SvgPicture.asset(
-                                      "assets/icons/icon_right.svg",
-                                      colorFilter: ColorFilter.mode(themeChange.getThem() ? AppThemeData.greyDark05 : AppThemeData.grey05, BlendMode.srcIn),
-                                    ),
+                            DebouncedInkWell(
+                              onTap: () async {
+                                final result = await Get.to(() => CategorySelectionScreen(), arguments: {"selectedCategories": controller.selectedCategory});
+
+                                if (result is List<CategoryModel> && result.isNotEmpty) {
+                                  final existingIds = controller.selectedCategory.map((e) => e.name).toSet();
+                                  final newCategories = result.where((e) => !existingIds.contains(e.name)).toList();
+                                  controller.selectedCategory.addAll(newCategories);
+                                  controller.selectedCategory.sort((a, b) => (a.name ?? '').compareTo(b.name ?? ''));
+                                  final text = controller.selectedCategory.map((e) => e.name ?? '').where((name) => name.isNotEmpty).join(', ');
+                                  controller.categoryTextFieldController.value.text = text;
+                                }
+                              },
+                              child: TextFieldWidget(
+                                title: 'Category'.tr,
+                                controller: controller.categoryTextFieldController.value,
+                                enable: false,
+                                hintText: 'Category'.tr,
+                                suffix: Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: SvgPicture.asset(
+                                    "assets/icons/icon_right.svg",
+                                    colorFilter: ColorFilter.mode(themeChange.getThem() ? AppThemeData.greyDark05 : AppThemeData.grey05, BlendMode.srcIn),
                                   ),
-                                  validator: (value) {
-                                    if (value == null || value.isEmpty) {
-                                      return '*';
-                                    }
-                                    return null;
-                                  },
                                 ),
+                                validator: (value) {
+                                  if (value == null || value.isEmpty) {
+                                    return '*';
+                                  }
+                                  return null;
+                                },
                               ),
+                            ),
                             TextFieldWidget(
                               title: 'Description'.tr,
                               controller: controller.descriptionTextFieldController.value,
@@ -585,13 +585,13 @@ class CreateBusinessScreen extends StatelessWidget {
                               title: 'Business Website Url'.tr,
                               controller: controller.websiteTextFieldController.value,
                               hintText: 'Business Website Url'.tr,
-                              suffix: IconButton(onPressed: () {}, icon: Image.asset("assets/images/website.png", height: 20, width: 20)),
+                              suffix: IconButton(onPressed: () {}, icon: SvgPicture.asset("assets/icons/global-line.svg", height: 20, width: 20, color: AppThemeData.red02)),
                             ),
                             TextFieldWidget(
                               title: 'Booking Website Url'.tr,
                               controller: controller.bookingLinkTextFieldController.value,
                               hintText: 'Booking Website Url'.tr,
-                              suffix: IconButton(onPressed: () {}, icon: Image.asset("assets/images/website.png", height: 20, width: 20)),
+                              suffix: IconButton(onPressed: () {}, icon: SvgPicture.asset("assets/icons/global-line.svg", height: 20, width: 20, color: AppThemeData.red02)),
                             ),
                             TextFieldWidget(
                               title: 'Facebook link'.tr,
