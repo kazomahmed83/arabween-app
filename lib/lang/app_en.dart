@@ -49,6 +49,7 @@ const Map<String, String> enUS = {
   "Privacy Policy.": "Privacy Policy.",
   "Continue with Google": "Continue with Google",
   "Continue with Apple": "Continue with Apple",
+  " Sign up": " Sign up",
   "Sign up": "Sign up",
   "dont_have_account": "Don’t have a @appName Account?",
   "Verify Your Account": "Verify Your Account",
@@ -71,6 +72,7 @@ const Map<String, String> enUS = {
   "Enter zipcode": "Enter zipcode",
   "already_have_account": "Already have a @appName Account?",
   "Sign In": "Sign In",
+  " Sign In": " Sign In",
   "welcome_to_app": "Welcome to @appName",
   "Discover & Share Local Favorites Let’s get Started.": "Discover & Share Local Favorites Let’s get Started.",
   "agree_to_app": "By continuing, you agree to @appName",
@@ -366,5 +368,6 @@ const Map<String, String> enUS = {
   'Open 24/7': 'Open 24/7',
   'Closed': 'Closed',
   'Open': 'Open',
-  'Go to Home Page': 'Go to Home Page'
+  'Go to Home Page': 'Go to Home Page',
+  'Login with email': 'Login with email'
 };

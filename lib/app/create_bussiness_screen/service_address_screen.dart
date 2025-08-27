@@ -144,7 +144,11 @@ class EditServiceAddressScreen extends StatelessWidget {
                               fontFamily: AppThemeData.boldOpenSans,
                             ),
                           ),
-                          const Icon(Icons.delete, color: AppThemeData.redDark03)
+                          InkWell(
+                              onTap: () {
+                                controller.selectedServiceAarea.remove(area);
+                              },
+                              child: const Icon(Icons.delete, color: AppThemeData.redDark03))
                         ],
                       ),
                     );

@@ -100,149 +100,145 @@ class LoginScreen extends StatelessWidget {
               child: SingleChildScrollView(
                 child: Column(
                   children: [
+                    // Padding(
+                    //   padding: const EdgeInsets.symmetric(vertical: 20),
+                    //   child: Center(
+                    //     child: Container(
+                    //       decoration: BoxDecoration(
+                    //         color: AppThemeData.grey07,
+                    //         borderRadius: BorderRadius.circular(30),
+                    //       ),
+                    //       child: Row(
+                    //         mainAxisSize: MainAxisSize.min,
+                    //         children: [
+                    //           buildButton("Email Address".tr, controller.isEmailSelected.value, true, controller),
+                    //           // buildButton("Phone number".tr, !controller.isEmailSelected.value, false, controller),
+                    //         ],
+                    //       ),
+                    //     ),
+                    //   ),
+                    // ),
                     Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 20),
-                      child: Center(
-                        child: Container(
-                          decoration: BoxDecoration(
-                            color: AppThemeData.grey07,
-                            borderRadius: BorderRadius.circular(30),
-                          ),
-                          child: Row(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              buildButton("Email Address".tr, controller.isEmailSelected.value, true, controller),
-                              buildButton("Phone number".tr, !controller.isEmailSelected.value, false, controller),
-                            ],
-                          ),
-                        ),
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 20),
+                      padding: const EdgeInsets.symmetric(vertical: 30),
                       child: Text(
-                        controller.isEmailSelected.value ? "Enter your email to log in".tr : "Enter your mobile no. to log in".tr,
+                        "Login with email".tr,
+                        // controller.isEmailSelected.value ? "Enter your email to log in".tr : "Enter your mobile no. to log in".tr,
                         textAlign: TextAlign.start,
-                        style: TextStyle(
-                          color: themeChange.getThem() ? AppThemeData.greyDark02 : AppThemeData.grey02,
-                          fontSize: 20,
-                          fontFamily: AppThemeData.bold,
-                        ),
+                        style: TextStyle(color: themeChange.getThem() ? AppThemeData.greyDark02 : AppThemeData.grey02, fontSize: 20, fontFamily: AppThemeData.bold),
                       ),
                     ),
-                    controller.isEmailSelected.value
-                        ? Column(
-                            children: [
-                              TextFieldWidget(
-                                controller: controller.emailTextFieldController.value,
-                                hintText: 'Email'.tr,
-                              ),
-                              TextFieldWidget(
-                                controller: controller.passwordTextFieldController.value,
-                                hintText: 'Password'.tr,
-                                obscureText: controller.passwordVisible.value,
-                                suffix: Padding(
-                                  padding: const EdgeInsets.all(12),
-                                  child: DebouncedInkWell(
-                                      onTap: () {
-                                        controller.passwordVisible.value = !controller.passwordVisible.value;
-                                      },
-                                      child: controller.passwordVisible.value
-                                          ? SvgPicture.asset(
-                                              "assets/icons/ic_password_show.svg",
-                                              colorFilter: ColorFilter.mode(
-                                                themeChange.getThem() ? AppThemeData.greyDark06 : AppThemeData.grey01,
-                                                BlendMode.srcIn,
-                                              ),
-                                            )
-                                          : SvgPicture.asset(
-                                              "assets/icons/ic_password_close.svg",
-                                              colorFilter: ColorFilter.mode(
-                                                themeChange.getThem() ? AppThemeData.greyDark06 : AppThemeData.grey01,
-                                                BlendMode.srcIn,
-                                              ),
-                                            )),
-                                ),
-                              ),
-                              Align(
-                                alignment: Alignment.centerRight,
-                                child: Text(
-                                  "Forgot Password".tr,
-                                  textAlign: TextAlign.start,
-                                  style: TextStyle(
-                                    color: themeChange.getThem() ? AppThemeData.tealDark02 : AppThemeData.teal02,
-                                    fontSize: 14,
-                                    fontFamily: AppThemeData.semiboldOpenSans,
-                                  ),
-                                ),
-                              ),
-                              SizedBox(
-                                height: 20,
-                              ),
-                              RoundedButtonFill(
-                                title: 'Log in'.tr,
-                                height: 5.5,
-                                textColor: themeChange.getThem() ? AppThemeData.greyDark10 : AppThemeData.grey10,
-                                color: themeChange.getThem() ? AppThemeData.redDark02 : AppThemeData.red02,
-                                onPress: () {
-                                  controller.signInWithEmailPassword();
+                    Column(
+                      children: [
+                        TextFieldWidget(
+                          controller: controller.emailTextFieldController.value,
+                          hintText: 'Email'.tr,
+                        ),
+                        TextFieldWidget(
+                          controller: controller.passwordTextFieldController.value,
+                          hintText: 'Password'.tr,
+                          obscureText: controller.passwordVisible.value,
+                          suffix: Padding(
+                            padding: const EdgeInsets.all(12),
+                            child: DebouncedInkWell(
+                                onTap: () {
+                                  controller.passwordVisible.value = !controller.passwordVisible.value;
                                 },
-                              ),
-                            ],
-                          )
-                        : Column(
-                            children: [
-                              TextFieldWidget(
-                                controller: controller.phoneNumberTextFieldController.value,
-                                hintText: 'Enter mobile number'.tr,
-                                inputFormatters: [
-                                  FilteringTextInputFormatter.allow(RegExp('[0-9]')),
-                                ],
-                                prefix: CountryCodePicker(
-                                  onChanged: (value) {
-                                    controller.countryCodeController.value.text = value.dialCode.toString();
-                                  },
-                                  dialogTextStyle:
-                                      TextStyle(color: themeChange.getThem() ? AppThemeData.greyDark01 : AppThemeData.grey01, fontWeight: FontWeight.w500, fontFamily: AppThemeData.medium),
-                                  dialogBackgroundColor: themeChange.getThem() ? AppThemeData.greyDark10 : AppThemeData.grey10,
-                                  initialSelection: "US",
-                                  comparator: (a, b) => b.name!.compareTo(a.name.toString()),
-                                  flagDecoration: const BoxDecoration(
-                                    borderRadius: BorderRadius.all(Radius.circular(2)),
-                                  ),
-                                  textStyle: TextStyle(
-                                    color: themeChange.getThem() ? AppThemeData.greyDark01 : AppThemeData.grey01,
-                                    fontWeight: FontWeight.w500,
-                                    fontFamily: AppThemeData.medium,
-                                  ),
-                                  searchDecoration: InputDecoration(
-                                    iconColor: themeChange.getThem() ? AppThemeData.grey08 : AppThemeData.grey08,
-                                  ),
-                                  searchStyle: TextStyle(
-                                    color: themeChange.getThem() ? AppThemeData.greyDark01 : AppThemeData.grey01,
-                                    fontWeight: FontWeight.w500,
-                                    fontFamily: AppThemeData.medium,
-                                  ),
-                                ),
-                              ),
-                              SizedBox(
-                                height: 20,
-                              ),
-                              RoundedButtonFill(
-                                title: 'Send OTP'.tr,
-                                height: 5.5,
-                                textColor: themeChange.getThem() ? AppThemeData.greyDark10 : AppThemeData.grey10,
-                                color: themeChange.getThem() ? AppThemeData.redDark02 : AppThemeData.red02,
-                                onPress: () {
-                                  if (controller.phoneNumberTextFieldController.value.text.isEmpty) {
-                                    ShowToastDialog.showToast("Please enter a phone number");
-                                  } else {
-                                    controller.sendCode();
-                                  }
-                                },
-                              ),
-                            ],
+                                child: controller.passwordVisible.value
+                                    ? SvgPicture.asset(
+                                        "assets/icons/ic_password_show.svg",
+                                        colorFilter: ColorFilter.mode(
+                                          themeChange.getThem() ? AppThemeData.greyDark06 : AppThemeData.grey01,
+                                          BlendMode.srcIn,
+                                        ),
+                                      )
+                                    : SvgPicture.asset(
+                                        "assets/icons/ic_password_close.svg",
+                                        colorFilter: ColorFilter.mode(
+                                          themeChange.getThem() ? AppThemeData.greyDark06 : AppThemeData.grey01,
+                                          BlendMode.srcIn,
+                                        ),
+                                      )),
                           ),
+                        ),
+                        Align(
+                          alignment: Alignment.centerRight,
+                          child: Text(
+                            "Forgot Password".tr,
+                            textAlign: TextAlign.start,
+                            style: TextStyle(
+                              color: themeChange.getThem() ? AppThemeData.tealDark02 : AppThemeData.teal02,
+                              fontSize: 14,
+                              fontFamily: AppThemeData.semiboldOpenSans,
+                            ),
+                          ),
+                        ),
+                        SizedBox(
+                          height: 20,
+                        ),
+                        RoundedButtonFill(
+                          title: 'Log in'.tr,
+                          height: 5.5,
+                          textColor: themeChange.getThem() ? AppThemeData.greyDark10 : AppThemeData.grey10,
+                          color: themeChange.getThem() ? AppThemeData.redDark02 : AppThemeData.red02,
+                          onPress: () {
+                            controller.signInWithEmailPassword();
+                          },
+                        ),
+                      ],
+                    ),
+                    // : Column(
+                    //     children: [
+                    //       TextFieldWidget(
+                    //         controller: controller.phoneNumberTextFieldController.value,
+                    //         hintText: 'Enter mobile number'.tr,
+                    //         inputFormatters: [
+                    //           FilteringTextInputFormatter.allow(RegExp('[0-9]')),
+                    //         ],
+                    //         prefix: CountryCodePicker(
+                    //           onChanged: (value) {
+                    //             controller.countryCodeController.value.text = value.dialCode.toString();
+                    //           },
+                    //           dialogTextStyle:
+                    //               TextStyle(color: themeChange.getThem() ? AppThemeData.greyDark01 : AppThemeData.grey01, fontWeight: FontWeight.w500, fontFamily: AppThemeData.medium),
+                    //           dialogBackgroundColor: themeChange.getThem() ? AppThemeData.greyDark10 : AppThemeData.grey10,
+                    //           initialSelection: "US",
+                    //           comparator: (a, b) => b.name!.compareTo(a.name.toString()),
+                    //           flagDecoration: const BoxDecoration(
+                    //             borderRadius: BorderRadius.all(Radius.circular(2)),
+                    //           ),
+                    //           textStyle: TextStyle(
+                    //             color: themeChange.getThem() ? AppThemeData.greyDark01 : AppThemeData.grey01,
+                    //             fontWeight: FontWeight.w500,
+                    //             fontFamily: AppThemeData.medium,
+                    //           ),
+                    //           searchDecoration: InputDecoration(
+                    //             iconColor: themeChange.getThem() ? AppThemeData.grey08 : AppThemeData.grey08,
+                    //           ),
+                    //           searchStyle: TextStyle(
+                    //             color: themeChange.getThem() ? AppThemeData.greyDark01 : AppThemeData.grey01,
+                    //             fontWeight: FontWeight.w500,
+                    //             fontFamily: AppThemeData.medium,
+                    //           ),
+                    //         ),
+                    //       ),
+                    //       SizedBox(
+                    //         height: 20,
+                    //       ),
+                    //       RoundedButtonFill(
+                    //         title: 'Send OTP'.tr,
+                    //         height: 5.5,
+                    //         textColor: themeChange.getThem() ? AppThemeData.greyDark10 : AppThemeData.grey10,
+                    //         color: themeChange.getThem() ? AppThemeData.redDark02 : AppThemeData.red02,
+                    //         onPress: () {
+                    //           if (controller.phoneNumberTextFieldController.value.text.isEmpty) {
+                    //             ShowToastDialog.showToast("Please enter a phone number");
+                    //           } else {
+                    //             controller.sendCode();
+                    //           }
+                    //         },
+                    //       ),
+                    //     ],
+                    //   ),
                     SizedBox(
                       height: 20,
                     ),
@@ -348,7 +344,7 @@ class LoginScreen extends StatelessWidget {
                             ..onTap = () {
                               Get.to(SingUpScreen());
                             },
-                          text: 'Sign up'.tr,
+                          text: ' Sign up'.tr,
                           style: TextStyle(
                             color: themeChange.getThem() ? AppThemeData.tealDark02 : AppThemeData.teal02,
                             fontSize: 14,

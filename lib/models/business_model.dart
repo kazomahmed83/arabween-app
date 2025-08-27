@@ -21,7 +21,6 @@ class BusinessModel {
   String? phoneNumber;
   String? website;
   String? bookingWebsite;
-  String? noteForYelpTeam;
   String? zipCode;
   Positions? position;
   LatLngModel? location;
@@ -68,7 +67,6 @@ class BusinessModel {
       this.phoneNumber,
       this.website,
       this.bookingWebsite,
-      this.noteForYelpTeam,
       this.zipCode,
       this.position,
       this.location,
@@ -113,7 +111,7 @@ class BusinessModel {
     phoneNumber = '${json['phoneNumber'] ?? ''}';
     website = json['website'] ?? '';
     bookingWebsite = json['bookingWebsite'] ?? '';
-    noteForYelpTeam = json['noteForYelpTeam'];
+
     zipCode = json['zipCode'];
     position = json['position'] != null ? Positions.fromJson(json['position']) : Positions();
     location = json['location'] != null ? LatLngModel.fromJson(json['location']) : LatLngModel();
@@ -167,7 +165,7 @@ class BusinessModel {
     data['phoneNumber'] = phoneNumber;
     data['website'] = website;
     data['bookingWebsite'] = bookingWebsite;
-    data['noteForYelpTeam'] = noteForYelpTeam;
+
     data['zipCode'] = zipCode;
     data['recommendUserId'] = recommendUserId;
     data['bookmarkUserId'] = bookmarkUserId;
@@ -229,7 +227,7 @@ class BusinessModel {
     data['phoneNumber'] = phoneNumber;
     data['website'] = website;
     data['bookingWebsite'] = bookingWebsite;
-    data['noteForYelpTeam'] = noteForYelpTeam;
+
     data['zipCode'] = zipCode;
     data['recommendUserId'] = recommendUserId;
     data['bookmarkUserId'] = bookmarkUserId;

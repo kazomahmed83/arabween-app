@@ -1,13 +1,15 @@
 import 'dart:convert';
 import 'dart:math';
 
+import 'package:arabween/app/create_bussiness_screen/create_business_screen.dart';
+import 'package:arabween/utils/notification_service.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:crypto/crypto.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:sign_in_with_apple/sign_in_with_apple.dart';
-import 'package:arabween/app/auth_screen/otp_screen.dart';
 import 'package:arabween/app/auth_screen/singup_screen.dart';
 import 'package:arabween/app/dashboard_screen/dashboard_screen.dart';
 import 'package:arabween/constant/constant.dart';
@@ -71,37 +73,37 @@ class LoginController extends GetxController {
     }
   }
 
-  sendCode() async {
-    ShowToastDialog.showLoader("Please wait".tr);
-    await FirebaseAuth.instance
-        .verifyPhoneNumber(
-      phoneNumber: countryCodeController.value.text + phoneNumberTextFieldController.value.text,
-      verificationCompleted: (PhoneAuthCredential credential) {},
-      verificationFailed: (FirebaseAuthException e) {
-        debugPrint("FirebaseAuthException--->${e.message}");
-        ShowToastDialog.closeLoader();
-        if (e.code == 'invalid-phone-number') {
-          ShowToastDialog.showToast("Enter valid phone number".tr);
-        } else {
-          ShowToastDialog.showToast(e.code);
-        }
-      },
-      codeSent: (String verificationId, int? resendToken) {
-        ShowToastDialog.closeLoader();
-        Get.to(const OtpScreen(), arguments: {
-          "countryCode": countryCodeController.value.text,
-          "phoneNumber": phoneNumberTextFieldController.value.text,
-          "verificationId": verificationId,
-        });
-      },
-      codeAutoRetrievalTimeout: (String verificationId) {},
-    )
-        .catchError((error) {
-      debugPrint("catchError--->$error");
-      ShowToastDialog.closeLoader();
-      ShowToastDialog.showToast("multiple_time_request".tr);
-    });
-  }
+  // sendCode() async {
+  //   ShowToastDialog.showLoader("Please wait".tr);
+  //   await FirebaseAuth.instance
+  //       .verifyPhoneNumber(
+  //     phoneNumber: countryCodeController.value.text + phoneNumberTextFieldController.value.text,
+  //     verificationCompleted: (PhoneAuthCredential credential) {},
+  //     verificationFailed: (FirebaseAuthException e) {
+  //       debugPrint("FirebaseAuthException--->${e.message}");
+  //       ShowToastDialog.closeLoader();
+  //       if (e.code == 'invalid-phone-number') {
+  //         ShowToastDialog.showToast("Enter valid phone number".tr);
+  //       } else {
+  //         ShowToastDialog.showToast(e.code);
+  //       }
+  //     },
+  //     codeSent: (String verificationId, int? resendToken) {
+  //       ShowToastDialog.closeLoader();
+  //       Get.to(const OtpScreen(), arguments: {
+  //         "countryCode": countryCodeController.value.text,
+  //         "phoneNumber": phoneNumberTextFieldController.value.text,
+  //         "verificationId": verificationId,
+  //       });
+  //     },
+  //     codeAutoRetrievalTimeout: (String verificationId) {},
+  //   )
+  //       .catchError((error) {
+  //     debugPrint("catchError--->$error");
+  //     ShowToastDialog.closeLoader();
+  //     ShowToastDialog.showToast("multiple_time_request".tr);
+  //   });
+  // }
 
   Future<UserCredential?> signInWithGoogle() async {
     try {
@@ -186,10 +188,18 @@ class LoginController extends GetxController {
           userModel.firstName = value.user!.displayName;
           userModel.profilePic = value.user!.photoURL;
           userModel.loginType = Constant.googleLoginType;
+          userModel.fcmToken = await NotificationService.getToken();
+          userModel.createdAt = Timestamp.now();
+          userModel.isActive = true;
 
-          ShowToastDialog.closeLoader();
-          Get.to(const SingUpScreen(), arguments: {
-            "userModel": userModel,
+          await FireStoreUtils.updateUser(userModel).then((value) {
+            ShowToastDialog.closeLoader();
+            if (value == true) {
+              ShowToastDialog.showToast("Account is created");
+              Get.to(CreateBusinessScreen(), arguments: {"asCustomerOrWorkAtBusiness": false})?.then((value) {
+                Get.offAll(const DashBoardScreen());
+              });
+            }
           });
         } else {
           await FireStoreUtils.userExistOrNot(value.user!.uid).then((userExit) async {

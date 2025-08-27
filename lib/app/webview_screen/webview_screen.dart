@@ -59,7 +59,7 @@ class WebviewScreen extends StatelessWidget {
               ),
             ),
             title: Text(
-              controller.title.value.isEmpty == true || controller.title.value == '' ? "Claim business".tr : controller.title.value,
+              controller.title.value.isEmpty == true || controller.title.value == '' ? "Claim business".tr : '',
               textAlign: TextAlign.start,
               style: TextStyle(
                 color: themeChange.getThem() ? AppThemeData.greyDark01 : AppThemeData.grey01,

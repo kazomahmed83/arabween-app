@@ -118,27 +118,6 @@ class SingUpScreen extends StatelessWidget {
                           ),
                         )
                       : SizedBox(),
-                  TextFieldWidget(
-                    controller: controller.phoneNumberTextFieldController.value,
-                    hintText: 'Enter mobile number'.tr,
-                    readOnly: controller.loginType.value == Constant.phoneLoginType ? true : false,
-                    enable: controller.loginType.value == Constant.phoneLoginType ? false : true,
-                    inputFormatters: [FilteringTextInputFormatter.allow(RegExp('[0-9]'))],
-                    prefix: CountryCodePicker(
-                      onChanged: (value) {
-                        controller.countryCodeController.value.text = value.dialCode.toString();
-                      },
-                      dialogTextStyle: TextStyle(color: themeChange.getThem() ? AppThemeData.greyDark01 : AppThemeData.grey01, fontWeight: FontWeight.w500, fontFamily: AppThemeData.medium),
-                      dialogBackgroundColor: themeChange.getThem() ? AppThemeData.greyDark10 : AppThemeData.grey10,
-                      initialSelection: "US",
-                      comparator: (a, b) => b.name!.compareTo(a.name.toString()),
-                      flagDecoration: const BoxDecoration(borderRadius: BorderRadius.all(Radius.circular(2))),
-                      textStyle: TextStyle(color: themeChange.getThem() ? AppThemeData.greyDark01 : AppThemeData.grey01, fontWeight: FontWeight.w500, fontFamily: AppThemeData.medium),
-                      searchDecoration: InputDecoration(iconColor: themeChange.getThem() ? AppThemeData.grey08 : AppThemeData.grey08),
-                      searchStyle: TextStyle(color: themeChange.getThem() ? AppThemeData.greyDark01 : AppThemeData.grey01, fontWeight: FontWeight.w500, fontFamily: AppThemeData.medium),
-                    ),
-                  ),
-                  TextFieldWidget(controller: controller.zipCodeFieldController.value, hintText: 'Zip Code'.tr, inputFormatters: [FilteringTextInputFormatter.allow(RegExp('[0-9]'))]),
                   SizedBox(height: 10),
                   RoundedButtonFill(
                     title: controller.isAddAbusinessBtn.value == true ? 'Next'.tr : 'Sign up'.tr,
@@ -155,10 +134,6 @@ class SingUpScreen extends StatelessWidget {
                           ShowToastDialog.showToast("Enter email address".tr);
                         } else if (controller.passwordTextFieldController.value.text.isEmpty) {
                           ShowToastDialog.showToast("Enter Password".tr);
-                        } else if (controller.phoneNumberTextFieldController.value.text.isEmpty) {
-                          ShowToastDialog.showToast("Enter mobile number".tr);
-                        } else if (controller.zipCodeFieldController.value.text.isEmpty) {
-                          ShowToastDialog.showToast("Enter zipcode".tr);
                         } else {
                           if (controller.isAddAbusinessBtn.value == true) {
                             controller.signUpWithEmailPassword(themeChange: themeChange.getThem(), context: context);
@@ -167,13 +142,7 @@ class SingUpScreen extends StatelessWidget {
                           }
                         }
                       } else {
-                        if (controller.phoneNumberTextFieldController.value.text.isEmpty) {
-                          ShowToastDialog.showToast("Enter mobile number".tr);
-                        } else if (controller.zipCodeFieldController.value.text.isEmpty) {
-                          ShowToastDialog.showToast("Enter zipcode".tr);
-                        } else {
-                          controller.createAccount();
-                        }
+                        controller.createAccount();
                       }
                     },
                   ),
@@ -194,7 +163,7 @@ class SingUpScreen extends StatelessWidget {
                       ..onTap = () {
                         Get.back();
                       },
-                    text: 'Sign In'.tr,
+                    text: ' Sign In'.tr,
                     style: TextStyle(color: themeChange.getThem() ? AppThemeData.tealDark02 : AppThemeData.teal02, fontSize: 14, fontFamily: AppThemeData.semiboldOpenSans),
                   ),
                 ],

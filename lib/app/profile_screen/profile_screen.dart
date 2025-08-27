@@ -1,4 +1,5 @@
 import 'package:arabween/app/auth_screen/welcome_screen.dart';
+import 'package:arabween/app/profile_screen/edit_profile_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
@@ -62,123 +63,157 @@ class ProfileScreen extends StatelessWidget {
                             padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
                             child: Column(
                               children: [
-                                ClipOval(
-                                  child: NetworkImageWidget(
-                                    imageUrl: controller.userModel.value.profilePic.toString(),
-                                    width: 100,
-                                    height: 100,
-                                  ),
-                                ),
-                                SizedBox(
-                                  height: 10,
-                                ),
-                                Text(
-                                  controller.userModel.value.id != null ? controller.userModel.value.fullName() : '',
-                                  textAlign: TextAlign.center,
-                                  style: TextStyle(fontSize: 20, fontFamily: AppThemeData.boldOpenSans),
-                                ),
-                                SizedBox(
-                                  height: 10,
-                                ),
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                Stack(
                                   children: [
-                                    Row(
+                                    Column(
                                       children: [
-                                        Constant.svgPictureShow("assets/icons/icon_user-business.svg", themeChange.getThem() ? AppThemeData.greyDark05 : AppThemeData.grey05, 20, 20),
+                                        ClipOval(
+                                          child: NetworkImageWidget(
+                                            imageUrl: controller.userModel.value.profilePic.toString(),
+                                            width: 100,
+                                            height: 100,
+                                          ),
+                                        ),
                                         SizedBox(
-                                          width: 5,
+                                          height: 10,
                                         ),
                                         Text(
-                                          "0",
-                                          textAlign: TextAlign.start,
-                                          style: TextStyle(
-                                            color: themeChange.getThem() ? AppThemeData.greyDark05 : AppThemeData.grey05,
-                                            fontSize: 14,
-                                            fontFamily: AppThemeData.boldOpenSans,
+                                          controller.userModel.value.id != null ? controller.userModel.value.fullName() : '',
+                                          textAlign: TextAlign.center,
+                                          style: TextStyle(fontSize: 20, fontFamily: AppThemeData.boldOpenSans),
+                                        ),
+                                        SizedBox(
+                                          height: 10,
+                                        ),
+                                        Row(
+                                          mainAxisAlignment: MainAxisAlignment.center,
+                                          crossAxisAlignment: CrossAxisAlignment.center,
+                                          children: [
+                                            Row(
+                                              children: [
+                                                Constant.svgPictureShow("assets/icons/icon_user-business.svg", themeChange.getThem() ? AppThemeData.greyDark05 : AppThemeData.grey05, 20, 20),
+                                                SizedBox(
+                                                  width: 5,
+                                                ),
+                                                Text(
+                                                  "0",
+                                                  textAlign: TextAlign.start,
+                                                  style: TextStyle(
+                                                    color: themeChange.getThem() ? AppThemeData.greyDark05 : AppThemeData.grey05,
+                                                    fontSize: 14,
+                                                    fontFamily: AppThemeData.boldOpenSans,
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                            SizedBox(
+                                              width: 15,
+                                            ),
+                                            Row(
+                                              children: [
+                                                Constant.svgPictureShow("assets/icons/review_show.svg", null, 20, 20),
+                                                SizedBox(
+                                                  width: 5,
+                                                ),
+                                                Text(
+                                                  "${controller.reviewList.length}",
+                                                  textAlign: TextAlign.start,
+                                                  style: TextStyle(
+                                                    color: themeChange.getThem() ? AppThemeData.greyDark05 : AppThemeData.grey05,
+                                                    fontSize: 14,
+                                                    fontFamily: AppThemeData.boldOpenSans,
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                            SizedBox(
+                                              width: 15,
+                                            ),
+                                            Row(
+                                              children: [
+                                                Constant.svgPictureShow("assets/icons/icon_picture.svg", themeChange.getThem() ? AppThemeData.greyDark05 : AppThemeData.grey05, 20, 20),
+                                                SizedBox(
+                                                  width: 5,
+                                                ),
+                                                Text(
+                                                  "${controller.photoList.length}",
+                                                  textAlign: TextAlign.start,
+                                                  style: TextStyle(
+                                                    color: themeChange.getThem() ? AppThemeData.greyDark05 : AppThemeData.grey05,
+                                                    fontSize: 14,
+                                                    fontFamily: AppThemeData.boldOpenSans,
+                                                  ),
+                                                ),
+                                              ],
+                                            )
+                                          ],
+                                        ),
+                                        SizedBox(
+                                          height: 10,
+                                        ),
+                                        Padding(
+                                          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 20),
+                                          child: Row(
+                                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                            children: [
+                                              DebouncedInkWell(
+                                                onTap: () {
+                                                  Get.to(SearchScreen());
+                                                },
+                                                child: imageWidget(themeChange, "assets/icons/star.svg", "Add Review"),
+                                              ),
+                                              InkWell(
+                                                  onTap: () {
+                                                    Get.to(SearchScreen());
+                                                  },
+                                                  child: imageWidget(themeChange, "assets/icons/icon_add-pic.svg", "Add Photo")),
+                                              if (controller.userModel.value.id != null)
+                                                InkWell(
+                                                    onTap: () {
+                                                      Get.to(CheckInListScreen(), arguments: {"userModel": controller.userModel.value});
+                                                    },
+                                                    child: imageWidget(themeChange, "assets/icons/icon_check-one.svg", "Check In")),
+                                              InkWell(
+                                                  onTap: () {
+                                                    if (FireStoreUtils.getCurrentUid() == '') {
+                                                      Get.offAll(WelcomeScreen());
+                                                    } else {
+                                                      showCustomBottomSheet(themeChange, context);
+                                                    }
+                                                  },
+                                                  child: imageWidget(themeChange, "assets/icons/icon_shop.svg", "Add Business")),
+                                            ],
                                           ),
                                         ),
                                       ],
                                     ),
-                                    SizedBox(
-                                      width: 15,
-                                    ),
-                                    Row(
-                                      children: [
-                                        Constant.svgPictureShow("assets/icons/review_show.svg", null, 20, 20),
-                                        SizedBox(
-                                          width: 5,
-                                        ),
-                                        Text(
-                                          "${controller.reviewList.length}",
-                                          textAlign: TextAlign.start,
-                                          style: TextStyle(
-                                            color: themeChange.getThem() ? AppThemeData.greyDark05 : AppThemeData.grey05,
-                                            fontSize: 14,
-                                            fontFamily: AppThemeData.boldOpenSans,
+                                    Positioned(
+                                        right: 0,
+                                        top: 0,
+                                        child: InkWell(
+                                          onTap: () {
+                                            Get.to(EditProfileScreen())?.then((value) {
+                                              if (value == true) {
+                                                controller.getData();
+                                              }
+                                            });
+                                          },
+                                          child: Row(
+                                            children: [
+                                              Constant.svgPictureShow("assets/icons/ic_edit.svg", themeChange.getThem() ? AppThemeData.greyDark02 : AppThemeData.grey02, null, null),
+                                              SizedBox(width: 5),
+                                              Text(
+                                                'Edit',
+                                                style: TextStyle(
+                                                  fontFamily: AppThemeData.semibold,
+                                                  color: themeChange.getThem() ? AppThemeData.greyDark02 : AppThemeData.grey02,
+                                                  fontSize: 14,
+                                                ),
+                                              ),
+                                            ],
                                           ),
-                                        ),
-                                      ],
-                                    ),
-                                    SizedBox(
-                                      width: 15,
-                                    ),
-                                    Row(
-                                      children: [
-                                        Constant.svgPictureShow("assets/icons/icon_picture.svg", themeChange.getThem() ? AppThemeData.greyDark05 : AppThemeData.grey05, 20, 20),
-                                        SizedBox(
-                                          width: 5,
-                                        ),
-                                        Text(
-                                          "${controller.photoList.length}",
-                                          textAlign: TextAlign.start,
-                                          style: TextStyle(
-                                            color: themeChange.getThem() ? AppThemeData.greyDark05 : AppThemeData.grey05,
-                                            fontSize: 14,
-                                            fontFamily: AppThemeData.boldOpenSans,
-                                          ),
-                                        ),
-                                      ],
-                                    )
+                                        ))
                                   ],
-                                ),
-                                SizedBox(
-                                  height: 10,
-                                ),
-                                Padding(
-                                  padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 20),
-                                  child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      DebouncedInkWell(
-                                        onTap: () {
-                                          Get.to(SearchScreen());
-                                        },
-                                        child: imageWidget(themeChange, "assets/icons/star.svg", "Add Review"),
-                                      ),
-                                      InkWell(
-                                          onTap: () {
-                                            Get.to(SearchScreen());
-                                          },
-                                          child: imageWidget(themeChange, "assets/icons/icon_add-pic.svg", "Add Photo")),
-                                      if (controller.userModel.value.id != null)
-                                        InkWell(
-                                            onTap: () {
-                                              Get.to(CheckInListScreen(), arguments: {"userModel": controller.userModel.value});
-                                            },
-                                            child: imageWidget(themeChange, "assets/icons/icon_check-one.svg", "Check In")),
-                                      InkWell(
-                                          onTap: () {
-                                            if (FireStoreUtils.getCurrentUid() == '') {
-                                              Get.offAll(WelcomeScreen());
-                                            } else {
-                                              showCustomBottomSheet(themeChange, context);
-                                            }
-                                          },
-                                          child: imageWidget(themeChange, "assets/icons/icon_shop.svg", "Add Business")),
-                                    ],
-                                  ),
                                 ),
                               ],
                             ),

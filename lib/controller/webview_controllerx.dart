@@ -19,7 +19,7 @@ class WebViewControllerX extends GetxController {
     dynamic argumentData = Get.arguments;
     if (argumentData != null) {
       url.value = argumentData['url'];
-      title.value = argumentData['title'] ?? "Claim Business";
+      title.value = argumentData['title'] ?? "";
 
       controller.value = WebViewController()
         ..setJavaScriptMode(JavaScriptMode.unrestricted)

@@ -13,11 +13,8 @@ import '../app/dashboard_screen/dashboard_screen.dart';
 class SignupController extends GetxController {
   Rx<TextEditingController> firstNameTextFieldController = TextEditingController().obs;
   Rx<TextEditingController> lastNameTextFieldController = TextEditingController().obs;
-  Rx<TextEditingController> phoneNumberTextFieldController = TextEditingController().obs;
-  Rx<TextEditingController> countryCodeController = TextEditingController(text: "+1").obs;
   Rx<TextEditingController> emailTextFieldController = TextEditingController().obs;
   Rx<TextEditingController> passwordTextFieldController = TextEditingController().obs;
-  Rx<TextEditingController> zipCodeFieldController = TextEditingController().obs;
   RxString profileImage = "".obs;
   RxBool passwordVisible = true.obs;
 
@@ -38,13 +35,13 @@ class SignupController extends GetxController {
       if (argumentData['userModel'] != null) {
         userModel.value = argumentData['userModel'];
         loginType.value = userModel.value.loginType.toString();
-        if (loginType.value == Constant.phoneLoginType) {
-          phoneNumberTextFieldController.value.text = userModel.value.phoneNumber.toString();
-          countryCodeController.value.text = userModel.value.countryCode.toString();
-        } else {
-          emailTextFieldController.value.text = userModel.value.email.toString();
-          firstNameTextFieldController.value.text = userModel.value.firstName ?? '';
-        }
+        // if (loginType.value == Constant.phoneLoginType) {
+        //   phoneNumberTextFieldController.value.text = userModel.value.phoneNumber.toString();
+        //   countryCodeController.value.text = userModel.value.countryCode.toString();
+        // } else {
+        emailTextFieldController.value.text = userModel.value.email.toString();
+        firstNameTextFieldController.value.text = userModel.value.firstName ?? '';
+        // }
       } else if (argumentData['type'] == 'Add a business') {
         isAddAbusinessBtn.value = true;
       }
@@ -85,10 +82,10 @@ class SignupController extends GetxController {
       userModelData.firstName = firstNameTextFieldController.value.text;
       userModelData.lastName = lastNameTextFieldController.value.text;
       userModelData.email = emailTextFieldController.value.text;
-      userModelData.countryCode = countryCodeController.value.text;
-      userModelData.phoneNumber = num.parse(phoneNumberTextFieldController.value.text);
+      // userModelData.countryCode = countryCodeController.value.text;
+      // userModelData.phoneNumber = num.parse(phoneNumberTextFieldController.value.text);
       userModelData.profilePic = profileImage.value;
-      userModelData.zipCode = zipCodeFieldController.value.text;
+      // userModelData.zipCode = zipCodeFieldController.value.text;
       userModelData.fcmToken = fcmToken;
       userModelData.createdAt = Timestamp.now();
       userModelData.isActive = true;

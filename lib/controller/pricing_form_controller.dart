@@ -128,7 +128,7 @@ class PricingFormController extends GetxController {
             username: Constant.userModel?.fullName() ?? '',
             businessName: business.businessName ?? '',
             useremail: Constant.userModel?.email ?? '',
-            userphone: "${Constant.userModel?.phoneNumber ?? ''}",
+            // userphone: "${Constant.userModel?.phoneNumber ?? ''}",
             date: Constant.formatTimestampToDateTime(pricingRequestModel.createdAt!),
           );
         }
@@ -144,8 +144,7 @@ class PricingFormController extends GetxController {
     Get.back();
   }
 
-  Future<void> sendReviewEmail(
-      {required String recipientEmail, required String username, required String businessName, required String useremail, required String userphone, required String date}) async {
+  Future<void> sendReviewEmail({required String recipientEmail, required String username, required String businessName, required String useremail, required String date}) async {
     // Replace the placeholders in the HTML
     EmailTemplateModel? emailTemplateModel = await FireStoreUtils.getEmailTemplates('new_project_request');
 
@@ -153,7 +152,7 @@ class PricingFormController extends GetxController {
       'username': username,
       'businessName': businessName,
       'useremail': useremail,
-      'userphone': userphone,
+      // 'userphone': userphone,
       'date': date,
     });
 

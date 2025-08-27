@@ -33,7 +33,6 @@ class CreateBusinessController extends GetxController {
   Rx<TextEditingController> phoneNumberTextFieldController = TextEditingController().obs;
   Rx<TextEditingController> websiteTextFieldController = TextEditingController().obs;
   Rx<TextEditingController> bookingLinkTextFieldController = TextEditingController().obs;
-  Rx<TextEditingController> notesOfTheYelpTeamTextFieldController = TextEditingController().obs;
   Rx<TextEditingController> fbLinkTextFieldController = TextEditingController().obs;
   Rx<TextEditingController> instaLinkTextFieldController = TextEditingController().obs;
   Rx<TextEditingController> tagLineTextFieldController = TextEditingController().obs;
@@ -122,7 +121,6 @@ class CreateBusinessController extends GetxController {
         fbLinkTextFieldController.value.text = businessModel.value.fbLink ?? '';
         instaLinkTextFieldController.value.text = businessModel.value.instaLink ?? '';
         tagLineTextFieldController.value.text = businessModel.value.tagLine ?? '';
-        notesOfTheYelpTeamTextFieldController.value.text = businessModel.value.noteForYelpTeam ?? '';
         addressTextFieldController.value.text = Constant.getFullAddressModel(address.value);
         categoryTextFieldController.value.text = selectedCategory.map((e) => e.name).join(", ");
         profileImage.value = businessModel.value.profilePhoto ?? '';
@@ -232,7 +230,6 @@ class CreateBusinessController extends GetxController {
     businessModel.value.fbLink = fbLinkTextFieldController.value.text;
     businessModel.value.instaLink = instaLinkTextFieldController.value.text;
     businessModel.value.tagLine = tagLineTextFieldController.value.text;
-    businessModel.value.noteForYelpTeam = notesOfTheYelpTeamTextFieldController.value.text;
     businessModel.value.searchKeyword = Constant.generateSearchKeywords(nameTextFieldController.value.text);
     businessModel.value.asCustomerOrWorkAtBusiness = asCustomerOrWorkAtBusiness.value;
     businessModel.value.profilePhoto = profileImage.value;

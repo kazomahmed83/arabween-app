@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:math';
 import 'dart:ui' as ui;
 
+import 'package:arabween/app/business_details_screen/business_details_screen.dart';
 import 'package:arabween/constant/show_toast_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -215,7 +216,14 @@ class BusinessListController extends GetxController {
             double.parse(business.location?.longitude ?? "0.0"),
           ),
           icon: icon,
-          infoWindow: InfoWindow(title: business.businessName),
+          infoWindow: InfoWindow(
+              title: business.businessName,
+              onTap: () async {
+                final value = await FireStoreUtils.getBusinessById(business.id ?? '');
+                if (value != null) {
+                  Get.to(BusinessDetailsScreen(), arguments: {"businessModel": value});
+                }
+              }),
         ),
       );
     }

@@ -94,8 +94,6 @@ class CreateBusinessScreen extends StatelessWidget {
                         ShowToastDialog.showToast("Please select a business type");
                       } else if (controller.nameTextFieldController.value.text.isEmpty) {
                         ShowToastDialog.showToast("Please enter a business name");
-                      } else if (controller.arabicNameTextFieldController.value.text.isEmpty) {
-                        ShowToastDialog.showToast("Please enter a arabic business name");
                       } else if (controller.businessUrlTextFieldController.value.text.isEmpty) {
                         ShowToastDialog.showToast("Please enter a seo slug");
                       } else if (controller.addressTextFieldController.value.text.isEmpty) {
@@ -104,8 +102,6 @@ class CreateBusinessScreen extends StatelessWidget {
                         ShowToastDialog.showToast("Please add service area");
                       } else if (controller.selectedCategory.isEmpty) {
                         ShowToastDialog.showToast("Please select category");
-                      } else if (controller.tagLineTextFieldController.value.text.isEmpty) {
-                        ShowToastDialog.showToast("Please enter a tagline");
                       } else if (controller.descriptionTextFieldController.value.text.isEmpty) {
                         ShowToastDialog.showToast("Please enter a description");
                       } else if (controller.phoneNumberTextFieldController.value.text.isEmpty) {
@@ -135,6 +131,7 @@ class CreateBusinessScreen extends StatelessWidget {
                         decoration: BoxDecoration(color: themeChange.getThem() ? AppThemeData.teal03 : AppThemeData.teal03, borderRadius: const BorderRadius.all(Radius.circular(150))),
                         child: DebouncedInkWell(
                           onTap: () {
+                            FocusManager.instance.primaryFocus?.unfocus();
                             buildBottomSheet(context, controller, 'profile');
                           },
                           child: controller.profileImage.isEmpty
@@ -163,6 +160,7 @@ class CreateBusinessScreen extends StatelessWidget {
                                 )
                               : DebouncedInkWell(
                                   onTap: () {
+                                    FocusManager.instance.primaryFocus?.unfocus();
                                     buildBottomSheet(context, controller, 'profile');
                                   },
                                   child: Constant().hasValidUrl(controller.profileImage.value) == false
@@ -179,6 +177,7 @@ class CreateBusinessScreen extends StatelessWidget {
                       decoration: BoxDecoration(color: themeChange.getThem() ? AppThemeData.teal03 : AppThemeData.teal03, borderRadius: const BorderRadius.all(Radius.circular(12))),
                       child: DebouncedInkWell(
                         onTap: () {
+                          FocusManager.instance.primaryFocus?.unfocus();
                           buildBottomSheet(context, controller, 'cover');
                         },
                         child: controller.coverImage.isEmpty
@@ -207,6 +206,7 @@ class CreateBusinessScreen extends StatelessWidget {
                               )
                             : DebouncedInkWell(
                                 onTap: () {
+                                  FocusManager.instance.primaryFocus?.unfocus();
                                   buildBottomSheet(context, controller, 'cover');
                                 },
                                 child: Constant().hasValidUrl(controller.coverImage.value) == false
@@ -294,17 +294,7 @@ class CreateBusinessScreen extends StatelessWidget {
                                 return null;
                               },
                             ),
-                            TextFieldWidget(
-                              title: 'Name in arabic'.tr,
-                              controller: controller.arabicNameTextFieldController.value,
-                              hintText: 'Name in arabic'.tr,
-                              validator: (value) {
-                                if (value == null || value.isEmpty) {
-                                  return '*';
-                                }
-                                return null;
-                              },
-                            ),
+                            TextFieldWidget(title: 'Name in arabic'.tr, controller: controller.arabicNameTextFieldController.value, hintText: 'Name in arabic'.tr),
                             TextFieldWidget(
                               title: 'SEO Slug'.tr,
                               controller: controller.businessUrlTextFieldController.value,
@@ -344,12 +334,6 @@ class CreateBusinessScreen extends StatelessWidget {
                               controller: controller.tagLineTextFieldController.value,
                               hintText: 'Tagline'.tr,
                               maxLine: 2,
-                              validator: (value) {
-                                if (value == null || value.isEmpty) {
-                                  return '*';
-                                }
-                                return null;
-                              },
                             ),
                             Text(
                               'Business Type'.tr,
@@ -373,6 +357,7 @@ class CreateBusinessScreen extends StatelessWidget {
                               }).toList(),
                               style: TextStyle(color: (themeChange.getThem() ? AppThemeData.greyDark01 : AppThemeData.grey01), fontSize: 16, fontFamily: AppThemeData.medium),
                               decoration: InputDecoration(
+                                contentPadding: EdgeInsets.symmetric(vertical: 13, horizontal: 10),
                                 filled: true,
                                 fillColor: themeChange.getThem() ? AppThemeData.greyDark10 : AppThemeData.grey10,
                                 disabledBorder: OutlineInputBorder(
@@ -398,6 +383,39 @@ class CreateBusinessScreen extends StatelessWidget {
                               ),
                             ),
                             const SizedBox(height: 10),
+                            DebouncedInkWell(
+                              onTap: () {
+                                Get.to(EditAddressScreen())?.then((value) {
+                                  ShowToastDialog.closeLoader();
+                                  if (value != null) {
+                                    AddressModel addressModel = value;
+                                    controller.location.value = LatLngModel(latitude: addressModel.lat, longitude: addressModel.lng);
+                                    controller.address.value = addressModel;
+                                    controller.addressTextFieldController.value.text = addressModel.formattedAddress.toString();
+                                    log("addressModel :: ${addressModel.toJson()}");
+                                  }
+                                });
+                              },
+                              child: TextFieldWidget(
+                                title: 'Address'.tr,
+                                controller: controller.addressTextFieldController.value,
+                                hintText: 'Address'.tr,
+                                enable: false,
+                                suffix: Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: SvgPicture.asset(
+                                    "assets/icons/icon_right.svg",
+                                    colorFilter: ColorFilter.mode(themeChange.getThem() ? AppThemeData.greyDark05 : AppThemeData.grey05, BlendMode.srcIn),
+                                  ),
+                                ),
+                                validator: (value) {
+                                  if (value == null || value.isEmpty) {
+                                    return '*';
+                                  }
+                                  return null;
+                                },
+                              ),
+                            ),
                             if (controller.selectedBusinessType.value == 'Service Business')
                               DebouncedInkWell(
                                 onTap: () {
@@ -432,58 +450,6 @@ class CreateBusinessScreen extends StatelessWidget {
                                   },
                                 ),
                               ),
-                            TextFieldWidget(
-                              title: 'Country'.tr,
-                              controller: controller.countryNameTextFieldController.value,
-                              hintText: 'Enter mobile number'.tr,
-                              readOnly: true,
-                              suffix: CountryCodePicker(
-                                onChanged: (value) {
-                                  controller.countryCodeController.value.text = value.dialCode.toString();
-                                },
-                                dialogTextStyle: TextStyle(color: themeChange.getThem() ? AppThemeData.greyDark01 : AppThemeData.grey01, fontWeight: FontWeight.w500, fontFamily: AppThemeData.medium),
-                                dialogBackgroundColor: themeChange.getThem() ? AppThemeData.greyDark10 : AppThemeData.grey10,
-                                initialSelection: "US",
-                                comparator: (a, b) => b.name!.compareTo(a.name.toString()),
-                                flagDecoration: const BoxDecoration(borderRadius: BorderRadius.all(Radius.circular(2))),
-                                textStyle: TextStyle(color: themeChange.getThem() ? AppThemeData.greyDark01 : AppThemeData.grey01, fontWeight: FontWeight.w500, fontFamily: AppThemeData.medium),
-                                searchDecoration: InputDecoration(iconColor: themeChange.getThem() ? AppThemeData.grey08 : AppThemeData.grey08),
-                                searchStyle: TextStyle(color: themeChange.getThem() ? AppThemeData.greyDark01 : AppThemeData.grey01, fontWeight: FontWeight.w500, fontFamily: AppThemeData.medium),
-                              ),
-                            ),
-                            DebouncedInkWell(
-                              onTap: () {
-                                Get.to(EditAddressScreen())?.then((value) {
-                                  ShowToastDialog.closeLoader();
-                                  if (value != null) {
-                                    AddressModel addressModel = value;
-                                    controller.location.value = LatLngModel(latitude: addressModel.lat, longitude: addressModel.lng);
-                                    controller.address.value = addressModel;
-                                    controller.addressTextFieldController.value.text = addressModel.formattedAddress.toString();
-                                    log("addressModel :: ${addressModel.toJson()}");
-                                  }
-                                });
-                              },
-                              child: TextFieldWidget(
-                                title: 'Address'.tr,
-                                controller: controller.addressTextFieldController.value,
-                                hintText: 'Address'.tr,
-                                enable: false,
-                                suffix: Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: SvgPicture.asset(
-                                    "assets/icons/icon_right.svg",
-                                    colorFilter: ColorFilter.mode(themeChange.getThem() ? AppThemeData.greyDark05 : AppThemeData.grey05, BlendMode.srcIn),
-                                  ),
-                                ),
-                                validator: (value) {
-                                  if (value == null || value.isEmpty) {
-                                    return '*';
-                                  }
-                                  return null;
-                                },
-                              ),
-                            ),
                             DebouncedInkWell(
                               onTap: () async {
                                 final result = await Get.to(() => CategorySelectionScreen(), arguments: {"selectedCategories": controller.selectedCategory});
@@ -528,6 +494,25 @@ class CreateBusinessScreen extends StatelessWidget {
                                 }
                                 return null;
                               },
+                            ),
+                            TextFieldWidget(
+                              title: 'Country'.tr,
+                              controller: controller.countryNameTextFieldController.value,
+                              hintText: 'Enter mobile number'.tr,
+                              readOnly: true,
+                              suffix: CountryCodePicker(
+                                onChanged: (value) {
+                                  controller.countryCodeController.value.text = value.dialCode.toString();
+                                },
+                                dialogTextStyle: TextStyle(color: themeChange.getThem() ? AppThemeData.greyDark01 : AppThemeData.grey01, fontWeight: FontWeight.w500, fontFamily: AppThemeData.medium),
+                                dialogBackgroundColor: themeChange.getThem() ? AppThemeData.greyDark10 : AppThemeData.grey10,
+                                initialSelection: "US",
+                                comparator: (a, b) => b.name!.compareTo(a.name.toString()),
+                                flagDecoration: const BoxDecoration(borderRadius: BorderRadius.all(Radius.circular(2))),
+                                textStyle: TextStyle(color: themeChange.getThem() ? AppThemeData.greyDark01 : AppThemeData.grey01, fontWeight: FontWeight.w500, fontFamily: AppThemeData.medium),
+                                searchDecoration: InputDecoration(iconColor: themeChange.getThem() ? AppThemeData.grey08 : AppThemeData.grey08),
+                                searchStyle: TextStyle(color: themeChange.getThem() ? AppThemeData.greyDark01 : AppThemeData.grey01, fontWeight: FontWeight.w500, fontFamily: AppThemeData.medium),
+                              ),
                             ),
                             TextFieldWidget(
                               title: 'Phone No'.tr,
@@ -604,12 +589,6 @@ class CreateBusinessScreen extends StatelessWidget {
                               controller: controller.instaLinkTextFieldController.value,
                               hintText: 'Instagram Link'.tr,
                               suffix: IconButton(onPressed: () {}, icon: Image.asset("assets/images/insta.png", height: 20, width: 20)),
-                            ),
-                            TextFieldWidget(
-                              title: 'Notes for our team'.tr,
-                              controller: controller.notesOfTheYelpTeamTextFieldController.value,
-                              hintText: 'Provide any additional information so we can make this business’s information as accurate as possible.'.tr,
-                              maxLine: 5,
                             ),
                             Text(
                               'Highlights from the business'.tr,

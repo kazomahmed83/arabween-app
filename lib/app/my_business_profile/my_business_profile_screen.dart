@@ -211,8 +211,24 @@ class MyBusinessProfileScreen extends StatelessWidget {
                                               child: Column(
                                                 crossAxisAlignment: CrossAxisAlignment.start,
                                                 children: [
-                                                  controller.businessModel.value.ownerId == null || controller.businessModel.value.ownerId!.isEmpty
+                                                  controller.businessModel.value.isVerified == true
                                                       ? RoundedButtonFill(
+                                                          title: 'Claimed'.tr,
+                                                          height: 3,
+                                                          width: 28,
+                                                          fontSizes: 12,
+                                                          isRight: true,
+                                                          isCenter: true,
+                                                          icon: Icon(
+                                                            Icons.info_outline,
+                                                            color: themeChange.getThem() ? AppThemeData.greyDark01 : AppThemeData.grey01,
+                                                            size: 16,
+                                                          ),
+                                                          textColor: themeChange.getThem() ? AppThemeData.greyDark01 : AppThemeData.grey01,
+                                                          color: themeChange.getThem() ? AppThemeData.greyDark10 : AppThemeData.grey10,
+                                                          onPress: () {},
+                                                        )
+                                                      : RoundedButtonFill(
                                                           title: 'Unclaimed'.tr,
                                                           height: 3,
                                                           width: 30,
@@ -226,8 +242,7 @@ class MyBusinessProfileScreen extends StatelessWidget {
                                                             ShowToastDialog.showLoader("Please wait");
                                                             Get.to(WebviewScreen(), arguments: {'url': Constant.claimBusinessURL});
                                                           },
-                                                        )
-                                                      : SizedBox(),
+                                                        ),
                                                   SizedBox(height: 5),
                                                   Text(
                                                     controller.businessModel.value.businessName ?? '',
@@ -779,11 +794,11 @@ class MyBusinessProfileScreen extends StatelessWidget {
                                 textAlign: TextAlign.center,
                                 style: TextStyle(color: themeChange.getThem() ? AppThemeData.greyDark01 : AppThemeData.grey01, fontSize: 16, fontFamily: AppThemeData.boldOpenSans),
                               ),
-                              Text(
-                                "${controller.businessModel.value.website}".tr,
-                                textAlign: TextAlign.center,
-                                style: TextStyle(color: themeChange.getThem() ? AppThemeData.greyDark03 : AppThemeData.grey03, fontSize: 12, fontFamily: AppThemeData.regularOpenSans),
-                              ),
+                              // Text(
+                              //   "${controller.businessModel.value.website}".tr,
+                              //   textAlign: TextAlign.center,
+                              //   style: TextStyle(color: themeChange.getThem() ? AppThemeData.greyDark03 : AppThemeData.grey03, fontSize: 12, fontFamily: AppThemeData.regularOpenSans),
+                              // ),
                             ],
                           ),
                         ),
@@ -814,11 +829,11 @@ class MyBusinessProfileScreen extends StatelessWidget {
                                 textAlign: TextAlign.start,
                                 style: TextStyle(color: themeChange.getThem() ? AppThemeData.greyDark01 : AppThemeData.grey01, fontSize: 16, fontFamily: AppThemeData.boldOpenSans),
                               ),
-                              Text(
-                                "${controller.businessModel.value.countryCode} ${controller.businessModel.value.phoneNumber}".tr,
-                                textAlign: TextAlign.start,
-                                style: TextStyle(color: themeChange.getThem() ? AppThemeData.greyDark03 : AppThemeData.grey03, fontSize: 12, fontFamily: AppThemeData.regularOpenSans),
-                              ),
+                              // Text(
+                              //   "${controller.businessModel.value.countryCode} ${controller.businessModel.value.phoneNumber}".tr,
+                              //   textAlign: TextAlign.start,
+                              //   style: TextStyle(color: themeChange.getThem() ? AppThemeData.greyDark03 : AppThemeData.grey03, fontSize: 12, fontFamily: AppThemeData.regularOpenSans),
+                              // ),
                             ],
                           ),
                         ),

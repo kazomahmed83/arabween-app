@@ -222,8 +222,24 @@ class BusinessDetailsScreen extends StatelessWidget {
                                                 child: Column(
                                                   crossAxisAlignment: CrossAxisAlignment.start,
                                                   children: [
-                                                    controller.businessModel.value.ownerId == null || controller.businessModel.value.ownerId!.isEmpty
+                                                    controller.businessModel.value.isVerified == true
                                                         ? RoundedButtonFill(
+                                                            title: 'Claimed'.tr,
+                                                            height: 3,
+                                                            width: 28,
+                                                            fontSizes: 12,
+                                                            isRight: true,
+                                                            isCenter: true,
+                                                            icon: Icon(
+                                                              Icons.info_outline,
+                                                              color: themeChange.getThem() ? AppThemeData.greyDark01 : AppThemeData.grey01,
+                                                              size: 16,
+                                                            ),
+                                                            textColor: themeChange.getThem() ? AppThemeData.greyDark01 : AppThemeData.grey01,
+                                                            color: themeChange.getThem() ? AppThemeData.greyDark10 : AppThemeData.grey10,
+                                                            onPress: () {},
+                                                          )
+                                                        : RoundedButtonFill(
                                                             title: 'Unclaimed'.tr,
                                                             height: 3,
                                                             width: 30,
@@ -241,22 +257,6 @@ class BusinessDetailsScreen extends StatelessWidget {
                                                               ShowToastDialog.showLoader("Please wait");
                                                               Get.to(WebviewScreen(), arguments: {'url': Constant.claimBusinessURL});
                                                             },
-                                                          )
-                                                        : RoundedButtonFill(
-                                                            title: 'Claimed'.tr,
-                                                            height: 3,
-                                                            width: 28,
-                                                            fontSizes: 12,
-                                                            isRight: true,
-                                                            isCenter: true,
-                                                            icon: Icon(
-                                                              Icons.info_outline,
-                                                              color: themeChange.getThem() ? AppThemeData.greyDark01 : AppThemeData.grey01,
-                                                              size: 16,
-                                                            ),
-                                                            textColor: themeChange.getThem() ? AppThemeData.greyDark01 : AppThemeData.grey01,
-                                                            color: themeChange.getThem() ? AppThemeData.greyDark10 : AppThemeData.grey10,
-                                                            onPress: () {},
                                                           ),
                                                     SizedBox(
                                                       height: 5,
@@ -625,7 +625,7 @@ class BusinessDetailsScreen extends StatelessWidget {
                       if (Constant.userModel?.id != null)
                         DebouncedInkWell(
                             onTap: () async {
-                              String mobile = "${Constant.userModel?.countryCode}${Constant.userModel?.phoneNumber}".replaceAll('+', '');
+                              String mobile = "${controller.businessModel.value.countryCode}${controller.businessModel.value.phoneNumber}".replaceAll('+', '');
                               if (await Utils.isWhatsAppInstalled(mobile) == true) {
                                 await Utils.sendWhatsAppMessage(
                                     phoneNumber: mobile,
@@ -1592,15 +1592,15 @@ class BusinessDetailsScreen extends StatelessWidget {
                           fontFamily: AppThemeData.boldOpenSans,
                         ),
                       ),
-                      Text(
-                        "${controller.businessModel.value.website}".tr,
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                          color: themeChange.getThem() ? AppThemeData.greyDark03 : AppThemeData.grey03,
-                          fontSize: 12,
-                          fontFamily: AppThemeData.regularOpenSans,
-                        ),
-                      )
+                      // Text(
+                      //   "${controller.businessModel.value.website}".tr,
+                      //   textAlign: TextAlign.center,
+                      //   style: TextStyle(
+                      //     color: themeChange.getThem() ? AppThemeData.greyDark03 : AppThemeData.grey03,
+                      //     fontSize: 12,
+                      //     fontFamily: AppThemeData.regularOpenSans,
+                      //   ),
+                      // )
                     ],
                   ),
                 ),
@@ -1638,15 +1638,15 @@ class BusinessDetailsScreen extends StatelessWidget {
                           fontFamily: AppThemeData.boldOpenSans,
                         ),
                       ),
-                      Text(
-                        "${controller.businessModel.value.countryCode} ${controller.businessModel.value.phoneNumber}".tr,
-                        textAlign: TextAlign.start,
-                        style: TextStyle(
-                          color: themeChange.getThem() ? AppThemeData.greyDark03 : AppThemeData.grey03,
-                          fontSize: 12,
-                          fontFamily: AppThemeData.regularOpenSans,
-                        ),
-                      )
+                      // Text(
+                      //   "${controller.businessModel.value.countryCode} ${controller.businessModel.value.phoneNumber}".tr,
+                      //   textAlign: TextAlign.start,
+                      //   style: TextStyle(
+                      //     color: themeChange.getThem() ? AppThemeData.greyDark03 : AppThemeData.grey03,
+                      //     fontSize: 12,
+                      //     fontFamily: AppThemeData.regularOpenSans,
+                      //   ),
+                      // )
                     ],
                   ),
                 ),

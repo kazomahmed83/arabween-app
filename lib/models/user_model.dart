@@ -9,10 +9,7 @@ class UserModel {
   String? profilePic;
   String? dateOfBirth;
   String? fcmToken;
-  String? countryCode;
-  num? phoneNumber;
   String? gender;
-  String? zipCode;
   bool? isActive;
   Timestamp? createdAt;
   List<dynamic>? followers;
@@ -29,9 +26,6 @@ class UserModel {
     this.loginType,
     this.profilePic,
     this.fcmToken,
-    this.countryCode,
-    this.phoneNumber,
-    this.zipCode,
     this.createdAt,
     this.followers,
     this.subscription,
@@ -50,13 +44,10 @@ class UserModel {
     loginType = json['loginType'];
     profilePic = json['profilePic'];
     fcmToken = json['fcmToken'];
-    countryCode = json['countryCode'];
-    phoneNumber = num.parse(json['phoneNumber'].toString());
     createdAt = json['createdAt'];
     gender = json['gender'];
     dateOfBirth = json['dateOfBirth'] ?? '';
     isActive = json['isActive'];
-    zipCode = json['zipCode'];
     followers = json['followers'] ?? [];
     subscription = json['subscription'] != null ? Subscription.fromJson(json['subscription']) : Subscription();
     appIdentifier = json['appIdentifier'];
@@ -71,13 +62,10 @@ class UserModel {
     data['loginType'] = loginType;
     data['profilePic'] = profilePic;
     data['fcmToken'] = fcmToken;
-    data['countryCode'] = countryCode;
-    data['phoneNumber'] = phoneNumber;
     data['createdAt'] = createdAt;
     data['gender'] = gender;
     data['dateOfBirth'] = dateOfBirth;
     data['isActive'] = isActive;
-    data['zipCode'] = zipCode;
     data['followers'] = followers;
     if (subscription != null) {
       data['subscription'] = subscription!.toJson();
