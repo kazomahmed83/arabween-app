@@ -1,6 +1,4 @@
 import 'dart:io';
-
-import 'package:country_code_picker/country_code_picker.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -10,7 +8,6 @@ import 'package:provider/provider.dart';
 import 'package:arabween/app/auth_screen/singup_screen.dart';
 import 'package:arabween/app/terms_and_condition/terms_and_condition_screen.dart';
 import 'package:arabween/constant/constant.dart';
-import 'package:arabween/constant/show_toast_dialog.dart';
 import 'package:arabween/controller/login_controller.dart';
 import 'package:arabween/themes/app_them_data.dart';
 import 'package:arabween/themes/round_button_border.dart';
