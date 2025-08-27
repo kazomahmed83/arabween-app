@@ -221,9 +221,19 @@ class LoginController extends GetxController {
               userModel.firstName = value.user!.displayName;
               userModel.profilePic = value.user!.photoURL;
               userModel.loginType = Constant.googleLoginType;
+              userModel.loginType = Constant.googleLoginType;
+              userModel.fcmToken = await NotificationService.getToken();
+              userModel.createdAt = Timestamp.now();
+              userModel.isActive = true;
 
-              Get.to(const SingUpScreen(), arguments: {
-                "userModel": userModel,
+              await FireStoreUtils.updateUser(userModel).then((value) {
+                ShowToastDialog.closeLoader();
+                if (value == true) {
+                  ShowToastDialog.showToast("Account is created");
+                  Get.to(CreateBusinessScreen(), arguments: {"asCustomerOrWorkAtBusiness": false})?.then((value) {
+                    Get.offAll(const DashBoardScreen());
+                  });
+                }
               });
             }
           });
