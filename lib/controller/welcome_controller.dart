@@ -1,13 +1,13 @@
 import 'dart:convert';
 import 'dart:math';
-
+import 'package:arabween/utils/notification_service.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:crypto/crypto.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:sign_in_with_apple/sign_in_with_apple.dart';
-import 'package:arabween/app/auth_screen/singup_screen.dart';
 import 'package:arabween/app/dashboard_screen/dashboard_screen.dart';
 import 'package:arabween/constant/constant.dart';
 import 'package:arabween/constant/show_toast_dialog.dart';
@@ -27,10 +27,16 @@ class WelcomeController extends GetxController {
           userModel.firstName = value.user!.displayName;
           userModel.profilePic = value.user!.photoURL;
           userModel.loginType = Constant.googleLoginType;
+          userModel.fcmToken = await NotificationService.getToken();
+          userModel.createdAt = Timestamp.now();
+          userModel.isActive = true;
 
-          ShowToastDialog.closeLoader();
-          Get.to(const SingUpScreen(), arguments: {
-            "userModel": userModel,
+          await FireStoreUtils.updateUser(userModel).then((value) {
+            ShowToastDialog.closeLoader();
+            if (value == true) {
+              ShowToastDialog.showToast("Account is created");
+              Get.offAll(const DashBoardScreen());
+            }
           });
         } else {
           await FireStoreUtils.userExistOrNot(value.user!.uid).then((userExit) async {
@@ -52,9 +58,15 @@ class WelcomeController extends GetxController {
               userModel.firstName = value.user!.displayName;
               userModel.profilePic = value.user!.photoURL;
               userModel.loginType = Constant.googleLoginType;
-
-              Get.to(const SingUpScreen(), arguments: {
-                "userModel": userModel,
+              userModel.fcmToken = await NotificationService.getToken();
+              userModel.createdAt = Timestamp.now();
+              userModel.isActive = true;
+              await FireStoreUtils.updateUser(userModel).then((value) {
+                ShowToastDialog.closeLoader();
+                if (value == true) {
+                  ShowToastDialog.showToast("Account is created");
+                  Get.offAll(const DashBoardScreen());
+                }
               });
             }
           });
@@ -65,7 +77,7 @@ class WelcomeController extends GetxController {
 
   loginWithApple() async {
     ShowToastDialog.showLoader("Please wait".tr);
-    await signInWithApple().then((value) {
+    await signInWithApple().then((value) async {
       ShowToastDialog.closeLoader();
       if (value != null) {
         Map<String, dynamic> map = value;
@@ -77,10 +89,16 @@ class WelcomeController extends GetxController {
           userModel.email = userCredential.user!.email;
           userModel.profilePic = userCredential.user!.photoURL;
           userModel.loginType = Constant.appleLoginType;
+          userModel.fcmToken = await NotificationService.getToken();
+          userModel.createdAt = Timestamp.now();
+          userModel.isActive = true;
 
-          ShowToastDialog.closeLoader();
-          Get.to(const SingUpScreen(), arguments: {
-            "userModel": userModel,
+          await FireStoreUtils.updateUser(userModel).then((value) {
+            ShowToastDialog.closeLoader();
+            if (value == true) {
+              ShowToastDialog.showToast("Account is created");
+              Get.offAll(const DashBoardScreen());
+            }
           });
         } else {
           FireStoreUtils.userExistOrNot(userCredential.user!.uid).then((userExit) async {
@@ -102,8 +120,15 @@ class WelcomeController extends GetxController {
               userModel.email = userCredential.user!.email;
               userModel.profilePic = userCredential.user!.photoURL;
               userModel.loginType = Constant.googleLoginType;
-              Get.to(const SingUpScreen(), arguments: {
-                "userModel": userModel,
+              userModel.fcmToken = await NotificationService.getToken();
+              userModel.createdAt = Timestamp.now();
+              userModel.isActive = true;
+              await FireStoreUtils.updateUser(userModel).then((value) {
+                ShowToastDialog.closeLoader();
+                if (value == true) {
+                  ShowToastDialog.showToast("Account is created");
+                  Get.offAll(const DashBoardScreen());
+                }
               });
             }
           });
