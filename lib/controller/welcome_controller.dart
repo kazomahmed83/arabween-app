@@ -18,7 +18,6 @@ class WelcomeController extends GetxController {
   loginWithGoogle() async {
     ShowToastDialog.showLoader("Please wait".tr);
     await signInWithGoogle().then((value) async {
-      ShowToastDialog.closeLoader();
       if (value != null) {
         if (value.additionalUserInfo!.isNewUser) {
           UserModel userModel = UserModel();
@@ -38,11 +37,12 @@ class WelcomeController extends GetxController {
               Get.offAll(const DashBoardScreen());
             }
           });
+          ShowToastDialog.closeLoader();
         } else {
           await FireStoreUtils.userExistOrNot(value.user!.uid).then((userExit) async {
-            ShowToastDialog.closeLoader();
             if (userExit == true) {
               UserModel? userModel = await FireStoreUtils.getUserProfile(value.user!.uid);
+              ShowToastDialog.closeLoader();
               if (userModel != null) {
                 if (userModel.isActive == true) {
                   Get.offAll(const DashBoardScreen());
