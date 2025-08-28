@@ -311,8 +311,8 @@ class BusinessListController extends GetxController {
 
   getAllFilteredLists() {
     print("allBusinessList :: ${allBusinessList.length}");
-    sponsoredBusinessList.value = allBusinessList.where((p0) => p0.sponsored != null && p0.sponsored!.status == "Running").toList();
-
+    sponsoredBusinessList.value = allBusinessList.where((p0) => p0.sponsored != null && p0.sponsored!.status == "Running").toList(); // Accepted
+    print("sponsoredBusinessList : ${sponsoredBusinessList.length}");
     // Get all filtered businesses
     List<BusinessModel> allFiltered = filterAndSort(allBusinessList);
     List<BusinessModel> sponsoredFiltered = filterAndSort(sponsoredBusinessList);
@@ -323,6 +323,7 @@ class BusinessListController extends GetxController {
 
     // Assign sponsored businesses separately
     sponsoredBusinessList.value = sponsoredFiltered;
+    print("sponsoredBusinessList :sponsoredBusinessList : ${sponsoredBusinessList.length}");
 
     setMarkers();
     update();

@@ -50,7 +50,6 @@ class SponsoredHistoryController extends GetxController {
     await FireStoreUtils.getSponsoredRequest(selectedBusiness.value.id.toString()).then(
       (value) {
         sponsoredHistoryList.value = value;
-
         runningHistoryList.value = sponsoredHistoryList.where((item) => item.status == 'Running').toList();
         acceptedHistoryList.value = sponsoredHistoryList.where((item) => item.status == 'Accepted').toList();
         pendingHistoryList.value = sponsoredHistoryList.where((item) => item.status == 'Pending').toList();

@@ -622,31 +622,30 @@ class BusinessDetailsScreen extends StatelessWidget {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
-                      if (Constant.userModel?.id != null)
-                        DebouncedInkWell(
-                            onTap: () async {
-                              String mobile = "${controller.businessModel.value.countryCode}${controller.businessModel.value.phoneNumber}".replaceAll('+', '');
-                              if (await Utils.isWhatsAppInstalled(mobile) == true) {
-                                await Utils.sendWhatsAppMessage(
-                                    phoneNumber: mobile,
-                                    message: "${controller.businessModel.value.businessName} \n ${Constant.deepLinkUrl}${Constant.businessDeepLink}${controller.businessModel.value.id}");
-                              } else {
-                                Utils.sendSMS(
-                                    phoneNumber: mobile,
-                                    message: "${controller.businessModel.value.businessName} \n ${Constant.deepLinkUrl}${Constant.businessDeepLink}${controller.businessModel.value.id}");
-                              }
-                            },
-                            child: imageWidget(themeChange, "assets/icons/ic_whatapp.svg", "Message".tr)),
+                      DebouncedInkWell(
+                          onTap: () async {
+                            // String mobile = "${controller.businessModel.value.countryCode}${controller.businessModel.value.phoneNumber}".replaceAll('+', '');
+                            // if (await Utils.isWhatsAppInstalled(mobile) == true) {
+                            await Utils.sendWhatsAppMessage(
+                                phoneNumber: '',
+                                message: "${controller.businessModel.value.businessName} \n ${Constant.deepLinkUrl}${Constant.businessDeepLink}${controller.businessModel.value.slug}");
+                            // } else {
+                            //   Utils.sendSMS(
+                            //       phoneNumber: '',
+                            //       message: "${controller.businessModel.value.businessName} \n ${Constant.deepLinkUrl}${Constant.businessDeepLink}${controller.businessModel.value.slug}");
+                            // }
+                          },
+                          child: imageWidget(themeChange, "assets/icons/ic_whatapp.svg", "Message".tr)),
                       DebouncedInkWell(
                           onTap: () {
-                            Clipboard.setData(ClipboardData(text: "${Constant.deepLinkUrl}${Constant.businessDeepLink}${controller.businessModel.value.id}")).then((_) {
+                            Clipboard.setData(ClipboardData(text: "${Constant.deepLinkUrl}${Constant.businessDeepLink}${controller.businessModel.value.slug}")).then((_) {
                               ShowToastDialog.showToast("Link Copied".tr);
                             });
                           },
                           child: imageWidget(themeChange, "assets/icons/icon_copy.svg", "Copy link".tr)),
                       DebouncedInkWell(
                           onTap: () {
-                            Utils.shareBusiness("${controller.businessModel.value.businessName} \n ${Constant.deepLinkUrl}${Constant.businessDeepLink}${controller.businessModel.value.id}");
+                            Utils.shareBusiness("${controller.businessModel.value.businessName} \n ${Constant.deepLinkUrl}${Constant.businessDeepLink}${controller.businessModel.value.slug}");
                           },
                           child: imageWidget(themeChange, "assets/icons/icon_more-one.svg", "More".tr)),
                     ],
@@ -824,7 +823,7 @@ class BusinessDetailsScreen extends StatelessWidget {
         actions: <Widget>[
           CupertinoActionSheetAction(
             onPressed: () {
-              Utils.shareBusiness("${controller.businessModel.value.businessName} \n ${Constant.deepLinkUrl}${Constant.businessDeepLink}${controller.businessModel.value.id}");
+              Utils.shareBusiness("${controller.businessModel.value.businessName} \n ${Constant.deepLinkUrl}${Constant.businessDeepLink}${controller.businessModel.value.slug}");
             },
             child: Text(
               "Share Business".tr,
@@ -937,7 +936,13 @@ class BusinessDetailsScreen extends StatelessWidget {
           ),
           child: Padding(
             padding: const EdgeInsets.all(14),
-            child: Constant.svgPictureShow(imagePath, AppThemeData.red02, 20, 20),
+            child: imagePath.contains('.png')
+                ? Image.asset(
+                    imagePath,
+                    width: 20,
+                    height: 20,
+                  )
+                : Constant.svgPictureShow(imagePath, AppThemeData.red02, 20, 20),
           ),
         )),
         SizedBox(
@@ -1831,49 +1836,25 @@ class BusinessDetailsScreen extends StatelessWidget {
                         ),
                       ),
                       SizedBox(height: 10),
-                      if (controller.businessModel.value.fbLink?.isNotEmpty == true)
-                        Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
-                          Image.asset(
-                            "assets/images/fb.png",
-                            height: 20,
-                            width: 20,
-                          ),
-                          SizedBox(width: 5),
-                          Expanded(
-                            child: Text(
-                              controller.businessModel.value.fbLink ?? '',
-                              maxLines: 2,
-                              textAlign: TextAlign.start,
-                              style: TextStyle(
-                                color: AppThemeData.blueDark03,
-                                fontSize: 14,
-                                fontFamily: AppThemeData.semiboldOpenSans,
-                              ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          if (controller.businessModel.value.fbLink?.isNotEmpty == true)
+                            DebouncedInkWell(
+                              onTap: () async {
+                                Get.to(WebviewScreen(), arguments: {'url': controller.businessModel.value.fbLink.toString()});
+                              },
+                              child: imageWidget(themeChange, "assets/images/fb.png", "Facebook link"),
                             ),
-                          ),
-                        ]),
-                      if (controller.businessModel.value.instaLink?.isNotEmpty == true) SizedBox(height: 15),
-                      if (controller.businessModel.value.instaLink?.isNotEmpty == true)
-                        Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
-                          Image.asset(
-                            "assets/images/insta.png",
-                            height: 20,
-                            width: 20,
-                          ),
-                          SizedBox(width: 5),
-                          Expanded(
-                            child: Text(
-                              controller.businessModel.value.instaLink ?? '',
-                              maxLines: 2,
-                              textAlign: TextAlign.start,
-                              style: TextStyle(
-                                color: AppThemeData.blueDark03,
-                                fontSize: 14,
-                                fontFamily: AppThemeData.semiboldOpenSans,
-                              ),
+                          if (controller.businessModel.value.instaLink?.isNotEmpty == true)
+                            DebouncedInkWell(
+                              onTap: () {
+                                Get.to(WebviewScreen(), arguments: {'url': controller.businessModel.value.instaLink.toString()});
+                              },
+                              child: imageWidget(themeChange, "assets/images/insta.png", "Instagram link"),
                             ),
-                          ),
-                        ]),
+                        ],
+                      ),
                     ],
                   ),
                 ),

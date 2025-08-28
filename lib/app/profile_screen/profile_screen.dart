@@ -187,32 +187,33 @@ class ProfileScreen extends StatelessWidget {
                                         ),
                                       ],
                                     ),
-                                    Positioned(
-                                        right: 0,
-                                        top: 0,
-                                        child: InkWell(
-                                          onTap: () {
-                                            Get.to(EditProfileScreen())?.then((value) {
-                                              if (value == true) {
-                                                controller.getData();
-                                              }
-                                            });
-                                          },
-                                          child: Row(
-                                            children: [
-                                              Constant.svgPictureShow("assets/icons/ic_edit.svg", themeChange.getThem() ? AppThemeData.greyDark02 : AppThemeData.grey02, null, null),
-                                              SizedBox(width: 5),
-                                              Text(
-                                                'Edit',
-                                                style: TextStyle(
-                                                  fontFamily: AppThemeData.semibold,
-                                                  color: themeChange.getThem() ? AppThemeData.greyDark02 : AppThemeData.grey02,
-                                                  fontSize: 14,
+                                    if (FireStoreUtils.getCurrentUid() != '')
+                                      Positioned(
+                                          right: 0,
+                                          top: 0,
+                                          child: InkWell(
+                                            onTap: () {
+                                              Get.to(EditProfileScreen())?.then((value) {
+                                                if (value == true) {
+                                                  controller.getData();
+                                                }
+                                              });
+                                            },
+                                            child: Row(
+                                              children: [
+                                                Constant.svgPictureShow("assets/icons/ic_edit.svg", themeChange.getThem() ? AppThemeData.greyDark02 : AppThemeData.grey02, null, null),
+                                                SizedBox(width: 5),
+                                                Text(
+                                                  'Edit',
+                                                  style: TextStyle(
+                                                    fontFamily: AppThemeData.semibold,
+                                                    color: themeChange.getThem() ? AppThemeData.greyDark02 : AppThemeData.grey02,
+                                                    fontSize: 14,
+                                                  ),
                                                 ),
-                                              ),
-                                            ],
-                                          ),
-                                        ))
+                                              ],
+                                            ),
+                                          ))
                                   ],
                                 ),
                               ],

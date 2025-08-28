@@ -982,49 +982,25 @@ class MyBusinessProfileScreen extends StatelessWidget {
                                 ),
                               ),
                               SizedBox(height: 10),
-                              if (controller.businessModel.value.fbLink?.isNotEmpty == true)
-                                Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
-                                  Image.asset(
-                                    "assets/images/fb.png",
-                                    height: 20,
-                                    width: 20,
-                                  ),
-                                  SizedBox(width: 5),
-                                  Expanded(
-                                    child: Text(
-                                      controller.businessModel.value.fbLink ?? '',
-                                      maxLines: 2,
-                                      textAlign: TextAlign.start,
-                                      style: TextStyle(
-                                        color: AppThemeData.blueDark03,
-                                        fontSize: 14,
-                                        fontFamily: AppThemeData.semiboldOpenSans,
-                                      ),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                children: [
+                                  if (controller.businessModel.value.fbLink?.isNotEmpty == true)
+                                    DebouncedInkWell(
+                                      onTap: () async {
+                                        Get.to(WebviewScreen(), arguments: {'url': controller.businessModel.value.fbLink.toString()});
+                                      },
+                                      child: imageWidget(themeChange, "assets/images/fb.png", "Facebook link"),
                                     ),
-                                  ),
-                                ]),
-                              if (controller.businessModel.value.instaLink?.isNotEmpty == true) SizedBox(height: 15),
-                              if (controller.businessModel.value.instaLink?.isNotEmpty == true)
-                                Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
-                                  Image.asset(
-                                    "assets/images/insta.png",
-                                    height: 20,
-                                    width: 20,
-                                  ),
-                                  SizedBox(width: 5),
-                                  Expanded(
-                                    child: Text(
-                                      controller.businessModel.value.instaLink ?? '',
-                                      maxLines: 2,
-                                      textAlign: TextAlign.start,
-                                      style: TextStyle(
-                                        color: AppThemeData.blueDark03,
-                                        fontSize: 14,
-                                        fontFamily: AppThemeData.semiboldOpenSans,
-                                      ),
+                                  if (controller.businessModel.value.instaLink?.isNotEmpty == true)
+                                    DebouncedInkWell(
+                                      onTap: () {
+                                        Get.to(WebviewScreen(), arguments: {'url': controller.businessModel.value.instaLink.toString()});
+                                      },
+                                      child: imageWidget(themeChange, "assets/images/insta.png", "Instagram link"),
                                     ),
-                                  ),
-                                ]),
+                                ],
+                              ),
                             ],
                           ),
                         ),
@@ -1171,17 +1147,22 @@ class MyBusinessProfileScreen extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
                       DebouncedInkWell(
-                        onTap: () {
-                          Utils.sendSMS(
-                            phoneNumber: '',
-                            message: "${controller.businessModel.value.businessName} \n ${Constant.deepLinkUrl}${Constant.businessDeepLink}${controller.businessModel.value.id}",
-                          );
+                        onTap: () async {
+                          // String mobile = "${controller.businessModel.value.countryCode}${controller.businessModel.value.phoneNumber}".replaceAll('+', '');
+                          // if (await Utils.isWhatsAppInstalled(mobile) == true) {
+                          await Utils.sendWhatsAppMessage(
+                              phoneNumber: '', message: "${controller.businessModel.value.businessName} \n ${Constant.deepLinkUrl}${Constant.businessDeepLink}${controller.businessModel.value.slug}");
+                          // } else {
+                          //   Utils.sendSMS(
+                          //       phoneNumber: '',
+                          //       message: "${controller.businessModel.value.businessName} \n ${Constant.deepLinkUrl}${Constant.businessDeepLink}${controller.businessModel.value.slug}");
+                          // }
                         },
                         child: imageWidget(themeChange, "assets/icons/ic_whatapp.svg", "Message"),
                       ),
                       DebouncedInkWell(
                         onTap: () {
-                          Clipboard.setData(ClipboardData(text: "${Constant.deepLinkUrl}${Constant.businessDeepLink}${controller.businessModel.value.id}")).then((_) {
+                          Clipboard.setData(ClipboardData(text: "${Constant.deepLinkUrl}${Constant.businessDeepLink}${controller.businessModel.value.slug}")).then((_) {
                             ShowToastDialog.showToast("Link Copied");
                           });
                         },
@@ -1189,7 +1170,7 @@ class MyBusinessProfileScreen extends StatelessWidget {
                       ),
                       DebouncedInkWell(
                         onTap: () {
-                          Utils.shareBusiness("${controller.businessModel.value.businessName} \n ${Constant.deepLinkUrl}${Constant.businessDeepLink}${controller.businessModel.value.id}");
+                          Utils.shareBusiness("${controller.businessModel.value.businessName} \n ${Constant.deepLinkUrl}${Constant.businessDeepLink}${controller.businessModel.value.slug}");
                         },
                         child: imageWidget(themeChange, "assets/icons/icon_more-one.svg", "More"),
                       ),
@@ -1896,7 +1877,7 @@ class MyBusinessProfileScreen extends StatelessWidget {
           ),
           CupertinoActionSheetAction(
             onPressed: () {
-              Utils.shareBusiness("${controller.businessModel.value.businessName} \n ${Constant.deepLinkUrl}${Constant.businessDeepLink}${controller.businessModel.value.id}");
+              Utils.shareBusiness("${controller.businessModel.value.businessName} \n ${Constant.deepLinkUrl}${Constant.businessDeepLink}${controller.businessModel.value.slug}");
             },
             child: Text(
               "Share Business".tr,

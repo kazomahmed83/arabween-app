@@ -80,80 +80,82 @@ class SponsoredScreen extends StatelessWidget {
                 ? Constant.loader()
                 : Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
-                    child: Column(
-                      children: [
-                        DropdownButtonFormField<BusinessModel>(
-                          hint: Text("Select Business"),
-                          value: controller.selectedBusiness.value.id == null ? null : controller.selectedBusiness.value,
-                          onChanged: (BusinessModel? newValue) {
-                            controller.selectedBusiness.value = newValue!;
-                          },
-                          items: controller.businessList.map((BusinessModel reason) {
-                            return DropdownMenuItem<BusinessModel>(
-                              value: reason,
-                              child: Text(reason.businessName.toString()),
-                            );
-                          }).toList(),
-                          style: TextStyle(color: themeChange.getThem() ? AppThemeData.greyDark01 : AppThemeData.grey01, fontFamily: AppThemeData.medium),
-                          decoration: InputDecoration(
-                            filled: true,
-                            fillColor: themeChange.getThem() ? AppThemeData.greyDark10 : AppThemeData.grey10,
-                            disabledBorder: OutlineInputBorder(
-                              borderRadius: const BorderRadius.all(Radius.circular(8)),
-                              borderSide: BorderSide(color: themeChange.getThem() ? AppThemeData.greyDark06 : AppThemeData.grey06, width: 1),
-                            ),
-                            focusedBorder: OutlineInputBorder(
-                              borderRadius: const BorderRadius.all(Radius.circular(8)),
-                              borderSide: BorderSide(color: themeChange.getThem() ? AppThemeData.redDark02 : AppThemeData.red02, width: 1),
-                            ),
-                            enabledBorder: OutlineInputBorder(
-                              borderRadius: const BorderRadius.all(Radius.circular(8)),
-                              borderSide: BorderSide(color: themeChange.getThem() ? AppThemeData.greyDark06 : AppThemeData.grey06, width: 1),
-                            ),
-                            errorBorder: OutlineInputBorder(
-                              borderRadius: const BorderRadius.all(Radius.circular(8)),
-                              borderSide: BorderSide(color: themeChange.getThem() ? AppThemeData.greyDark06 : AppThemeData.grey06, width: 1),
-                            ),
-                            border: OutlineInputBorder(
-                              borderRadius: const BorderRadius.all(Radius.circular(8)),
-                              borderSide: BorderSide(color: themeChange.getThem() ? AppThemeData.greyDark06 : AppThemeData.grey06, width: 1),
-                            ),
-                          ),
-                        ),
-                        SizedBox(
-                          height: 10,
-                        ),
-                        Container(
-                          decoration: BoxDecoration(
-                              color: themeChange.getThem() ? AppThemeData.greyDark10 : AppThemeData.grey10,
-                              borderRadius: BorderRadius.circular(20),
-                              border: Border.all(color: themeChange.getThem() ? AppThemeData.greyDark06 : AppThemeData.grey06)),
-                          child: SfDateRangePicker(
-                            backgroundColor: Colors.transparent,
-                            onSelectionChanged: (DateRangePickerSelectionChangedArgs args) {
-                              if (args.value is PickerDateRange) {
-                                controller.startValidityDate.value = args.value.startDate;
-                                controller.endValidityDate.value = args.value.endDate;
-                              }
+                    child: SingleChildScrollView(
+                      child: Column(
+                        children: [
+                          DropdownButtonFormField<BusinessModel>(
+                            hint: Text("Select Business"),
+                            value: controller.selectedBusiness.value.id == null ? null : controller.selectedBusiness.value,
+                            onChanged: (BusinessModel? newValue) {
+                              controller.selectedBusiness.value = newValue!;
                             },
-                            selectionMode: DateRangePickerSelectionMode.range,
-                            minDate: DateTime.now(),
-                            maxDate: DateTime.now().add(Duration(days: 5 * 365)),
-                            initialSelectedRange: PickerDateRange(
-                              controller.startValidityDate.value,
-                              controller.endValidityDate.value,
+                            items: controller.businessList.map((BusinessModel reason) {
+                              return DropdownMenuItem<BusinessModel>(
+                                value: reason,
+                                child: Text(reason.businessName.toString()),
+                              );
+                            }).toList(),
+                            style: TextStyle(color: themeChange.getThem() ? AppThemeData.greyDark01 : AppThemeData.grey01, fontFamily: AppThemeData.medium),
+                            decoration: InputDecoration(
+                              filled: true,
+                              fillColor: themeChange.getThem() ? AppThemeData.greyDark10 : AppThemeData.grey10,
+                              disabledBorder: OutlineInputBorder(
+                                borderRadius: const BorderRadius.all(Radius.circular(8)),
+                                borderSide: BorderSide(color: themeChange.getThem() ? AppThemeData.greyDark06 : AppThemeData.grey06, width: 1),
+                              ),
+                              focusedBorder: OutlineInputBorder(
+                                borderRadius: const BorderRadius.all(Radius.circular(8)),
+                                borderSide: BorderSide(color: themeChange.getThem() ? AppThemeData.redDark02 : AppThemeData.red02, width: 1),
+                              ),
+                              enabledBorder: OutlineInputBorder(
+                                borderRadius: const BorderRadius.all(Radius.circular(8)),
+                                borderSide: BorderSide(color: themeChange.getThem() ? AppThemeData.greyDark06 : AppThemeData.grey06, width: 1),
+                              ),
+                              errorBorder: OutlineInputBorder(
+                                borderRadius: const BorderRadius.all(Radius.circular(8)),
+                                borderSide: BorderSide(color: themeChange.getThem() ? AppThemeData.greyDark06 : AppThemeData.grey06, width: 1),
+                              ),
+                              border: OutlineInputBorder(
+                                borderRadius: const BorderRadius.all(Radius.circular(8)),
+                                borderSide: BorderSide(color: themeChange.getThem() ? AppThemeData.greyDark06 : AppThemeData.grey06, width: 1),
+                              ),
                             ),
                           ),
-                        ),
-                        SizedBox(
-                          height: 10,
-                        ),
-                        TextFieldWidget(
-                          controller: controller.noteTextFieldController.value,
-                          hintText: 'Note for admin',
-                          maxLine: 4,
-                        ),
-                      ],
+                          SizedBox(
+                            height: 10,
+                          ),
+                          Container(
+                            decoration: BoxDecoration(
+                                color: themeChange.getThem() ? AppThemeData.greyDark10 : AppThemeData.grey10,
+                                borderRadius: BorderRadius.circular(20),
+                                border: Border.all(color: themeChange.getThem() ? AppThemeData.greyDark06 : AppThemeData.grey06)),
+                            child: SfDateRangePicker(
+                              backgroundColor: Colors.transparent,
+                              onSelectionChanged: (DateRangePickerSelectionChangedArgs args) {
+                                if (args.value is PickerDateRange) {
+                                  controller.startValidityDate.value = args.value.startDate;
+                                  controller.endValidityDate.value = args.value.endDate;
+                                }
+                              },
+                              selectionMode: DateRangePickerSelectionMode.range,
+                              minDate: DateTime.now(),
+                              maxDate: DateTime.now().add(Duration(days: 5 * 365)),
+                              initialSelectedRange: PickerDateRange(
+                                controller.startValidityDate.value,
+                                controller.endValidityDate.value,
+                              ),
+                            ),
+                          ),
+                          SizedBox(
+                            height: 10,
+                          ),
+                          TextFieldWidget(
+                            controller: controller.noteTextFieldController.value,
+                            hintText: 'Note for admin',
+                            maxLine: 4,
+                          ),
+                        ],
+                      ),
                     ),
                   ),
             bottomNavigationBar: Padding(
