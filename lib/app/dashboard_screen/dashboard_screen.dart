@@ -1,3 +1,4 @@
+import 'package:arabween/utils/fire_store_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
@@ -45,43 +46,75 @@ class DashBoardScreen extends StatelessWidget {
                 onTap: (int index) {
                   controller.selectedIndex.value = index;
                 },
-                items: [
-                  navigationBarItem(
-                    themeChange,
-                    index: 0,
-                    assetIcon: "assets/icons/icon_search.svg",
-                    label: 'Home'.tr,
-                    controller: controller,
-                  ),
-                  // navigationBarItem(
-                  //   themeChange,
-                  //   index: 1,
-                  //   assetIcon: "assets/icons/folder-open.svg",
-                  //   label: 'Projects'.tr,
-                  //   controller: controller,
-                  // ),
-                  navigationBarItem(
-                    themeChange,
-                    index: 1,
-                    assetIcon: "assets/icons/user.svg",
-                    label: 'Me'.tr,
-                    controller: controller,
-                  ),
-                  navigationBarItem(
-                    themeChange,
-                    index: 2,
-                    assetIcon: "assets/icons/bookmark-one.svg",
-                    label: 'Collections'.tr,
-                    controller: controller,
-                  ),
-                  navigationBarItem(
-                    themeChange,
-                    index: 3,
-                    assetIcon: "assets/icons/icon_center-alignment.svg",
-                    label: 'More'.tr,
-                    controller: controller,
-                  ),
-                ],
+                items: FireStoreUtils.getCurrentUid() != ''
+                    ? [
+                        navigationBarItem(
+                          themeChange,
+                          index: 0,
+                          assetIcon: "assets/icons/icon_search.svg",
+                          label: 'Home'.tr,
+                          controller: controller,
+                        ),
+                        // navigationBarItem(
+                        //   themeChange,
+                        //   index: 1,
+                        //   assetIcon: "assets/icons/folder-open.svg",
+                        //   label: 'Projects'.tr,
+                        //   controller: controller,
+                        // ),
+
+                        navigationBarItem(
+                          themeChange,
+                          index: 1,
+                          assetIcon: "assets/icons/user.svg",
+                          label: 'Me'.tr,
+                          controller: controller,
+                        ),
+                        navigationBarItem(
+                          themeChange,
+                          index: 2,
+                          assetIcon: "assets/icons/bookmark-one.svg",
+                          label: 'Collections'.tr,
+                          controller: controller,
+                        ),
+                        navigationBarItem(
+                          themeChange,
+                          index: 3,
+                          assetIcon: "assets/icons/icon_center-alignment.svg",
+                          label: 'More'.tr,
+                          controller: controller,
+                        ),
+                      ]
+                    : [
+                        navigationBarItem(
+                          themeChange,
+                          index: 0,
+                          assetIcon: "assets/icons/icon_search.svg",
+                          label: 'Home'.tr,
+                          controller: controller,
+                        ),
+                        // navigationBarItem(
+                        //   themeChange,
+                        //   index: 1,
+                        //   assetIcon: "assets/icons/folder-open.svg",
+                        //   label: 'Projects'.tr,
+                        //   controller: controller,
+                        // ),
+                        navigationBarItem(
+                          themeChange,
+                          index: 1,
+                          assetIcon: "assets/icons/bookmark-one.svg",
+                          label: 'Collections'.tr,
+                          controller: controller,
+                        ),
+                        navigationBarItem(
+                          themeChange,
+                          index: 2,
+                          assetIcon: "assets/icons/icon_center-alignment.svg",
+                          label: 'More'.tr,
+                          controller: controller,
+                        ),
+                      ],
               ),
             ),
           );

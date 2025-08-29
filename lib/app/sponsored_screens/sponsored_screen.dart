@@ -1,3 +1,4 @@
+import 'package:arabween/constant/show_toast_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
@@ -172,7 +173,11 @@ class SponsoredScreen extends StatelessWidget {
                     textColor: themeChange.getThem() ? AppThemeData.greyDark10 : AppThemeData.grey10,
                     color: themeChange.getThem() ? AppThemeData.redDark02 : AppThemeData.red02,
                     onPress: () {
-                      controller.sentSponsoredRequest();
+                      if (controller.selectedBusiness.value.id == null || controller.selectedBusiness.value.id == '') {
+                        ShowToastDialog.showToast("First, select a business, then send your request.".tr);
+                      } else {
+                        controller.sentSponsoredRequest();
+                      }
                     },
                   ),
                   SizedBox(

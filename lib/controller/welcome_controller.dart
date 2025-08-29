@@ -24,6 +24,7 @@ class WelcomeController extends GetxController {
           userModel.id = value.user!.uid;
           userModel.email = value.user!.email;
           userModel.firstName = value.user!.displayName;
+          userModel.lastName = '';
           userModel.profilePic = value.user!.photoURL;
           userModel.loginType = Constant.googleLoginType;
           userModel.fcmToken = await NotificationService.getToken();
@@ -56,6 +57,7 @@ class WelcomeController extends GetxController {
               userModel.id = value.user!.uid;
               userModel.email = value.user!.email;
               userModel.firstName = value.user!.displayName;
+              userModel.lastName = '';
               userModel.profilePic = value.user!.photoURL;
               userModel.loginType = Constant.googleLoginType;
               userModel.fcmToken = await NotificationService.getToken();
@@ -72,22 +74,24 @@ class WelcomeController extends GetxController {
           });
         }
       }
+      ShowToastDialog.closeLoader();
     });
   }
 
   loginWithApple() async {
     ShowToastDialog.showLoader("Please wait".tr);
     await signInWithApple().then((value) async {
-      ShowToastDialog.closeLoader();
       if (value != null) {
         Map<String, dynamic> map = value;
-        // AuthorizationCredentialAppleID appleCredential = map['appleCredential'];
+        AuthorizationCredentialAppleID appleCredential = map['appleCredential'];
         UserCredential userCredential = map['userCredential'];
         if (userCredential.additionalUserInfo!.isNewUser) {
           UserModel userModel = UserModel();
           userModel.id = userCredential.user!.uid;
           userModel.email = userCredential.user!.email;
           userModel.profilePic = userCredential.user!.photoURL;
+          userModel.firstName = appleCredential.givenName ?? '';
+          userModel.lastName = appleCredential.familyName ?? '';
           userModel.loginType = Constant.appleLoginType;
           userModel.fcmToken = await NotificationService.getToken();
           userModel.createdAt = Timestamp.now();
@@ -120,6 +124,8 @@ class WelcomeController extends GetxController {
               userModel.email = userCredential.user!.email;
               userModel.profilePic = userCredential.user!.photoURL;
               userModel.loginType = Constant.googleLoginType;
+              userModel.firstName = appleCredential.givenName ?? '';
+              userModel.lastName = appleCredential.familyName ?? '';
               userModel.fcmToken = await NotificationService.getToken();
               userModel.createdAt = Timestamp.now();
               userModel.isActive = true;
@@ -134,6 +140,7 @@ class WelcomeController extends GetxController {
           });
         }
       }
+      ShowToastDialog.closeLoader();
     });
   }
 

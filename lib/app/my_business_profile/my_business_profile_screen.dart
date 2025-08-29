@@ -240,7 +240,7 @@ class MyBusinessProfileScreen extends StatelessWidget {
                                                           color: themeChange.getThem() ? AppThemeData.greyDark10 : AppThemeData.grey10,
                                                           onPress: () {
                                                             ShowToastDialog.showLoader("Please wait");
-                                                            Get.to(WebviewScreen(), arguments: {'url': Constant.claimBusinessURL});
+                                                            Get.to(WebviewScreen(), arguments: {'url': Constant.claimBusinessURL, 'title': 'Claim business'});
                                                           },
                                                         ),
                                                   SizedBox(height: 5),
@@ -774,7 +774,7 @@ class MyBusinessProfileScreen extends StatelessWidget {
                             if (controller.businessModel.value.website?.isEmpty == true || controller.businessModel.value.website == '') {
                               ShowToastDialog.showToast("Website not available".tr);
                             } else {
-                              Get.to(WebviewScreen(), arguments: {'url': controller.businessModel.value.website.toString()});
+                              Get.to(WebviewScreen(), arguments: {'url': controller.businessModel.value.website.toString(), 'title': ''});
                             }
                           },
                           child: Column(
@@ -981,7 +981,7 @@ class MyBusinessProfileScreen extends StatelessWidget {
                                   fontFamily: AppThemeData.boldOpenSans,
                                 ),
                               ),
-                              SizedBox(height: 10),
+                              SizedBox(height: 20),
                               Row(
                                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                                 children: [
@@ -990,14 +990,30 @@ class MyBusinessProfileScreen extends StatelessWidget {
                                       onTap: () async {
                                         Get.to(WebviewScreen(), arguments: {'url': controller.businessModel.value.fbLink.toString()});
                                       },
-                                      child: imageWidget(themeChange, "assets/images/fb.png", "Facebook link"),
+                                      child: ClipRRect(
+                                        borderRadius: BorderRadius.circular(40),
+                                        child: Image.asset(
+                                          "assets/images/fb.png",
+                                          width: 45,
+                                          height: 45,
+                                          fit: BoxFit.cover,
+                                        ),
+                                      ),
                                     ),
                                   if (controller.businessModel.value.instaLink?.isNotEmpty == true)
                                     DebouncedInkWell(
                                       onTap: () {
                                         Get.to(WebviewScreen(), arguments: {'url': controller.businessModel.value.instaLink.toString()});
                                       },
-                                      child: imageWidget(themeChange, "assets/images/insta.png", "Instagram link"),
+                                      child: ClipRRect(
+                                        borderRadius: BorderRadius.circular(40),
+                                        child: Image.asset(
+                                          "assets/images/insta.png",
+                                          width: 45,
+                                          height: 45,
+                                          fit: BoxFit.cover,
+                                        ),
+                                      ),
                                     ),
                                 ],
                               ),
@@ -1179,75 +1195,76 @@ class MyBusinessProfileScreen extends StatelessWidget {
                 ],
               ),
             ),
-            Container(color: themeChange.getThem() ? AppThemeData.greyDark09 : AppThemeData.grey09, height: 14),
-            Container(
-              width: Responsive.width(100, Get.context!),
-              decoration: BoxDecoration(color: themeChange.getThem() ? AppThemeData.greyDark10 : AppThemeData.grey10, borderRadius: BorderRadius.all(Radius.circular(10))),
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 20),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      "Leave a review".tr,
-                      textAlign: TextAlign.start,
-                      style: TextStyle(color: themeChange.getThem() ? AppThemeData.greyDark01 : AppThemeData.grey01, fontSize: 20, fontFamily: AppThemeData.boldOpenSans),
-                    ),
-                    SizedBox(height: 10),
-                    Container(
-                      decoration: BoxDecoration(
-                        color: themeChange.getThem() ? AppThemeData.greyDark10 : AppThemeData.grey10,
-                        borderRadius: BorderRadius.all(Radius.circular(10)),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.black.withOpacity(0.1), // soft shadow
-                            spreadRadius: 1,
-                            blurRadius: 5,
-                            offset: Offset(0, 2), // vertical offset
-                          ),
-                        ],
+            if (FireStoreUtils.getCurrentUid() != '') Container(color: themeChange.getThem() ? AppThemeData.greyDark09 : AppThemeData.grey09, height: 14),
+            if (FireStoreUtils.getCurrentUid() != '')
+              Container(
+                width: Responsive.width(100, Get.context!),
+                decoration: BoxDecoration(color: themeChange.getThem() ? AppThemeData.greyDark10 : AppThemeData.grey10, borderRadius: BorderRadius.all(Radius.circular(10))),
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 20),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        "Leave a review".tr,
+                        textAlign: TextAlign.start,
+                        style: TextStyle(color: themeChange.getThem() ? AppThemeData.greyDark01 : AppThemeData.grey01, fontSize: 20, fontFamily: AppThemeData.boldOpenSans),
                       ),
-                      child: DebouncedInkWell(
-                        onTap: () {
-                          Get.to(AddReviewScreen(), arguments: {"businessModel": controller.businessModel.value})!.then((value) {
-                            if (value == true) {
-                              controller.getReview();
-                            }
-                          });
-                        },
-                        child: Padding(
-                          padding: const EdgeInsets.all(10),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              ReviewUserView(userId: Constant.userModel!.id.toString()),
-                              SizedBox(height: 10),
-                              CustomStarRating(
-                                initialRating: "0.0",
-                                enable: false,
-                                bgColor: themeChange.getThem() ? AppThemeData.greyDark06 : AppThemeData.grey06,
-                                emptyColor: themeChange.getThem() ? AppThemeData.greyDark10 : AppThemeData.grey10,
-                              ),
-                              SizedBox(height: 10),
-                              Text(
-                                "Tap to review".tr,
-                                textAlign: TextAlign.start,
-                                style: TextStyle(
-                                  color: AppThemeData.red02,
-                                  fontSize: 14,
-                                  fontFamily: AppThemeData.semiboldOpenSans,
+                      SizedBox(height: 10),
+                      Container(
+                        decoration: BoxDecoration(
+                          color: themeChange.getThem() ? AppThemeData.greyDark10 : AppThemeData.grey10,
+                          borderRadius: BorderRadius.all(Radius.circular(10)),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.black.withOpacity(0.1), // soft shadow
+                              spreadRadius: 1,
+                              blurRadius: 5,
+                              offset: Offset(0, 2), // vertical offset
+                            ),
+                          ],
+                        ),
+                        child: DebouncedInkWell(
+                          onTap: () {
+                            Get.to(AddReviewScreen(), arguments: {"businessModel": controller.businessModel.value})!.then((value) {
+                              if (value == true) {
+                                controller.getReview();
+                              }
+                            });
+                          },
+                          child: Padding(
+                            padding: const EdgeInsets.all(10),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                ReviewUserView(userId: Constant.userModel?.id ?? ''),
+                                SizedBox(height: 10),
+                                CustomStarRating(
+                                  initialRating: "0.0",
+                                  enable: false,
+                                  bgColor: themeChange.getThem() ? AppThemeData.greyDark06 : AppThemeData.grey06,
+                                  emptyColor: themeChange.getThem() ? AppThemeData.greyDark10 : AppThemeData.grey10,
                                 ),
-                              ),
-                              SizedBox(height: 8),
-                            ],
+                                SizedBox(height: 10),
+                                Text(
+                                  "Tap to review".tr,
+                                  textAlign: TextAlign.start,
+                                  style: TextStyle(
+                                    color: AppThemeData.red02,
+                                    fontSize: 14,
+                                    fontFamily: AppThemeData.semiboldOpenSans,
+                                  ),
+                                ),
+                                SizedBox(height: 8),
+                              ],
+                            ),
                           ),
                         ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               ),
-            ),
             Container(color: themeChange.getThem() ? AppThemeData.greyDark09 : AppThemeData.grey09, height: 14),
             Container(
               key: controller.reviewKey,

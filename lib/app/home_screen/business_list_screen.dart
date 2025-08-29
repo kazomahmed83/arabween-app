@@ -465,7 +465,7 @@ class BusinessListScreen extends StatelessWidget {
                                                               Padding(
                                                                 padding: const EdgeInsets.symmetric(horizontal: 16),
                                                                 child: Text(
-                                                                  "Sponsored Result".tr,
+                                                                  "Sponsored Businesses".tr,
                                                                   textAlign: TextAlign.start,
                                                                   style: TextStyle(
                                                                     color: themeChange.getThem() ? AppThemeData.greyDark01 : AppThemeData.grey01,
@@ -719,9 +719,9 @@ class BusinessListScreen extends StatelessWidget {
                                                             crossAxisAlignment: CrossAxisAlignment.start,
                                                             children: [
                                                               Padding(
-                                                                padding: const EdgeInsets.only(left: 16, right: 16, top: 20),
+                                                                padding: EdgeInsets.only(left: 16, right: 16, top: controller.sponsoredBusinessList.isEmpty == true ? 10 : 20),
                                                                 child: Text(
-                                                                  "All Result".tr,
+                                                                  "All Businesses".tr,
                                                                   textAlign: TextAlign.start,
                                                                   style: TextStyle(
                                                                     color: themeChange.getThem() ? AppThemeData.greyDark01 : AppThemeData.grey01,

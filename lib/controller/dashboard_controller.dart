@@ -14,13 +14,21 @@ class DashBoardController extends GetxController {
   @override
   void onInit() {
     // TODO: implement onInit
-    pageList.value = [
-      const HomeScreen(),
-      // const ProjectScreen(),
-      const ProfileScreen(),
-      const CollectionScreen(),
-      const MoreScreen(),
-    ];
+    pageList.value = FireStoreUtils.getCurrentUid() != ''
+        ? [
+            const HomeScreen(),
+            // const ProjectScreen(),
+            const ProfileScreen(),
+            const CollectionScreen(),
+            const MoreScreen(),
+          ]
+        : [
+            const HomeScreen(),
+            // const ProjectScreen(),
+            //const ProfileScreen(),
+            const CollectionScreen(),
+            const MoreScreen(),
+          ];
     getAllBusiness();
     super.onInit();
   }

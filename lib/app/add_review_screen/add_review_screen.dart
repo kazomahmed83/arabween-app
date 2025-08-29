@@ -80,180 +80,182 @@ class AddReviewScreen extends StatelessWidget {
                 ? Constant.loader()
                 : Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 20),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          "${controller.businessModel.value.businessName}".tr,
-                          textAlign: TextAlign.start,
-                          style: TextStyle(
-                            color: themeChange.getThem() ? AppThemeData.greyDark02 : AppThemeData.grey02,
-                            fontSize: 16,
-                            fontFamily: AppThemeData.bold,
+                    child: SingleChildScrollView(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            "${controller.businessModel.value.businessName}".tr,
+                            textAlign: TextAlign.start,
+                            style: TextStyle(
+                              color: themeChange.getThem() ? AppThemeData.greyDark02 : AppThemeData.grey02,
+                              fontSize: 16,
+                              fontFamily: AppThemeData.bold,
+                            ),
                           ),
-                        ),
-                        SizedBox(
-                          height: 4,
-                        ),
-                        Text(
-                          "${Constant.getFullAddressModel(controller.businessModel.value.address!)}".tr,
-                          textAlign: TextAlign.start,
-                          style: TextStyle(
-                            color: themeChange.getThem() ? AppThemeData.greyDark03 : AppThemeData.grey03,
-                            fontSize: 14,
-                            fontFamily: AppThemeData.mediumOpenSans,
+                          SizedBox(
+                            height: 4,
                           ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(vertical: 10),
-                          child: Divider(
-                            color: themeChange.getThem() ? AppThemeData.greyDark03 : AppThemeData.grey03,
+                          Text(
+                            "${Constant.getFullAddressModel(controller.businessModel.value.address!)}".tr,
+                            textAlign: TextAlign.start,
+                            style: TextStyle(
+                              color: themeChange.getThem() ? AppThemeData.greyDark03 : AppThemeData.grey03,
+                              fontSize: 14,
+                              fontFamily: AppThemeData.mediumOpenSans,
+                            ),
                           ),
-                        ),
-                        Text(
-                          "How would you rate your experience?".tr,
-                          textAlign: TextAlign.start,
-                          style: TextStyle(
-                            color: themeChange.getThem() ? AppThemeData.greyDark02 : AppThemeData.grey02,
-                            fontSize: 16,
-                            fontFamily: AppThemeData.bold,
+                          Padding(
+                            padding: const EdgeInsets.symmetric(vertical: 10),
+                            child: Divider(
+                              color: themeChange.getThem() ? AppThemeData.greyDark03 : AppThemeData.grey03,
+                            ),
                           ),
-                        ),
-                        SizedBox(
-                          height: 5,
-                        ),
-                        CustomStarRating(
-                          initialRating: "0",
-                          size: 30,
-                          bgColor: themeChange.getThem() ? AppThemeData.greyDark06 : AppThemeData.grey06,
-                          emptyColor: themeChange.getThem() ? AppThemeData.greyDark10 : AppThemeData.grey10,
-                          onRatingUpdate: (value) {
-                            controller.rating.value = value;
-                          },
-                        ),
-                        SizedBox(
-                          height: 30,
-                        ),
-                        Text(
-                          "Tell us about your experience?".tr,
-                          textAlign: TextAlign.start,
-                          style: TextStyle(
-                            color: themeChange.getThem() ? AppThemeData.greyDark02 : AppThemeData.grey02,
-                            fontSize: 16,
-                            fontFamily: AppThemeData.bold,
+                          Text(
+                            "How would you rate your experience?".tr,
+                            textAlign: TextAlign.start,
+                            style: TextStyle(
+                              color: themeChange.getThem() ? AppThemeData.greyDark02 : AppThemeData.grey02,
+                              fontSize: 16,
+                              fontFamily: AppThemeData.bold,
+                            ),
                           ),
-                        ),
-                        SizedBox(
-                          height: 4,
-                        ),
-                        Text(
-                          "A few things to consider in your review".tr,
-                          textAlign: TextAlign.start,
-                          style: TextStyle(
-                            color: themeChange.getThem() ? AppThemeData.greyDark03 : AppThemeData.grey03,
-                            fontSize: 14,
-                            fontFamily: AppThemeData.mediumOpenSans,
+                          SizedBox(
+                            height: 5,
                           ),
-                        ),
-                        SizedBox(
-                          height: 20,
-                        ),
-                        TextFieldWidget(
-                          controller: controller.reviewDescriptionController.value,
-                          hintText: 'write your experience here....'.tr,
-                          maxLine: 6,
-                        ),
-                        SizedBox(
-                          height: 14,
-                        ),
-                        SizedBox(
-                          height: 130,
-                          child: Column(
-                            children: [
-                              Expanded(
-                                child: Row(
-                                  children: [
-                                    Container(
-                                      decoration: BoxDecoration(
-                                        color: themeChange.getThem() ? AppThemeData.greyDark08 : AppThemeData.grey08,
-                                        borderRadius: const BorderRadius.all(
-                                          Radius.circular(12),
+                          CustomStarRating(
+                            initialRating: "0",
+                            size: 30,
+                            bgColor: themeChange.getThem() ? AppThemeData.greyDark06 : AppThemeData.grey06,
+                            emptyColor: themeChange.getThem() ? AppThemeData.greyDark10 : AppThemeData.grey10,
+                            onRatingUpdate: (value) {
+                              controller.rating.value = value;
+                            },
+                          ),
+                          SizedBox(
+                            height: 30,
+                          ),
+                          Text(
+                            "Tell us about your experience?".tr,
+                            textAlign: TextAlign.start,
+                            style: TextStyle(
+                              color: themeChange.getThem() ? AppThemeData.greyDark02 : AppThemeData.grey02,
+                              fontSize: 16,
+                              fontFamily: AppThemeData.bold,
+                            ),
+                          ),
+                          SizedBox(
+                            height: 4,
+                          ),
+                          Text(
+                            "A few things to consider in your review".tr,
+                            textAlign: TextAlign.start,
+                            style: TextStyle(
+                              color: themeChange.getThem() ? AppThemeData.greyDark03 : AppThemeData.grey03,
+                              fontSize: 14,
+                              fontFamily: AppThemeData.mediumOpenSans,
+                            ),
+                          ),
+                          SizedBox(
+                            height: 20,
+                          ),
+                          TextFieldWidget(
+                            controller: controller.reviewDescriptionController.value,
+                            hintText: 'write your experience here....'.tr,
+                            maxLine: 6,
+                          ),
+                          SizedBox(
+                            height: 14,
+                          ),
+                          SizedBox(
+                            height: 130,
+                            child: Column(
+                              children: [
+                                Expanded(
+                                  child: Row(
+                                    children: [
+                                      Container(
+                                        decoration: BoxDecoration(
+                                          color: themeChange.getThem() ? AppThemeData.greyDark08 : AppThemeData.grey08,
+                                          borderRadius: const BorderRadius.all(
+                                            Radius.circular(12),
+                                          ),
+                                        ),
+                                        child: InkWell(
+                                          onTap: () {
+                                            buildBottomSheet(context, controller);
+                                          },
+                                          child: SizedBox(
+                                              height: 120,
+                                              width: 120,
+                                              child: Center(
+                                                  child: Constant.svgPictureShow("assets/icons/icon_picture.svg", themeChange.getThem() ? AppThemeData.greyDark03 : AppThemeData.grey03, 40, 40))),
                                         ),
                                       ),
-                                      child: InkWell(
-                                        onTap: () {
-                                          buildBottomSheet(context, controller);
-                                        },
-                                        child: SizedBox(
-                                            height: 120,
-                                            width: 120,
-                                            child:
-                                                Center(child: Constant.svgPictureShow("assets/icons/icon_picture.svg", themeChange.getThem() ? AppThemeData.greyDark03 : AppThemeData.grey03, 40, 40))),
-                                      ),
-                                    ),
-                                    Expanded(
-                                      child: ListView.builder(
-                                        itemCount: controller.images.length,
-                                        shrinkWrap: true,
-                                        scrollDirection: Axis.horizontal,
-                                        // physics: const NeverScrollableScrollPhysics(),
-                                        itemBuilder: (context, index) {
-                                          return Padding(
-                                            padding: const EdgeInsets.symmetric(horizontal: 5),
-                                            child: Stack(
-                                              children: [
-                                                ClipRRect(
-                                                  borderRadius: const BorderRadius.all(Radius.circular(4)),
-                                                  child: controller.images[index].runtimeType == XFile
-                                                      ? Image.file(
-                                                          File(controller.images[index].path),
-                                                          fit: BoxFit.cover,
-                                                          width: 120,
-                                                          height: 120,
-                                                        )
-                                                      : NetworkImageWidget(
-                                                          imageUrl: controller.images[index],
-                                                          fit: BoxFit.cover,
-                                                          width: 120,
-                                                          height: 120,
-                                                        ),
-                                                ),
-                                                Positioned(
-                                                  top: 8,
-                                                  right: 8,
-                                                  child: InkWell(
-                                                    onTap: () async {
-                                                      controller.images.removeAt(index);
-                                                    },
-                                                    child: ClipOval(
-                                                      child: Container(
-                                                        height: 30,
-                                                        width: 30,
-                                                        color: AppThemeData.red03,
-                                                        child: Padding(
-                                                          padding: const EdgeInsets.all(5.0),
-                                                          child: Constant.svgPictureShow("assets/icons/delete-one.svg", AppThemeData.red02, 20, 20),
+                                      Expanded(
+                                        child: ListView.builder(
+                                          itemCount: controller.images.length,
+                                          shrinkWrap: true,
+                                          scrollDirection: Axis.horizontal,
+                                          // physics: const NeverScrollableScrollPhysics(),
+                                          itemBuilder: (context, index) {
+                                            return Padding(
+                                              padding: const EdgeInsets.symmetric(horizontal: 5),
+                                              child: Stack(
+                                                children: [
+                                                  ClipRRect(
+                                                    borderRadius: const BorderRadius.all(Radius.circular(4)),
+                                                    child: controller.images[index].runtimeType == XFile
+                                                        ? Image.file(
+                                                            File(controller.images[index].path),
+                                                            fit: BoxFit.cover,
+                                                            width: 120,
+                                                            height: 120,
+                                                          )
+                                                        : NetworkImageWidget(
+                                                            imageUrl: controller.images[index],
+                                                            fit: BoxFit.cover,
+                                                            width: 120,
+                                                            height: 120,
+                                                          ),
+                                                  ),
+                                                  Positioned(
+                                                    top: 8,
+                                                    right: 8,
+                                                    child: InkWell(
+                                                      onTap: () async {
+                                                        controller.images.removeAt(index);
+                                                      },
+                                                      child: ClipOval(
+                                                        child: Container(
+                                                          height: 30,
+                                                          width: 30,
+                                                          color: AppThemeData.red03,
+                                                          child: Padding(
+                                                            padding: const EdgeInsets.all(5.0),
+                                                            child: Constant.svgPictureShow("assets/icons/delete-one.svg", AppThemeData.red02, 20, 20),
+                                                          ),
                                                         ),
                                                       ),
                                                     ),
                                                   ),
-                                                ),
-                                              ],
-                                            ),
-                                          );
-                                        },
+                                                ],
+                                              ),
+                                            );
+                                          },
+                                        ),
                                       ),
-                                    ),
-                                  ],
+                                    ],
+                                  ),
                                 ),
-                              ),
-                              const SizedBox(
-                                height: 10,
-                              ),
-                            ],
+                                const SizedBox(
+                                  height: 10,
+                                ),
+                              ],
+                            ),
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
                   ),
             bottomNavigationBar: Container(

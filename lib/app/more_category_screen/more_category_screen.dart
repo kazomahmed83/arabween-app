@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
@@ -103,7 +105,8 @@ class MoreCategoryScreen extends StatelessWidget {
                             CategoryModel categoryModel = controller.categoryList[index];
                             return InkWell(
                               onTap: () async {
-                                if (categoryModel.children!.isEmpty) {
+                                log("categoryModel.children :: ${categoryModel.children?.isEmpty}");
+                                if (categoryModel.children?.isEmpty == true || categoryModel.children == null) {
                                   Get.off(BusinessListScreen(), arguments: {
                                     "categoryModel": categoryModel,
                                     "latLng": null,

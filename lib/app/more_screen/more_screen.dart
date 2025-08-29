@@ -41,6 +41,7 @@ class MoreScreen extends StatelessWidget {
               backgroundColor: themeChange.getThem() ? AppThemeData.surfaceDark50 : AppThemeData.surface50,
               centerTitle: true,
               leadingWidth: 120,
+              leading: SizedBox(),
               bottom: PreferredSize(
                 preferredSize: const Size.fromHeight(4.0),
                 child: Container(
@@ -91,70 +92,69 @@ class MoreScreen extends StatelessWidget {
                             padding: const EdgeInsets.only(bottom: 10),
                             child: AdManager.bannerAdWidget(),
                           ),
-                          Container(
-                            width: Responsive.width(100, context),
-                            decoration: BoxDecoration(color: themeChange.getThem() ? AppThemeData.greyDark10 : AppThemeData.grey10, borderRadius: BorderRadius.all(Radius.circular(10))),
-                            child: Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Column(
-                                children: [
-                                  if (FireStoreUtils.getCurrentUid() != '')
-                                    DebouncedInkWell(
-                                      onTap: () {
-                                        Get.to(InboxScreen());
-                                      },
-                                      child: Row(
-                                        children: [
-                                          badges.Badge(
-                                            badgeContent: StreamBuilder<int>(
-                                              stream: controller.getLiveCountUserChat(),
-                                              builder: (context, snapshot0) {
-                                                final count = snapshot0.data ?? 0;
-                                                final showBadge = count > 0;
-                                                return badges.Badge(
-                                                  badgeContent: Text(
-                                                    count.toString(),
-                                                    style: TextStyle(
-                                                      fontSize: 12,
-                                                      color: AppThemeData.grey10,
+                          if (FireStoreUtils.getCurrentUid() != '')
+                            Container(
+                              width: Responsive.width(100, context),
+                              decoration: BoxDecoration(color: themeChange.getThem() ? AppThemeData.greyDark10 : AppThemeData.grey10, borderRadius: BorderRadius.all(Radius.circular(10))),
+                              child: Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Column(
+                                  children: [
+                                    if (FireStoreUtils.getCurrentUid() != '')
+                                      DebouncedInkWell(
+                                        onTap: () {
+                                          Get.to(InboxScreen());
+                                        },
+                                        child: Row(
+                                          children: [
+                                            badges.Badge(
+                                              badgeContent: StreamBuilder<int>(
+                                                stream: controller.getLiveCountUserChat(),
+                                                builder: (context, snapshot0) {
+                                                  final count = snapshot0.data ?? 0;
+                                                  final showBadge = count > 0;
+                                                  return badges.Badge(
+                                                    badgeContent: Text(
+                                                      count.toString(),
+                                                      style: TextStyle(
+                                                        fontSize: 12,
+                                                        color: AppThemeData.grey10,
+                                                      ),
                                                     ),
-                                                  ),
-                                                  showBadge: showBadge,
-                                                  badgeStyle: badges.BadgeStyle(badgeColor: AppThemeData.red02),
-                                                  child: Padding(
-                                                    padding: const EdgeInsets.all(8.0),
-                                                    child: Constant.svgPictureShow("assets/icons/message-emoji.svg", null, 20, 20),
-                                                  ),
-                                                );
-                                              },
+                                                    showBadge: showBadge,
+                                                    badgeStyle: badges.BadgeStyle(badgeColor: AppThemeData.red02),
+                                                    child: Padding(
+                                                      padding: const EdgeInsets.all(8.0),
+                                                      child: Constant.svgPictureShow("assets/icons/message-emoji.svg", null, 20, 20),
+                                                    ),
+                                                  );
+                                                },
+                                              ),
+                                              showBadge: controller.isShow.value,
+                                              badgeStyle: badges.BadgeStyle(badgeColor: AppThemeData.red02),
+                                              child: Padding(
+                                                padding: const EdgeInsets.all(8.0),
+                                                child: Constant.svgPictureShow("assets/icons/message-emoji.svg", null, 20, 20),
+                                              ),
                                             ),
-                                            showBadge: controller.isShow.value,
-                                            badgeStyle: badges.BadgeStyle(badgeColor: AppThemeData.red02),
-                                            child: Padding(
-                                              padding: const EdgeInsets.all(8.0),
-                                              child: Constant.svgPictureShow("assets/icons/message-emoji.svg", null, 20, 20),
+                                            SizedBox(
+                                              width: 10,
                                             ),
-                                          ),
-                                          SizedBox(
-                                            width: 10,
-                                          ),
-                                          Text(
-                                            "Message".tr,
-                                            textAlign: TextAlign.start,
-                                            style: TextStyle(
-                                              color: themeChange.getThem() ? AppThemeData.greyDark01 : AppThemeData.grey01,
-                                              fontSize: 16,
-                                              fontFamily: AppThemeData.semiboldOpenSans,
+                                            Text(
+                                              "Message".tr,
+                                              textAlign: TextAlign.start,
+                                              style: TextStyle(
+                                                color: themeChange.getThem() ? AppThemeData.greyDark01 : AppThemeData.grey01,
+                                                fontSize: 16,
+                                                fontFamily: AppThemeData.semiboldOpenSans,
+                                              ),
                                             ),
-                                          ),
-                                        ],
+                                          ],
+                                        ),
                                       ),
-                                    ),
-                                  if (FireStoreUtils.getCurrentUid() != '')
                                     SizedBox(
                                       height: 16,
                                     ),
-                                  if (FireStoreUtils.getCurrentUid() != '')
                                     DebouncedInkWell(
                                       onTap: () {
                                         DashBoardController dashController = Get.put(DashBoardController());
@@ -181,13 +181,14 @@ class MoreScreen extends StatelessWidget {
                                         ],
                                       ),
                                     )
-                                ],
+                                  ],
+                                ),
                               ),
                             ),
-                          ),
-                          SizedBox(
-                            height: 20,
-                          ),
+                          if (FireStoreUtils.getCurrentUid() != '')
+                            SizedBox(
+                              height: 20,
+                            ),
                           Container(
                             width: Responsive.width(100, context),
                             decoration: BoxDecoration(color: themeChange.getThem() ? AppThemeData.greyDark10 : AppThemeData.grey10, borderRadius: BorderRadius.all(Radius.circular(10))),
@@ -258,7 +259,7 @@ class MoreScreen extends StatelessWidget {
                                               ),
                                             ),
                                             SizedBox(
-                                              height: 16,
+                                              height: 8,
                                             ),
                                             ListView.builder(
                                               itemCount: controller.businessList.length,
@@ -510,7 +511,7 @@ class MoreScreen extends StatelessWidget {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Text(
-                                    "Settings and Support".tr,
+                                    FireStoreUtils.getCurrentUid() != '' ? "Settings and Support".tr : "Settings".tr,
                                     textAlign: TextAlign.start,
                                     style: TextStyle(
                                       color: themeChange.getThem() ? AppThemeData.greyDark01 : AppThemeData.grey01,
@@ -518,9 +519,10 @@ class MoreScreen extends StatelessWidget {
                                       fontFamily: AppThemeData.boldOpenSans,
                                     ),
                                   ),
-                                  SizedBox(
-                                    height: 16,
-                                  ),
+                                  if (FireStoreUtils.getCurrentUid() != '')
+                                    SizedBox(
+                                      height: 16,
+                                    ),
                                   if (FireStoreUtils.getCurrentUid() != '')
                                     InkWell(
                                       onTap: () {

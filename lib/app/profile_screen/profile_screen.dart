@@ -1,4 +1,5 @@
 import 'package:arabween/app/auth_screen/welcome_screen.dart';
+import 'package:arabween/app/profile_screen/all_review_screen.dart';
 import 'package:arabween/app/profile_screen/edit_profile_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -445,33 +446,38 @@ class ProfileScreen extends StatelessWidget {
                                       padding: const EdgeInsets.symmetric(horizontal: 16),
                                       child: Column(
                                         children: [
-                                          Row(
-                                            children: [
-                                              Constant.svgPictureShow("assets/icons/star.svg", themeChange.getThem() ? AppThemeData.greyDark01 : AppThemeData.grey01, 24, 24),
-                                              SizedBox(
-                                                width: 10,
-                                              ),
-                                              Expanded(
-                                                child: Text(
-                                                  "Review".tr,
+                                          InkWell(
+                                            onTap: () {
+                                              Get.to(AllReviewScreen());
+                                            },
+                                            child: Row(
+                                              children: [
+                                                Constant.svgPictureShow("assets/icons/star.svg", themeChange.getThem() ? AppThemeData.greyDark01 : AppThemeData.grey01, 24, 24),
+                                                SizedBox(
+                                                  width: 10,
+                                                ),
+                                                Expanded(
+                                                  child: Text(
+                                                    "Review".tr,
+                                                    textAlign: TextAlign.start,
+                                                    style: TextStyle(
+                                                      color: themeChange.getThem() ? AppThemeData.greyDark01 : AppThemeData.grey01,
+                                                      fontSize: 16,
+                                                      fontFamily: AppThemeData.semiboldOpenSans,
+                                                    ),
+                                                  ),
+                                                ),
+                                                Text(
+                                                  "${controller.reviewList.length}",
                                                   textAlign: TextAlign.start,
                                                   style: TextStyle(
                                                     color: themeChange.getThem() ? AppThemeData.greyDark01 : AppThemeData.grey01,
                                                     fontSize: 16,
                                                     fontFamily: AppThemeData.semiboldOpenSans,
                                                   ),
-                                                ),
-                                              ),
-                                              Text(
-                                                "${controller.reviewList.length}",
-                                                textAlign: TextAlign.start,
-                                                style: TextStyle(
-                                                  color: themeChange.getThem() ? AppThemeData.greyDark01 : AppThemeData.grey01,
-                                                  fontSize: 16,
-                                                  fontFamily: AppThemeData.semiboldOpenSans,
-                                                ),
-                                              )
-                                            ],
+                                                )
+                                              ],
+                                            ),
                                           ),
                                           SizedBox(
                                             height: 20,

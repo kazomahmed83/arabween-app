@@ -38,7 +38,6 @@ class ReviewUserViewController extends GetxController {
 
   var photoMap = <String, List<PhotoModel>>{}.obs; // Caches review images
   Future<void> loadReviewImages(String reviewId) async {
-
     if (photoMap.containsKey(reviewId)) return; // Prevent duplicate fetches
 
     List<PhotoModel> photos = await FireStoreUtils.getReviewImage(reviewId);

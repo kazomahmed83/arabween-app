@@ -369,5 +369,10 @@ const Map<String, String> enUS = {
   'Closed': 'Closed',
   'Open': 'Open',
   'Go to Home Page': 'Go to Home Page',
-  'Login with email': 'Login with email'
+  'Login with email': 'Login with email',
+  'Oops! You haven’t uploaded an image yet.': 'Oops! You haven’t uploaded an image yet.',
+  'All Businesses': 'All Businesses',
+  'Sponsored Businesses': 'Sponsored Businesses',
+  'First, select a business, then send your request.': 'First, select a business, then send your request.',
+  'Review Not Found': 'Review Not Found'
 };

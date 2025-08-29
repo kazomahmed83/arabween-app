@@ -359,5 +359,10 @@ const Map<String, String> lnAr = {
   "Open 24/7": "مفتوح 24/7",
   "Closed": "مغلق",
   "Open": "مفتوح",
-  'Go to Home Page': 'الصفحة الرئيسية'
+  'Go to Home Page': 'الصفحة الرئيسية',
+  'Oops! You haven’t uploaded an image yet.': 'عذرًا! لم تقم بتحميل صورة بعد.',
+  'All Businesses': 'جميع الأنشطة التجارية',
+  'Sponsored Businesses': 'الأنشطة التجارية المدعومة',
+  'First, select a business, then send your request.': 'أولاً، اختر نشاطًا تجاريًا، ثم أرسل طلبك.',
+  'Review Not Found': 'لم يتم العثور على مراجعة'
 };

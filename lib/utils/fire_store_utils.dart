@@ -74,6 +74,7 @@ class FireStoreUtils {
   static Future<bool> updateUser(UserModel userModel) async {
     bool isUpdate = false;
     await fireStore.collection(CollectionName.users).doc(userModel.id).set(userModel.toJson()).whenComplete(() {
+      Constant.userModel = userModel;
       isUpdate = true;
     }).catchError((error) {
       log("Failed to update user: $error");

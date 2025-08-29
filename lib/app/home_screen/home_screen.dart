@@ -41,6 +41,7 @@ class HomeScreen extends StatelessWidget {
               : CustomScrollView(
                   slivers: [
                     SliverAppBar(
+                      leading: SizedBox(),
                       expandedHeight: 220,
                       pinned: true,
                       backgroundColor: themeChange.getThem() ? AppThemeData.surfaceDark50 : AppThemeData.surface50,

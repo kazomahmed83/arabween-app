@@ -255,7 +255,7 @@ class BusinessDetailsScreen extends StatelessWidget {
                                                             color: themeChange.getThem() ? AppThemeData.greyDark10 : AppThemeData.grey10,
                                                             onPress: () {
                                                               ShowToastDialog.showLoader("Please wait");
-                                                              Get.to(WebviewScreen(), arguments: {'url': Constant.claimBusinessURL});
+                                                              Get.to(WebviewScreen(), arguments: {'url': Constant.claimBusinessURL, 'title': 'Claim business'});
                                                             },
                                                           ),
                                                     SizedBox(
@@ -653,7 +653,7 @@ class BusinessDetailsScreen extends StatelessWidget {
                 ],
               ),
             ),
-            reviewWidget(controller, themeChange),
+            if (FireStoreUtils.getCurrentUid() != '') reviewWidget(controller, themeChange),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 20),
               child: Row(
@@ -1569,7 +1569,7 @@ class BusinessDetailsScreen extends StatelessWidget {
                       ShowToastDialog.showToast("Website not available".tr);
                     } else {
                       ShowToastDialog.showLoader("Please wait");
-                      Get.to(WebviewScreen(), arguments: {'url': controller.businessModel.value.website.toString()});
+                      Get.to(WebviewScreen(), arguments: {'url': controller.businessModel.value.website.toString(), 'title': ''});
                       // Utils.launchURL(controller.businessModel.value.website.toString());
                     }
                   },
@@ -1835,7 +1835,7 @@ class BusinessDetailsScreen extends StatelessWidget {
                           fontFamily: AppThemeData.boldOpenSans,
                         ),
                       ),
-                      SizedBox(height: 10),
+                      SizedBox(height: 20),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
@@ -1844,14 +1844,30 @@ class BusinessDetailsScreen extends StatelessWidget {
                               onTap: () async {
                                 Get.to(WebviewScreen(), arguments: {'url': controller.businessModel.value.fbLink.toString()});
                               },
-                              child: imageWidget(themeChange, "assets/images/fb.png", "Facebook link"),
+                              child: ClipRRect(
+                                borderRadius: BorderRadius.circular(40),
+                                child: Image.asset(
+                                  "assets/images/fb.png",
+                                  width: 45,
+                                  height: 45,
+                                  fit: BoxFit.cover,
+                                ),
+                              ),
                             ),
                           if (controller.businessModel.value.instaLink?.isNotEmpty == true)
                             DebouncedInkWell(
                               onTap: () {
                                 Get.to(WebviewScreen(), arguments: {'url': controller.businessModel.value.instaLink.toString()});
                               },
-                              child: imageWidget(themeChange, "assets/images/insta.png", "Instagram link"),
+                              child: ClipRRect(
+                                borderRadius: BorderRadius.circular(40),
+                                child: Image.asset(
+                                  "assets/images/insta.png",
+                                  width: 45,
+                                  height: 45,
+                                  fit: BoxFit.fill,
+                                ),
+                              ),
                             ),
                         ],
                       ),

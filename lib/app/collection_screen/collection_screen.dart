@@ -31,6 +31,7 @@ class CollectionScreen extends StatelessWidget {
               backgroundColor: themeChange.getThem() ? AppThemeData.greyDark10 : AppThemeData.grey10,
               centerTitle: true,
               leadingWidth: 120,
+              leading: SizedBox(),
               bottom: PreferredSize(
                 preferredSize: const Size.fromHeight(4.0),
                 child: Container(
