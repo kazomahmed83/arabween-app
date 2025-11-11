@@ -19,7 +19,7 @@ android {
 
     defaultConfig {
         applicationId = "com.arabween"
-        minSdk = 23
+        minSdkVersion = flutter.minSdkVersion
         //noinspection OldTargetApi
         targetSdk = 35
         versionCode = flutter.versionCode

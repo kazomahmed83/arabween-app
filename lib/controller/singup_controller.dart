@@ -21,6 +21,8 @@ class SignupController extends GetxController {
   Rx<TextEditingController> lastNameTextFieldController = TextEditingController().obs;
   Rx<TextEditingController> emailTextFieldController = TextEditingController().obs;
   Rx<TextEditingController> passwordTextFieldController = TextEditingController().obs;
+  Rx<TextEditingController> phoneNumberTextFieldController = TextEditingController().obs;
+  Rx<TextEditingController> countryCodeController = TextEditingController(text: "+1").obs;
   RxString profileImage = "".obs;
   RxBool passwordVisible = true.obs;
 
@@ -41,13 +43,12 @@ class SignupController extends GetxController {
       if (argumentData['userModel'] != null) {
         userModel.value = argumentData['userModel'];
         loginType.value = userModel.value.loginType.toString();
-        // if (loginType.value == Constant.phoneLoginType) {
-        //   phoneNumberTextFieldController.value.text = userModel.value.phoneNumber.toString();
-        //   countryCodeController.value.text = userModel.value.countryCode.toString();
-        // } else {
+        if (loginType.value == Constant.phoneLoginType) {
+          phoneNumberTextFieldController.value.text = userModel.value.phoneNumber.toString();
+          countryCodeController.value.text = userModel.value.countryCode.toString();
+        }
         emailTextFieldController.value.text = userModel.value.email.toString();
         firstNameTextFieldController.value.text = userModel.value.firstName ?? '';
-        // }
       } else if (argumentData['type'] == 'Add a business') {
         isAddAbusinessBtn.value = true;
       }
@@ -88,8 +89,10 @@ class SignupController extends GetxController {
       userModelData.firstName = firstNameTextFieldController.value.text;
       userModelData.lastName = lastNameTextFieldController.value.text;
       userModelData.email = emailTextFieldController.value.text;
-      // userModelData.countryCode = countryCodeController.value.text;
-      // userModelData.phoneNumber = num.parse(phoneNumberTextFieldController.value.text);
+      if (loginType.value == Constant.emailLoginType) {
+        userModelData.countryCode = countryCodeController.value.text;
+        userModelData.phoneNumber = phoneNumberTextFieldController.value.text;
+      }
       userModelData.profilePic = profileImage.value;
       // userModelData.zipCode = zipCodeFieldController.value.text;
       userModelData.fcmToken = fcmToken;

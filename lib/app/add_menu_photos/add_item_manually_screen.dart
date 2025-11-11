@@ -101,137 +101,139 @@ class AddItemManuallyScreen extends StatelessWidget {
             ),
             body: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 30),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    "Add Image (Max 4 images)".tr,
-                    style: TextStyle(
-                      fontFamily: AppThemeData.boldOpenSans,
-                      fontSize: 14,
-                      color: themeChange.getThem() ? AppThemeData.greyDark01 : AppThemeData.grey01,
-                    ),
-                  ),
-                  SizedBox(
-                    height: 10,
-                  ),
-                  Container(
-                    decoration: BoxDecoration(
-                      color: themeChange.getThem() ? AppThemeData.teal03 : AppThemeData.teal03,
-                      borderRadius: const BorderRadius.all(
-                        Radius.circular(12),
+              child: SingleChildScrollView(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      "Add Image (Max 4 images)".tr,
+                      style: TextStyle(
+                        fontFamily: AppThemeData.boldOpenSans,
+                        fontSize: 14,
+                        color: themeChange.getThem() ? AppThemeData.greyDark01 : AppThemeData.grey01,
                       ),
                     ),
-                    child: InkWell(
-                      onTap: () {
-                        buildBottomSheet(context, controller);
-                      },
-                      child: SizedBox(
-                          height: Responsive.height(18, context),
-                          width: Responsive.width(90, context),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Constant.svgPictureShow("assets/icons/icon_upload.svg", themeChange.getThem() ? AppThemeData.teal02 : AppThemeData.teal02, 20, 20),
-                              const SizedBox(
-                                height: 10,
-                              ),
-                              Text(
-                                "Click to \nUpload Image".tr,
-                                textAlign: TextAlign.center,
-                                style: TextStyle(color: themeChange.getThem() ? AppThemeData.greyDark02 : AppThemeData.grey02, fontFamily: AppThemeData.medium, fontSize: 14),
-                              ),
-                            ],
-                          )),
+                    SizedBox(
+                      height: 10,
                     ),
-                  ),
-                  SizedBox(
-                    height: 20,
-                  ),
-                  controller.images.isEmpty
-                      ? const SizedBox()
-                      : SizedBox(
-                          height: 120,
-                          child: Column(
-                            children: [
-                              Expanded(
-                                child: ListView.builder(
-                                  itemCount: controller.images.length,
-                                  shrinkWrap: true,
-                                  scrollDirection: Axis.horizontal,
-                                  // physics: const NeverScrollableScrollPhysics(),
-                                  itemBuilder: (context, index) {
-                                    return Padding(
-                                      padding: const EdgeInsets.symmetric(horizontal: 5),
-                                      child: Stack(
-                                        children: [
-                                          ClipRRect(
-                                            borderRadius: const BorderRadius.all(Radius.circular(4)),
-                                            child: controller.images[index].runtimeType == XFile
-                                                ? Image.file(
-                                                    File(controller.images[index].path),
-                                                    fit: BoxFit.cover,
-                                                    width: 100,
-                                                    height: 100,
-                                                  )
-                                                : NetworkImageWidget(
-                                                    imageUrl: controller.images[index],
-                                                    fit: BoxFit.cover,
-                                                    width: 100,
-                                                    height: 100,
-                                                  ),
-                                          ),
-                                          Positioned(
-                                            top: 8,
-                                            right: 8,
-                                            child: InkWell(
-                                              onTap: () async {
-                                                controller.images.removeAt(index);
-                                              },
-                                              child: ClipOval(
-                                                child: Container(
-                                                  height: 30,
-                                                  width: 30,
-                                                  color: AppThemeData.red03,
-                                                  child: Padding(
-                                                    padding: const EdgeInsets.all(5.0),
-                                                    child: Constant.svgPictureShow("assets/icons/delete-one.svg", AppThemeData.red02, 20, 20),
+                    Container(
+                      decoration: BoxDecoration(
+                        color: themeChange.getThem() ? AppThemeData.teal03 : AppThemeData.teal03,
+                        borderRadius: const BorderRadius.all(
+                          Radius.circular(12),
+                        ),
+                      ),
+                      child: InkWell(
+                        onTap: () {
+                          buildBottomSheet(context, controller);
+                        },
+                        child: SizedBox(
+                            height: Responsive.height(18, context),
+                            width: Responsive.width(90, context),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Constant.svgPictureShow("assets/icons/icon_upload.svg", themeChange.getThem() ? AppThemeData.teal02 : AppThemeData.teal02, 20, 20),
+                                const SizedBox(
+                                  height: 10,
+                                ),
+                                Text(
+                                  "Click to \nUpload Image".tr,
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(color: themeChange.getThem() ? AppThemeData.greyDark02 : AppThemeData.grey02, fontFamily: AppThemeData.medium, fontSize: 14),
+                                ),
+                              ],
+                            )),
+                      ),
+                    ),
+                    SizedBox(
+                      height: 20,
+                    ),
+                    controller.images.isEmpty
+                        ? const SizedBox()
+                        : SizedBox(
+                            height: 120,
+                            child: Column(
+                              children: [
+                                Expanded(
+                                  child: ListView.builder(
+                                    itemCount: controller.images.length,
+                                    shrinkWrap: true,
+                                    scrollDirection: Axis.horizontal,
+                                    // physics: const NeverScrollableScrollPhysics(),
+                                    itemBuilder: (context, index) {
+                                      return Padding(
+                                        padding: const EdgeInsets.symmetric(horizontal: 5),
+                                        child: Stack(
+                                          children: [
+                                            ClipRRect(
+                                              borderRadius: const BorderRadius.all(Radius.circular(4)),
+                                              child: controller.images[index].runtimeType == XFile
+                                                  ? Image.file(
+                                                      File(controller.images[index].path),
+                                                      fit: BoxFit.cover,
+                                                      width: 100,
+                                                      height: 100,
+                                                    )
+                                                  : NetworkImageWidget(
+                                                      imageUrl: controller.images[index],
+                                                      fit: BoxFit.cover,
+                                                      width: 100,
+                                                      height: 100,
+                                                    ),
+                                            ),
+                                            Positioned(
+                                              top: 8,
+                                              right: 8,
+                                              child: InkWell(
+                                                onTap: () async {
+                                                  controller.images.removeAt(index);
+                                                },
+                                                child: ClipOval(
+                                                  child: Container(
+                                                    height: 30,
+                                                    width: 30,
+                                                    color: AppThemeData.red03,
+                                                    child: Padding(
+                                                      padding: const EdgeInsets.all(5.0),
+                                                      child: Constant.svgPictureShow("assets/icons/delete-one.svg", AppThemeData.red02, 20, 20),
+                                                    ),
                                                   ),
                                                 ),
                                               ),
                                             ),
-                                          ),
-                                        ],
-                                      ),
-                                    );
-                                  },
+                                          ],
+                                        ),
+                                      );
+                                    },
+                                  ),
                                 ),
-                              ),
-                              const SizedBox(
-                                height: 10,
-                              ),
-                            ],
+                                const SizedBox(
+                                  height: 10,
+                                ),
+                              ],
+                            ),
                           ),
-                        ),
-                  TextFieldWidget(
-                    title: 'Menu Item Details'.tr,
-                    controller: controller.nameTextFieldController.value,
-                    hintText: 'Name'.tr,
-                  ),
-                  TextFieldWidget(
-                    controller: controller.descriptionTextFieldController.value,
-                    hintText: 'Descriptions'.tr,
-                    maxLine: 5,
-                  ),
-                  TextFieldWidget(
-                    controller: controller.priceTextFieldController.value,
-                    inputFormatters: [
-                      FilteringTextInputFormatter.allow(RegExp('[0-9]')),
-                    ],
-                    hintText: 'Price: ex\$5'.tr,
-                  ),
-                ],
+                    TextFieldWidget(
+                      title: 'Menu Item Details'.tr,
+                      controller: controller.nameTextFieldController.value,
+                      hintText: 'Name'.tr,
+                    ),
+                    TextFieldWidget(
+                      controller: controller.descriptionTextFieldController.value,
+                      hintText: 'Descriptions'.tr,
+                      maxLine: 5,
+                    ),
+                    TextFieldWidget(
+                      controller: controller.priceTextFieldController.value,
+                      inputFormatters: [
+                        FilteringTextInputFormatter.allow(RegExp('[0-9]')),
+                      ],
+                      hintText: '${"Price: ex".tr}\$5'.tr,
+                    ),
+                  ],
+                ),
               ),
             ),
           );

@@ -203,7 +203,9 @@ class CategorySelectionScreen extends StatelessWidget {
                                                     contentPadding: EdgeInsets.zero,
                                                     onChanged: (bool? value) {
                                                       if (isSelected(controller, categoryModel)) {
-                                                        controller.selectedCategories.remove(categoryModel);
+                                                        controller.selectedCategories.removeWhere(
+                                                          (element) => element.name == categoryModel.name,
+                                                        );
                                                       } else {
                                                         controller.selectedCategories.add(categoryModel);
                                                       }
@@ -285,43 +287,89 @@ class CategorySelectionScreen extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Container(
-                    decoration: BoxDecoration(
+                  // Container(
+                  //   decoration: BoxDecoration(
+                  //     color: themeChange.getThem() ? AppThemeData.greyDark10 : AppThemeData.grey10,
+                  //     borderRadius: BorderRadius.all(Radius.circular(10)),
+                  //     border: Border.all(
+                  //       color: themeChange.getThem() ? AppThemeData.greyDark06 : AppThemeData.grey06,
+                  //     ),
+                  //   ),
+                  //   child: InkWell(
+                  //     onTap: () {},
+                  //     child: Padding(
+                  //       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+                  //       child: Row(
+                  //         children: [
+                  //           ClipOval(
+                  //             child: NetworkImageWidget(
+                  //               imageUrl: parentCategoryModel.icon.toString(),
+                  //               width: 30,
+                  //               height: 30,
+                  //               fit: BoxFit.cover,
+                  //             ),
+                  //           ),
+                  //           SizedBox(
+                  //             width: 10,
+                  //           ),
+                  //           Expanded(
+                  //             child: Text(
+                  //               "${parentCategoryModel.name}".tr,
+                  //               textAlign: TextAlign.start,
+                  //               style: TextStyle(
+                  //                 color: themeChange.getThem() ? AppThemeData.greyDark02 : AppThemeData.grey02,
+                  //                 fontSize: 14,
+                  //                 fontFamily: AppThemeData.boldOpenSans,
+                  //               ),
+                  //             ),
+                  //           ),
+                  //         ],
+                  //       ),
+                  //     ),
+                  //   ),
+                  // ),
+                  Obx(
+                    () => Container(
                       color: themeChange.getThem() ? AppThemeData.greyDark10 : AppThemeData.grey10,
-                      borderRadius: BorderRadius.all(Radius.circular(10)),
-                      border: Border.all(
-                        color: themeChange.getThem() ? AppThemeData.greyDark06 : AppThemeData.grey06,
-                      ),
-                    ),
-                    child: InkWell(
-                      onTap: () {},
                       child: Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-                        child: Row(
-                          children: [
-                            ClipOval(
-                              child: NetworkImageWidget(
-                                imageUrl: parentCategoryModel.icon.toString(),
+                        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 5),
+                        child: CheckboxListTile(
+                          value: isSelected(controller, parentCategoryModel),
+                          dense: true,
+                          contentPadding: EdgeInsets.zero,
+                          onChanged: (bool? value) {
+                            if (isSelected(controller, parentCategoryModel)) {
+                              controller.selectedCategories.removeWhere(
+                                (element) => element.name == parentCategoryModel.name,
+                              );
+                            } else {
+                              controller.selectedCategories.add(parentCategoryModel);
+                            }
+                          },
+                          title: Row(
+                            children: [
+                              NetworkImageWidget(
                                 width: 30,
                                 height: 30,
                                 fit: BoxFit.cover,
+                                imageUrl: parentCategoryModel.icon.toString(),
                               ),
-                            ),
-                            SizedBox(
-                              width: 10,
-                            ),
-                            Expanded(
-                              child: Text(
-                                "${parentCategoryModel.name}".tr,
-                                textAlign: TextAlign.start,
+                              SizedBox(
+                                width: 10,
+                              ),
+                              Text(
+                                parentCategoryModel.name ?? '',
                                 style: TextStyle(
-                                  color: themeChange.getThem() ? AppThemeData.greyDark02 : AppThemeData.grey02,
-                                  fontSize: 14,
-                                  fontFamily: AppThemeData.boldOpenSans,
+                                  color: themeChange.getThem() ? AppThemeData.greyDark01 : AppThemeData.grey01,
+                                  fontSize: 16,
+                                  fontFamily: AppThemeData.regularOpenSans,
                                 ),
                               ),
-                            ),
-                          ],
+                            ],
+                          ),
+                          controlAffinity: ListTileControlAffinity.trailing,
+                          // Checkbox on the left
+                          activeColor: AppThemeData.red02, // Change color as needed
                         ),
                       ),
                     ),
@@ -425,7 +473,9 @@ class CategorySelectionScreen extends StatelessWidget {
                                         contentPadding: EdgeInsets.zero,
                                         onChanged: (bool? value) {
                                           if (isSelected(controller, categoryModel)) {
-                                            controller.selectedCategories.remove(categoryModel);
+                                            controller.selectedCategories.removeWhere(
+                                              (element) => element.name == categoryModel.name,
+                                            );
                                           } else {
                                             controller.selectedCategories.add(categoryModel);
                                           }

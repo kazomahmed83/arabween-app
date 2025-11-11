@@ -1,5 +1,7 @@
 import 'dart:developer';
 import 'dart:io';
+import 'package:arabween/controller/add_service_controller.dart';
+import 'package:arabween/models/service_model.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -57,6 +59,7 @@ class CreateBusinessController extends GetxController {
   Rx<LatLngModel> location = LatLngModel().obs;
 
   RxList<CategoryModel> selectedCategory = <CategoryModel>[].obs;
+  RxList<Map<String, List<OptionModel>>> services = <Map<String, List<OptionModel>>>[].obs;
   RxList<dynamic> selectedServiceArea = [].obs;
 
   RxBool asCustomerOrWorkAtBusiness = true.obs;
@@ -98,12 +101,12 @@ class CreateBusinessController extends GetxController {
   RxList<String> businessTypeList = ['Local Business', 'Service Business'].obs;
   RxString selectedBusinessType = ''.obs;
 
-  getArgument() {
+  getArgument() async {
     dynamic argumentData = Get.arguments;
     if (argumentData != null) {
       if (argumentData['businessModel'] != null) {
         businessModel.value = argumentData['businessModel'];
-
+        services.value = BusinessModel().decodeFromFirebase(businessModel.value.services ?? []);
         isPermanentClosed.value = businessModel.value.isPermanentClosed ?? false;
         countryNameTextFieldController.value.text = businessModel.value.countryName ?? '';
         countryCodeController.value.text = businessModel.value.countryCode ?? '';
@@ -151,6 +154,13 @@ class CreateBusinessController extends GetxController {
         if (businessModel.value.metaKeywords != null) {
           metaKeywordsList.value = businessModel.value.metaKeywords!;
           metaKeywordsController.value.text = metaKeywordsList.join(', ');
+        }
+        await getSpecification();
+        selectedServiceModel.clear();
+        for (var element in services) {
+          element.forEach((key, value) {
+            selectedServiceModel.add(SelectedServiceModel(id: key, options: value));
+          });
         }
         update();
       } else {
@@ -245,6 +255,15 @@ class CreateBusinessController extends GetxController {
     businessModel.value.isBusinessOpenAllTime = isOpenBusinessAllTime.value;
     businessModel.value.serviceArea = selectedServiceArea;
     log("Service Area :: ${businessModel.value.serviceArea?.join(', ')}");
+    services.clear();
+    for (var element in selectedServiceModel) {
+      if (element.options!.isNotEmpty) {
+        if (services.where((p0) => p0.keys.toString() == element.id.toString()).isEmpty) {
+          services.add({element.id.toString(): element.options!});
+        }
+      }
+    }
+    businessModel.value.services = BusinessModel().convertForUpload(services);
     // businessModel.value.ownerId = FireStoreUtils.getCurrentUid();
     await FireStoreUtils.addBusiness(businessModel.value).then(
       (value) {
@@ -321,5 +340,61 @@ class CreateBusinessController extends GetxController {
       );
     }).toList();
     return DayHours(isOpen: true, timeRanges: ranges);
+  }
+
+  RxList<ServiceModel> serviceList = <ServiceModel>[].obs;
+  RxList<SelectedServiceModel> selectedServiceModel = <SelectedServiceModel>[].obs;
+  getSpecification() async {
+    serviceList.clear();
+    selectedServiceModel.clear();
+    for (var element in selectedCategory) {
+      if (element.services != null) {
+        for (var element0 in element.services!) {
+          await FireStoreUtils.getServiceById(element0.toString()).then(
+            (value) {
+              if (value != null) {
+                if (!serviceList.any((element) => element.name == value.name)) {
+                  serviceList.add(value);
+                }
+              }
+            },
+          );
+        }
+      }
+    }
+  }
+
+  bool isSelected(ServiceModel serviceModel, OptionModel option) {
+    final index = selectedServiceModel.indexWhere((e) => e.id == serviceModel.id);
+    if (index == -1) return false;
+    return selectedServiceModel[index].options?.any((e) => e.name == option.name) ?? false;
+  }
+
+  void toggleOption(ServiceModel serviceModel, OptionModel option, bool selected) {
+    int indexOfModel = selectedServiceModel.indexWhere((e) => e.id == serviceModel.id);
+
+    if (selected) {
+      if (indexOfModel == -1) {
+        selectedServiceModel.add(SelectedServiceModel(id: serviceModel.id, options: [option]));
+      } else {
+        List<OptionModel> list = selectedServiceModel[indexOfModel].options ?? [];
+        if (!list.any((e) => e.name == option.name)) {
+          list.add(option);
+          selectedServiceModel[indexOfModel].options = list;
+        }
+      }
+    } else {
+      if (indexOfModel != -1) {
+        List<OptionModel> list = selectedServiceModel[indexOfModel].options ?? [];
+        list.removeWhere((e) => e.name == option.name);
+        if (list.isEmpty) {
+          selectedServiceModel.removeAt(indexOfModel);
+        } else {
+          selectedServiceModel[indexOfModel].options = list;
+        }
+      }
+    }
+
+    selectedServiceModel.refresh(); // Trigger rebuild
   }
 }

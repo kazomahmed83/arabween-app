@@ -323,7 +323,7 @@ class BusinessListController extends GetxController {
 
     // Assign sponsored businesses separately
     sponsoredBusinessList.value = sponsoredFiltered;
-    print("sponsoredBusinessList :sponsoredBusinessList : ${sponsoredBusinessList.length}");
+    print("sponsoredBusinessList : sponsoredBusinessList : ${sponsoredBusinessList.length}");
 
     setMarkers();
     update();

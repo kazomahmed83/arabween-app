@@ -15,22 +15,25 @@ class UserModel {
   List<dynamic>? followers;
   Subscription? subscription;
   String? appIdentifier;
+  String? countryCode;
+  String? phoneNumber;
 
-  UserModel({
-    this.firstName,
-    this.lastName,
-    this.id,
-    this.isActive,
-    this.dateOfBirth,
-    this.email,
-    this.loginType,
-    this.profilePic,
-    this.fcmToken,
-    this.createdAt,
-    this.followers,
-    this.subscription,
-    this.appIdentifier,
-  });
+  UserModel(
+      {this.firstName,
+      this.lastName,
+      this.id,
+      this.isActive,
+      this.dateOfBirth,
+      this.email,
+      this.loginType,
+      this.profilePic,
+      this.fcmToken,
+      this.createdAt,
+      this.followers,
+      this.subscription,
+      this.appIdentifier,
+      this.countryCode,
+      this.phoneNumber});
 
   fullName() {
     return "$firstName $lastName";
@@ -51,6 +54,8 @@ class UserModel {
     followers = json['followers'] ?? [];
     subscription = json['subscription'] != null ? Subscription.fromJson(json['subscription']) : Subscription();
     appIdentifier = json['appIdentifier'];
+    countryCode = json['countryCode'] ?? '+1';
+    phoneNumber = json['phoneNumber']?.toString();
   }
 
   Map<String, dynamic> toJson() {
@@ -71,6 +76,8 @@ class UserModel {
       data['subscription'] = subscription!.toJson();
     }
     data['appIdentifier'] = appIdentifier;
+    data['countryCode'] = countryCode;
+    data['phoneNumber'] = phoneNumber;
     return data;
   }
 }

@@ -425,8 +425,15 @@ class FireStoreUtils {
             final data = doc.data() as Map<String, dynamic>;
             final business = BusinessModel.fromJson(data);
 
-            final matchesCategory = category.slug == null || (business.category?.any((cat) => cat.slug == category.slug) ?? false);
-
+            bool matchesCategory = false;
+            if (category.children?.isEmpty == true) {
+              matchesCategory = (business.category?.any((cat) => cat.slug == category.slug) ?? false);
+            } else {
+              matchesCategory = business.category?.any(
+                    (cat) => category.children!.contains(cat.slug),
+                  ) ??
+                  false;
+            }
             if (matchesCategory) {
               businesses.add(business);
             }

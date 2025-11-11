@@ -223,40 +223,61 @@ class BusinessDetailsScreen extends StatelessWidget {
                                                   crossAxisAlignment: CrossAxisAlignment.start,
                                                   children: [
                                                     controller.businessModel.value.isVerified == true
-                                                        ? RoundedButtonFill(
-                                                            title: 'Claimed'.tr,
-                                                            height: 3,
-                                                            width: 28,
-                                                            fontSizes: 12,
-                                                            isRight: true,
-                                                            isCenter: true,
-                                                            icon: Icon(
-                                                              Icons.info_outline,
-                                                              color: themeChange.getThem() ? AppThemeData.greyDark01 : AppThemeData.grey01,
-                                                              size: 16,
-                                                            ),
-                                                            textColor: themeChange.getThem() ? AppThemeData.greyDark01 : AppThemeData.grey01,
-                                                            color: themeChange.getThem() ? AppThemeData.greyDark10 : AppThemeData.grey10,
-                                                            onPress: () {},
+                                                        ? Row(
+                                                            mainAxisAlignment: MainAxisAlignment.start,
+                                                            crossAxisAlignment: CrossAxisAlignment.center,
+                                                            children: [
+                                                              Image.asset(
+                                                                'assets/images/ic_free.png',
+                                                                width: 20,
+                                                                height: 20,
+                                                              ),
+                                                              const SizedBox(width: 3),
+                                                              Text(
+                                                                'Claimed'.tr,
+                                                                textAlign: TextAlign.center,
+                                                                style: TextStyle(
+                                                                  fontFamily: AppThemeData.semibold,
+                                                                  fontSize: 12,
+                                                                  color: AppThemeData.greyDark01,
+                                                                ),
+                                                              ),
+                                                            ],
                                                           )
-                                                        : RoundedButtonFill(
-                                                            title: 'Unclaimed'.tr,
-                                                            height: 3,
-                                                            width: 30,
-                                                            fontSizes: 12,
-                                                            isRight: true,
-                                                            isCenter: true,
-                                                            icon: Icon(
-                                                              Icons.info_outline,
-                                                              color: themeChange.getThem() ? AppThemeData.greyDark01 : AppThemeData.grey01,
-                                                              size: 16,
-                                                            ),
-                                                            textColor: themeChange.getThem() ? AppThemeData.greyDark01 : AppThemeData.grey01,
-                                                            color: themeChange.getThem() ? AppThemeData.greyDark10 : AppThemeData.grey10,
-                                                            onPress: () {
-                                                              ShowToastDialog.showLoader("Please wait");
-                                                              Get.to(WebviewScreen(), arguments: {'url': Constant.claimBusinessURL, 'title': 'Claim business'});
+                                                        : InkWell(
+                                                            onTap: () {
+                                                              Utils.launchURL(Constant.claimBusinessURL);
+                                                              // ShowToastDialog.showLoader("Please wait");
+                                                              // Get.to(WebviewScreen(), arguments: {'url': Constant.claimBusinessURL, 'title': 'Claim business'});
                                                             },
+                                                            child: Container(
+                                                              height: 28, // static height (instead of Responsive.height)
+                                                              width: 130,
+                                                              padding: const EdgeInsets.symmetric(horizontal: 8),
+                                                              decoration: BoxDecoration(
+                                                                color: themeChange.getThem() ? AppThemeData.greyDark10 : AppThemeData.grey10,
+                                                                borderRadius: BorderRadius.circular(4),
+                                                              ),
+                                                              child: Row(
+                                                                mainAxisAlignment: MainAxisAlignment.center,
+                                                                crossAxisAlignment: CrossAxisAlignment.center,
+                                                                children: [
+                                                                  // left icon (if needed)
+                                                                  Icon(Icons.info_outline, color: themeChange.getThem() ? AppThemeData.greyDark01 : AppThemeData.grey01, size: 16),
+                                                                  const SizedBox(width: 6),
+                                                                  // title text
+                                                                  Text(
+                                                                    'Unclaimed'.tr,
+                                                                    textAlign: TextAlign.center,
+                                                                    style: TextStyle(
+                                                                      fontFamily: AppThemeData.semibold,
+                                                                      fontSize: 12,
+                                                                      color: themeChange.getThem() ? AppThemeData.greyDark01 : AppThemeData.grey01,
+                                                                    ),
+                                                                  ),
+                                                                ],
+                                                              ),
+                                                            ),
                                                           ),
                                                     SizedBox(
                                                       height: 5,
@@ -2010,102 +2031,105 @@ class BusinessDetailsScreen extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Container(
-            color: themeChange.getThem() ? AppThemeData.greyDark09 : AppThemeData.grey09,
-            height: 14,
-          ),
-          Container(
-            width: Responsive.width(100, Get.context!),
-            decoration: BoxDecoration(
-              color: themeChange.getThem() ? AppThemeData.greyDark10 : AppThemeData.grey10,
-              borderRadius: BorderRadius.all(
-                Radius.circular(10),
-              ),
+          if (controller.reviewList.any((test) => test.userId == FireStoreUtils.getCurrentUid()) != true)
+            Container(
+              color: themeChange.getThem() ? AppThemeData.greyDark09 : AppThemeData.grey09,
+              height: 14,
             ),
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 20),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    "Leave a review".tr,
-                    textAlign: TextAlign.start,
-                    style: TextStyle(
-                      color: themeChange.getThem() ? AppThemeData.greyDark01 : AppThemeData.grey01,
-                      fontSize: 20,
-                      fontFamily: AppThemeData.boldOpenSans,
+          if (controller.reviewList.any((test) => test.userId == FireStoreUtils.getCurrentUid()) != true)
+            Container(
+              width: Responsive.width(100, Get.context!),
+              decoration: BoxDecoration(
+                color: themeChange.getThem() ? AppThemeData.greyDark10 : AppThemeData.grey10,
+                borderRadius: BorderRadius.all(
+                  Radius.circular(10),
+                ),
+              ),
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 20),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      "Leave a review".tr,
+                      textAlign: TextAlign.start,
+                      style: TextStyle(
+                        color: themeChange.getThem() ? AppThemeData.greyDark01 : AppThemeData.grey01,
+                        fontSize: 20,
+                        fontFamily: AppThemeData.boldOpenSans,
+                      ),
                     ),
-                  ),
-                  SizedBox(
-                    height: 10,
-                  ),
-                  if (Constant.userModel?.id != null)
-                    Container(
-                      decoration: BoxDecoration(
-                        color: themeChange.getThem() ? AppThemeData.greyDark10 : AppThemeData.grey10,
-                        borderRadius: BorderRadius.all(
-                          Radius.circular(10),
-                        ),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.black.withOpacity(0.1), // soft shadow
-                            spreadRadius: 1,
-                            blurRadius: 5,
-                            offset: Offset(0, 2), // vertical offset
+                    SizedBox(
+                      height: 10,
+                    ),
+                    if (Constant.userModel?.id != null)
+                      Container(
+                        decoration: BoxDecoration(
+                          color: themeChange.getThem() ? AppThemeData.greyDark10 : AppThemeData.grey10,
+                          borderRadius: BorderRadius.all(
+                            Radius.circular(10),
                           ),
-                        ],
-                      ),
-                      child: DebouncedInkWell(
-                        onTap: () {
-                          Get.to(AddReviewScreen(), arguments: {"businessModel": controller.businessModel.value})?.then(
-                            (value) {
-                              if (value == true) {
-                                controller.getReview();
-                              }
-                            },
-                          );
-                        },
-                        child: Padding(
-                          padding: const EdgeInsets.all(10),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              ReviewUserView(
-                                userId: Constant.userModel!.id.toString(),
-                              ),
-                              SizedBox(
-                                height: 10,
-                              ),
-                              CustomStarRating(
-                                initialRating: "0.0",
-                                enable: false,
-                                bgColor: themeChange.getThem() ? AppThemeData.greyDark06 : AppThemeData.grey06,
-                                emptyColor: themeChange.getThem() ? AppThemeData.greyDark10 : AppThemeData.grey10,
-                              ),
-                              SizedBox(
-                                height: 10,
-                              ),
-                              Text(
-                                "Tap to review".tr,
-                                textAlign: TextAlign.start,
-                                style: TextStyle(
-                                  color: AppThemeData.red02,
-                                  fontSize: 14,
-                                  fontFamily: AppThemeData.semiboldOpenSans,
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.black.withOpacity(0.1), // soft shadow
+                              spreadRadius: 1,
+                              blurRadius: 5,
+                              offset: Offset(0, 2), // vertical offset
+                            ),
+                          ],
+                        ),
+                        child: DebouncedInkWell(
+                          onTap: () {
+                            Get.to(AddReviewScreen(), arguments: {"businessModel": controller.businessModel.value})?.then(
+                              (value) {
+                                if (value == true) {
+                                  controller.getReview();
+                                  controller.getBusinessListOfSameCategory();
+                                }
+                              },
+                            );
+                          },
+                          child: Padding(
+                            padding: const EdgeInsets.all(10),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                ReviewUserView(
+                                  userId: Constant.userModel!.id.toString(),
                                 ),
-                              ),
-                              SizedBox(
-                                height: 8,
-                              ),
-                            ],
+                                SizedBox(
+                                  height: 10,
+                                ),
+                                CustomStarRating(
+                                  initialRating: "0.0",
+                                  enable: false,
+                                  bgColor: themeChange.getThem() ? AppThemeData.greyDark06 : AppThemeData.grey06,
+                                  emptyColor: themeChange.getThem() ? AppThemeData.greyDark10 : AppThemeData.grey10,
+                                ),
+                                SizedBox(
+                                  height: 10,
+                                ),
+                                Text(
+                                  "Tap to review".tr,
+                                  textAlign: TextAlign.start,
+                                  style: TextStyle(
+                                    color: AppThemeData.red02,
+                                    fontSize: 14,
+                                    fontFamily: AppThemeData.semiboldOpenSans,
+                                  ),
+                                ),
+                                SizedBox(
+                                  height: 8,
+                                ),
+                              ],
+                            ),
                           ),
                         ),
-                      ),
-                    )
-                ],
+                      )
+                  ],
+                ),
               ),
             ),
-          ),
           Container(
             color: themeChange.getThem() ? AppThemeData.greyDark09 : AppThemeData.grey09,
             height: 14,

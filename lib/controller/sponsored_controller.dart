@@ -8,7 +8,6 @@ import 'package:arabween/models/sponsored_request_model.dart';
 import 'package:arabween/models/user_model.dart';
 import 'package:arabween/utils/fire_store_utils.dart';
 
-
 class SponsoredController extends GetxController {
   RxBool isLoading = true.obs;
   Rx<TextEditingController> noteTextFieldController = TextEditingController().obs;
@@ -22,32 +21,25 @@ class SponsoredController extends GetxController {
 
   Rx<UserModel> userModel = UserModel().obs;
 
-
   RxList<BusinessModel> businessList = <BusinessModel>[].obs;
   Rx<BusinessModel> selectedBusiness = BusinessModel().obs;
-
 
   Rx<DateTime> startValidityDate = DateTime.now().obs;
   Rx<DateTime> endValidityDate = DateTime.now().obs;
 
   getSponsoredPackage() async {
+    await FireStoreUtils.getCurrentUserModel().then((value) {
+      if (value != null) {
+        userModel.value = value;
+      }
+    });
 
-    await FireStoreUtils.getCurrentUserModel().then(
-      (value) {
-        if (value != null) {
-          userModel.value = value;
-        }
-      },
-    );
-
-    await FireStoreUtils.getOwnerBusinessListById(userModel.value.id.toString()).then(
-      (value) {
-        businessList.value = value;
-        if (businessList.isNotEmpty) {
-          selectedBusiness.value = businessList.first;
-        }
-      },
-    );
+    await FireStoreUtils.getOwnerBusinessListById(userModel.value.id.toString()).then((value) {
+      businessList.value = value;
+      if (businessList.isNotEmpty) {
+        selectedBusiness.value = businessList.first;
+      }
+    });
 
     isLoading.value = false;
   }
@@ -63,12 +55,9 @@ class SponsoredController extends GetxController {
     sponsoredRequestModel.createdAt = Timestamp.fromDate(DateTime.now());
     sponsoredRequestModel.adminNote = noteTextFieldController.value.text;
     sponsoredRequestModel.userId = userModel.value.id;
-    await FireStoreUtils.addSponsoredRequest(sponsoredRequestModel).then(
-      (value) {
-        Get.back();
-        ShowToastDialog.showToast("Request Sent Successfully");
-      },
-    );
+    await FireStoreUtils.addSponsoredRequest(sponsoredRequestModel).then((value) {
+      Get.back();
+      ShowToastDialog.showToast("Request Sent Successfully");
+    });
   }
-
 }

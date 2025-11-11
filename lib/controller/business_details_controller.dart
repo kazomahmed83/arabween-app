@@ -90,7 +90,6 @@ class BusinessDetailsController extends GetxController with GetSingleTickerProvi
           await fetchBusinessServices();
           await fetchBusinessHighLight();
           await getBusinessListOfSameCategory();
-
           getReview();
         }
       },

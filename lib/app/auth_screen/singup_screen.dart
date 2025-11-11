@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:arabween/themes/round_button_border.dart';
+import 'package:country_code_picker/country_code_picker.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -120,7 +121,44 @@ class SingUpScreen extends StatelessWidget {
                             ),
                           )
                         : SizedBox(),
-                    SizedBox(height: 10),
+                    if (controller.loginType.value == Constant.emailLoginType)
+                      TextFieldWidget(
+                        controller: controller.phoneNumberTextFieldController.value,
+                        hintText: 'Enter mobile number'.tr,
+                        readOnly: controller.loginType.value == Constant.phoneLoginType ? true : false,
+                        enable: controller.loginType.value == Constant.phoneLoginType ? false : true,
+                        inputFormatters: [
+                          FilteringTextInputFormatter.allow(RegExp('[0-9]')),
+                        ],
+                        prefix: CountryCodePicker(
+                          onChanged: (value) {
+                            controller.countryCodeController.value.text = value.dialCode.toString();
+                          },
+                          dialogTextStyle: TextStyle(color: themeChange.getThem() ? AppThemeData.greyDark01 : AppThemeData.grey01, fontWeight: FontWeight.w500, fontFamily: AppThemeData.medium),
+                          dialogBackgroundColor: themeChange.getThem() ? AppThemeData.greyDark10 : AppThemeData.grey10,
+                          initialSelection: controller.countryCodeController.value.text,
+                          comparator: (a, b) => b.name!.compareTo(a.name.toString()),
+                          flagDecoration: const BoxDecoration(
+                            borderRadius: BorderRadius.all(Radius.circular(2)),
+                          ),
+                          textStyle: TextStyle(
+                            color: themeChange.getThem() ? AppThemeData.greyDark01 : AppThemeData.grey01,
+                            fontWeight: FontWeight.w500,
+                            fontFamily: AppThemeData.medium,
+                          ),
+                          searchDecoration: InputDecoration(
+                            iconColor: themeChange.getThem() ? AppThemeData.grey08 : AppThemeData.grey08,
+                          ),
+                          searchStyle: TextStyle(
+                            color: themeChange.getThem() ? AppThemeData.greyDark01 : AppThemeData.grey01,
+                            fontWeight: FontWeight.w500,
+                            fontFamily: AppThemeData.medium,
+                          ),
+                        ),
+                      ),
+                    SizedBox(
+                      height: 10,
+                    ),
                     RoundedButtonFill(
                       title: controller.isAddAbusinessBtn.value == true ? 'Next'.tr : 'Sign up'.tr,
                       height: 5.5,
@@ -136,6 +174,8 @@ class SingUpScreen extends StatelessWidget {
                             ShowToastDialog.showToast("Enter email address".tr);
                           } else if (controller.passwordTextFieldController.value.text.isEmpty) {
                             ShowToastDialog.showToast("Enter Password".tr);
+                          } else if (controller.phoneNumberTextFieldController.value.text.isEmpty) {
+                            ShowToastDialog.showToast("Enter mobile number".tr);
                           } else {
                             if (controller.isAddAbusinessBtn.value == true) {
                               controller.signUpWithEmailPassword(themeChange: themeChange.getThem(), context: context);

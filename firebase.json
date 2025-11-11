@@ -1,1 +1,30 @@
-{"flutter":{"platforms":{"android":{"default":{"projectId":"arab-ween-app","appId":"1:447213836415:android:767883d8433ac38959474a","fileOutput":"android/app/google-services.json"}},"ios":{"default":{"projectId":"arabween-875c3","appId":"1:930102973522:ios:207533b67b0e45e0b5fb8b","uploadDebugSymbols":false,"fileOutput":"ios/Runner/GoogleService-Info.plist"}},"dart":{"lib/firebase_options.dart":{"projectId":"arab-ween-app","configurations":{"android":"1:447213836415:android:767883d8433ac38959474a","ios":"1:447213836415:ios:2118c41d443c65a859474a"}}}}}}
+{
+    "flutter": {
+        "platforms": {
+            "android": {
+                "default": {
+                    "projectId": "arab-ween-app",
+                    "appId": "1:447213836415:android:767883d8433ac38959474a",
+                    "fileOutput": "android/app/google-services.json"
+                }
+            },
+            "ios": {
+                "default": {
+                    "projectId": "arabween-875c3",
+                    "appId": "1:930102973522:ios:207533b67b0e45e0b5fb8b",
+                    "uploadDebugSymbols": false,
+                    "fileOutput": "ios/Runner/GoogleService-Info.plist"
+                }
+            },
+            "dart": {
+                "lib/firebase_options.dart": {
+                    "projectId": "arab-ween-app",
+                    "configurations": {
+                        "android": "1:447213836415:android:767883d8433ac38959474a",
+                        "ios": "1:447213836415:ios:2118c41d443c65a859474a"
+                    }
+                }
+            }
+        }
+    }
+}

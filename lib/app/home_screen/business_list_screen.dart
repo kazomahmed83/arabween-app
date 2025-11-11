@@ -372,7 +372,6 @@ class BusinessListScreen extends StatelessWidget {
                                                           } else {
                                                             controller.selectedCategory.value = category;
                                                           }
-
                                                           controller.getBusiness();
                                                         },
                                                         child: SizedBox(

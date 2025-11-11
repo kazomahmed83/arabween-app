@@ -4,6 +4,7 @@ import 'package:arabween/app/create_bussiness_screen/service_address_screen.dart
 import 'package:arabween/app/highlight_screen/highlight_screen.dart';
 import 'package:arabween/models/business_model.dart';
 import 'package:arabween/models/highlight_model.dart';
+import 'package:arabween/models/service_model.dart';
 import 'package:country_code_picker/country_code_picker.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -329,12 +330,7 @@ class CreateBusinessScreen extends StatelessWidget {
                               ),
                             ),
                             SizedBox(height: 5),
-                            TextFieldWidget(
-                              title: 'Tagline'.tr,
-                              controller: controller.tagLineTextFieldController.value,
-                              hintText: 'Tagline'.tr,
-                              maxLine: 2,
-                            ),
+                            TextFieldWidget(title: 'Tagline'.tr, controller: controller.tagLineTextFieldController.value, hintText: 'Tagline'.tr, maxLine: 2),
                             Text(
                               'Business Type'.tr,
                               style: TextStyle(fontFamily: AppThemeData.boldOpenSans, fontSize: 14, color: themeChange.getThem() ? AppThemeData.greyDark01 : AppThemeData.grey01),
@@ -462,6 +458,7 @@ class CreateBusinessScreen extends StatelessWidget {
                                   final text = controller.selectedCategory.map((e) => e.name ?? '').where((name) => name.isNotEmpty).join(', ');
                                   controller.categoryTextFieldController.value.text = text;
                                 }
+                                controller.getSpecification();
                               },
                               child: TextFieldWidget(
                                 title: 'Category'.tr,
@@ -570,13 +567,19 @@ class CreateBusinessScreen extends StatelessWidget {
                               title: 'Business Website Url'.tr,
                               controller: controller.websiteTextFieldController.value,
                               hintText: 'Business Website Url'.tr,
-                              suffix: IconButton(onPressed: () {}, icon: SvgPicture.asset("assets/icons/global-line.svg", height: 20, width: 20, color: AppThemeData.red02)),
+                              suffix: IconButton(
+                                onPressed: () {},
+                                icon: SvgPicture.asset("assets/icons/global-line.svg", height: 20, width: 20, color: AppThemeData.red02),
+                              ),
                             ),
                             TextFieldWidget(
                               title: 'Booking Website Url'.tr,
                               controller: controller.bookingLinkTextFieldController.value,
                               hintText: 'Booking Website Url'.tr,
-                              suffix: IconButton(onPressed: () {}, icon: SvgPicture.asset("assets/icons/global-line.svg", height: 20, width: 20, color: AppThemeData.red02)),
+                              suffix: IconButton(
+                                onPressed: () {},
+                                icon: SvgPicture.asset("assets/icons/global-line.svg", height: 20, width: 20, color: AppThemeData.red02),
+                              ),
                             ),
                             TextFieldWidget(
                               title: 'Facebook link'.tr,
@@ -705,6 +708,81 @@ class CreateBusinessScreen extends StatelessWidget {
                                     shrinkWrap: true,
                                     children: controller.businessWeek.entries.map((entry) => _buildDayEditor(context, controller, entry.key, entry.value)).toList(),
                                   ),
+                            Visibility(
+                              visible: controller.serviceList.isNotEmpty,
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  const SizedBox(height: 10),
+                                  Text(
+                                    'Category Services Options'.tr,
+                                    style: TextStyle(fontFamily: AppThemeData.boldOpenSans, fontSize: 14, color: themeChange.getThem() ? AppThemeData.greyDark01 : AppThemeData.grey01),
+                                  ),
+                                  const SizedBox(height: 5),
+                                  controller.serviceList.isEmpty
+                                      ? Constant.showEmptyView(message: "Service Not available".tr)
+                                      : ListView.builder(
+                                          padding: EdgeInsets.all(0),
+                                          physics: NeverScrollableScrollPhysics(),
+                                          shrinkWrap: true,
+                                          itemCount: controller.serviceList.length,
+                                          itemBuilder: (context, index) {
+                                            ServiceModel serviceModel = controller.serviceList[index];
+                                            return Padding(
+                                              padding: const EdgeInsets.symmetric(vertical: 10),
+                                              child: Padding(
+                                                padding: const EdgeInsets.symmetric(horizontal: 0, vertical: 0),
+                                                child: Column(
+                                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                                  children: [
+                                                    Text(
+                                                      "${serviceModel.name}".tr,
+                                                      textAlign: TextAlign.start,
+                                                      style: TextStyle(
+                                                        color: themeChange.getThem() ? AppThemeData.greyDark01 : AppThemeData.grey02,
+                                                        fontSize: 14,
+                                                        fontFamily: AppThemeData.boldOpenSans,
+                                                      ),
+                                                    ),
+                                                    GridView.builder(
+                                                      padding: EdgeInsets.all(0),
+                                                      physics: NeverScrollableScrollPhysics(),
+                                                      shrinkWrap: true,
+                                                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2, childAspectRatio: 4, mainAxisSpacing: 2, crossAxisSpacing: 2),
+                                                      itemCount: serviceModel.options?.length, // First item is the upload button
+                                                      itemBuilder: (context, index1) {
+                                                        return Obx(
+                                                          () => CheckboxListTile(
+                                                            value: controller.isSelected(serviceModel, serviceModel.options![index1]),
+                                                            dense: true,
+                                                            contentPadding: EdgeInsets.zero,
+                                                            onChanged: (bool? value) {
+                                                              controller.toggleOption(serviceModel, serviceModel.options![index1], value ?? false);
+                                                            },
+                                                            title: Text(
+                                                              serviceModel.options![index1].name.toString().tr,
+                                                              style: TextStyle(
+                                                                color: themeChange.getThem() ? AppThemeData.greyDark01 : AppThemeData.grey01,
+                                                                fontSize: 13,
+                                                                fontFamily: AppThemeData.regularOpenSans,
+                                                              ),
+                                                            ),
+                                                            controlAffinity: ListTileControlAffinity.leading,
+                                                            // Checkbox on the left
+                                                            activeColor: AppThemeData.red02, // Change color as needed
+                                                          ),
+                                                        );
+                                                      },
+                                                    ),
+                                                  ],
+                                                ),
+                                              ),
+                                            );
+                                          },
+                                        ),
+                                ],
+                              ),
+                            ),
                           ],
                         ),
                       ),

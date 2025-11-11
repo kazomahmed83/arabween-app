@@ -364,5 +364,9 @@ const Map<String, String> lnAr = {
   'All Businesses': 'جميع الأنشطة التجارية',
   'Sponsored Businesses': 'الأنشطة التجارية المدعومة',
   'First, select a business, then send your request.': 'أولاً، اختر نشاطًا تجاريًا، ثم أرسل طلبك.',
-  'Review Not Found': 'لم يتم العثور على مراجعة'
+  'Review Not Found': 'لم يتم العثور على مراجعة',
+  "Price: ex": "السعر: مثال",
+  "What’s your relationship with the business you’d like to add?": "ما علاقتك بالنشاط التجاري الذي ترغب في إضافته؟",
+  "I’m a customer": "أنا عميل",
+  "I work at the business": "أنا أملك النشاط التجاري",
 };
