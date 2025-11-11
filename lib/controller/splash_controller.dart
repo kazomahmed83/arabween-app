@@ -6,6 +6,8 @@ import 'package:get/get.dart';
 import 'package:arabween/app/auth_screen/welcome_screen.dart';
 import 'package:arabween/app/dashboard_screen/dashboard_screen.dart';
 import 'package:arabween/app/location_permission_screen/location_permission_screen.dart';
+import 'package:arabween/app/onboarding_screen/onboarding_screen.dart';
+import 'package:arabween/controller/onboarding/onboarding_controller.dart';
 import 'package:arabween/utils/fire_store_utils.dart';
 
 class SplashController extends GetxController {
@@ -16,6 +18,13 @@ class SplashController extends GetxController {
   }
 
   redirectScreen() async {
+    bool isOnboardingComplete = await OnboardingController.isOnboardingComplete();
+
+    if (!isOnboardingComplete) {
+      Get.offAll(() => const OnboardingScreen());
+      return;
+    }
+
     bool isLocationPermission = await _checkLocationPermission();
     if (isLocationPermission) {
       bool isLogin = await FireStoreUtils.isLogin();
