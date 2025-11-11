@@ -1,4 +1,5 @@
 import 'package:arabween/app/business_details_screen/business_details_screen.dart';
+import 'package:arabween/app/ai_search_screen/ai_search_screen.dart';
 
 import 'package:arabween/app/create_bussiness_screen/service_address_screen.dart';
 import 'package:arabween/app/home_screen/all_business_list_screen.dart';
@@ -129,53 +130,75 @@ class HomeScreen extends StatelessWidget {
                         preferredSize: Size.fromHeight(10),
                         child: Padding(
                           padding: const EdgeInsets.only(left: 16, right: 16, bottom: 8),
-                          child: Container(
-                            height: 50,
-                            decoration: BoxDecoration(color: themeChange.getThem() ? AppThemeData.greyDark10 : AppThemeData.grey10, borderRadius: BorderRadius.circular(8)),
-                            child: DebouncedInkWell(
-                              onTap: () {
-                                Get.to(SearchScreen());
-                              },
-                              child: TextFormField(
-                                keyboardType: TextInputType.text,
-                                textCapitalization: TextCapitalization.sentences,
-                                controller: controller.searchController.value,
-                                style: TextStyle(color: themeChange.getThem() ? AppThemeData.greyDark01 : AppThemeData.grey01, fontFamily: AppThemeData.medium),
-                                decoration: InputDecoration(
-                                  errorStyle: const TextStyle(color: Colors.red),
-                                  enabled: false,
-                                  suffixIcon: Padding(
-                                    padding: const EdgeInsets.all(8.0),
-                                    child: Icon(Icons.search, color: AppThemeData.red02),
+                          child: Row(
+                            children: [
+                              Expanded(
+                                child: Container(
+                                  height: 50,
+                                  decoration: BoxDecoration(color: themeChange.getThem() ? AppThemeData.greyDark10 : AppThemeData.grey10, borderRadius: BorderRadius.circular(8)),
+                                  child: DebouncedInkWell(
+                                    onTap: () {
+                                      Get.to(SearchScreen());
+                                    },
+                                    child: TextFormField(
+                                      keyboardType: TextInputType.text,
+                                      textCapitalization: TextCapitalization.sentences,
+                                      controller: controller.searchController.value,
+                                      style: TextStyle(color: themeChange.getThem() ? AppThemeData.greyDark01 : AppThemeData.grey01, fontFamily: AppThemeData.medium),
+                                      decoration: InputDecoration(
+                                        errorStyle: const TextStyle(color: Colors.red),
+                                        enabled: false,
+                                        suffixIcon: Padding(
+                                          padding: const EdgeInsets.all(8.0),
+                                          child: Icon(Icons.search, color: AppThemeData.red02),
+                                        ),
+                                        prefixIconConstraints: BoxConstraints(minHeight: 20, minWidth: 20),
+                                        contentPadding: EdgeInsets.symmetric(vertical: 16, horizontal: 10),
+                                        fillColor: themeChange.getThem() ? AppThemeData.greyDark10 : AppThemeData.grey10,
+                                        disabledBorder: OutlineInputBorder(
+                                          borderRadius: const BorderRadius.all(Radius.circular(8)),
+                                          borderSide: BorderSide(color: themeChange.getThem() ? AppThemeData.grey03 : AppThemeData.greyDark06, width: 1),
+                                        ),
+                                        focusedBorder: OutlineInputBorder(
+                                          borderRadius: const BorderRadius.all(Radius.circular(8)),
+                                          borderSide: BorderSide(color: themeChange.getThem() ? AppThemeData.grey03 : AppThemeData.greyDark06, width: 1),
+                                        ),
+                                        enabledBorder: OutlineInputBorder(
+                                          borderRadius: const BorderRadius.all(Radius.circular(8)),
+                                          borderSide: BorderSide(color: themeChange.getThem() ? AppThemeData.grey03 : AppThemeData.greyDark06, width: 1),
+                                        ),
+                                        errorBorder: OutlineInputBorder(
+                                          borderRadius: const BorderRadius.all(Radius.circular(8)),
+                                          borderSide: BorderSide(color: themeChange.getThem() ? AppThemeData.grey03 : AppThemeData.greyDark06, width: 1),
+                                        ),
+                                        border: OutlineInputBorder(
+                                          borderRadius: const BorderRadius.all(Radius.circular(8)),
+                                          borderSide: BorderSide(color: themeChange.getThem() ? AppThemeData.grey03 : AppThemeData.greyDark06, width: 1),
+                                        ),
+                                        hintText: "Search for nail salons".tr,
+                                        hintStyle: TextStyle(fontSize: 14, color: themeChange.getThem() ? AppThemeData.greyDark04 : AppThemeData.grey04, fontFamily: AppThemeData.regularOpenSans),
+                                      ),
+                                    ),
                                   ),
-                                  prefixIconConstraints: BoxConstraints(minHeight: 20, minWidth: 20),
-                                  contentPadding: EdgeInsets.symmetric(vertical: 16, horizontal: 10),
-                                  fillColor: themeChange.getThem() ? AppThemeData.greyDark10 : AppThemeData.grey10,
-                                  disabledBorder: OutlineInputBorder(
-                                    borderRadius: const BorderRadius.all(Radius.circular(8)),
-                                    borderSide: BorderSide(color: themeChange.getThem() ? AppThemeData.grey03 : AppThemeData.greyDark06, width: 1),
-                                  ),
-                                  focusedBorder: OutlineInputBorder(
-                                    borderRadius: const BorderRadius.all(Radius.circular(8)),
-                                    borderSide: BorderSide(color: themeChange.getThem() ? AppThemeData.grey03 : AppThemeData.greyDark06, width: 1),
-                                  ),
-                                  enabledBorder: OutlineInputBorder(
-                                    borderRadius: const BorderRadius.all(Radius.circular(8)),
-                                    borderSide: BorderSide(color: themeChange.getThem() ? AppThemeData.grey03 : AppThemeData.greyDark06, width: 1),
-                                  ),
-                                  errorBorder: OutlineInputBorder(
-                                    borderRadius: const BorderRadius.all(Radius.circular(8)),
-                                    borderSide: BorderSide(color: themeChange.getThem() ? AppThemeData.grey03 : AppThemeData.greyDark06, width: 1),
-                                  ),
-                                  border: OutlineInputBorder(
-                                    borderRadius: const BorderRadius.all(Radius.circular(8)),
-                                    borderSide: BorderSide(color: themeChange.getThem() ? AppThemeData.grey03 : AppThemeData.greyDark06, width: 1),
-                                  ),
-                                  hintText: "Search for nail salons".tr,
-                                  hintStyle: TextStyle(fontSize: 14, color: themeChange.getThem() ? AppThemeData.greyDark04 : AppThemeData.grey04, fontFamily: AppThemeData.regularOpenSans),
                                 ),
                               ),
-                            ),
+                              SizedBox(width: 8),
+                              Container(
+                                height: 50,
+                                width: 50,
+                                decoration: BoxDecoration(
+                                  color: AppThemeData.primary300,
+                                  borderRadius: BorderRadius.circular(8),
+                                ),
+                                child: IconButton(
+                                  icon: Icon(Icons.auto_awesome, color: Colors.white),
+                                  onPressed: () {
+                                    Get.to(() => const AISearchScreen());
+                                  },
+                                  tooltip: 'AI Search',
+                                ),
+                              ),
+                            ],
                           ),
                         ),
                       ),
