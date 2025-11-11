@@ -11,6 +11,7 @@ import 'package:arabween/app/business_details_screen/business_details_screen.dar
 import 'package:arabween/constant/constant.dart';
 import 'package:arabween/models/language_model.dart';
 import 'package:arabween/service/ad_manager.dart';
+import 'package:arabween/service/integrated_data_service.dart';
 import 'package:arabween/themes/styles.dart';
 import 'package:arabween/utils/dark_theme_provider.dart';
 import 'package:arabween/utils/fire_store_utils.dart';
@@ -51,6 +52,19 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
     getCurrentAppTheme();
     WidgetsBinding.instance.addObserver(this);
     _listenDeepLinks();
+    await _initializeIntegratedSync();
+  }
+
+  Future<void> _initializeIntegratedSync() async {
+    try {
+      await IntegratedDataService.initialize(
+        websiteApiUrl: 'https://your-website.com/api',
+        backendApiUrl: 'https://your-backend.com/api',
+      );
+      debugPrint('Integrated sync service initialized');
+    } catch (e) {
+      debugPrint('Error initializing sync service: $e');
+    }
   }
 
   Future<void> _setInitialLanguage() async {

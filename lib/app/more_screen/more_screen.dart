@@ -10,6 +10,7 @@ import 'package:arabween/app/create_bussiness_screen/create_business_screen.dart
 import 'package:arabween/app/my_business_profile/my_business_profile_screen.dart';
 import 'package:arabween/app/settings_screen/setting_screens.dart';
 import 'package:arabween/app/sponsored_screens/sponsored_screen.dart';
+import 'package:arabween/app/sync_status_screen/sync_status_screen.dart';
 import 'package:arabween/app/user_subscriotion_screen/user_subscription_screen.dart';
 import 'package:arabween/constant/constant.dart';
 import 'package:arabween/controller/dashboard_controller.dart';
@@ -621,6 +622,34 @@ class MoreScreen extends StatelessWidget {
                                   //     );
                                   //   },
                                   // ),
+                                  SizedBox(
+                                    height: 16,
+                                  ),
+                                  InkWell(
+                                    onTap: () {
+                                      Get.to(() => const SyncStatusScreen());
+                                    },
+                                    child: Row(
+                                      children: [
+                                        Padding(
+                                          padding: const EdgeInsets.all(12),
+                                          child: Icon(Icons.sync, size: 20),
+                                        ),
+                                        SizedBox(
+                                          width: 10,
+                                        ),
+                                        Text(
+                                          "Sync Status".tr,
+                                          textAlign: TextAlign.start,
+                                          style: TextStyle(
+                                            color: themeChange.getThem() ? AppThemeData.greyDark01 : AppThemeData.grey01,
+                                            fontSize: 16,
+                                            fontFamily: AppThemeData.semiboldOpenSans,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
                                   SizedBox(
                                     height: 16,
                                   ),
