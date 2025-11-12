@@ -18,9 +18,9 @@ class ReviewPhotoView extends StatelessWidget {
       List<PhotoModel>? photos = userController.photoMap[reviewId];
 
       if (photos == null) {
-        return Center(child: CircularProgressIndicator()); // Loading state
+        return Center(child: CircularProgressIndicator());
       } else if (photos.isEmpty) {
-        return SizedBox(); // Empty state
+        return SizedBox();
       }
 
       return SizedBox(

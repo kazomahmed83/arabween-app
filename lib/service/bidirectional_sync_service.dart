@@ -31,7 +31,7 @@ class SyncOperation {
     required this.direction,
     required this.source,
     required this.target,
-    this.priority = ApiConfig.Priority.medium,
+    this.priority = Priority.medium,
     DateTime? timestamp,
     this.status = SyncStatus.pending,
     this.retryCount = 0,
@@ -61,7 +61,7 @@ class SyncOperation {
         direction: SyncDirection.values.firstWhere((e) => e.toString() == json['direction']),
         source: DataSource.values.firstWhere((e) => e.toString() == json['source']),
         target: DataSource.values.firstWhere((e) => e.toString() == json['target']),
-        priority: json['priority'] ?? ApiConfig.Priority.medium,
+        priority: json['priority'] ?? Priority.medium,
         timestamp: DateTime.parse(json['timestamp']),
         status: SyncStatus.values.firstWhere((e) => e.toString() == json['status']),
         retryCount: json['retryCount'] ?? 0,
@@ -82,7 +82,7 @@ class BidirectionalSyncService {
     await _loadSyncQueue();
     await _loadLastSyncTime();
     
-    if (ApiConfig.SyncConfig.enableAutoSync) {
+    if (SyncConfig.enableAutoSync) {
       _startAutoSync();
     }
   }
@@ -90,7 +90,7 @@ class BidirectionalSyncService {
   Future<void> _loadSyncQueue() async {
     try {
       final prefs = await SharedPreferences.getInstance();
-      final queueJson = prefs.getString(ApiConfig.SyncConfig.syncQueueKey);
+      final queueJson = prefs.getString(SyncConfig.syncQueueKey);
       if (queueJson != null) {
         final List<dynamic> queueList = jsonDecode(queueJson);
         _syncQueue.clear();
@@ -106,7 +106,7 @@ class BidirectionalSyncService {
     try {
       final prefs = await SharedPreferences.getInstance();
       final queueJson = jsonEncode(_syncQueue.map((op) => op.toJson()).toList());
-      await prefs.setString(ApiConfig.SyncConfig.syncQueueKey, queueJson);
+      await prefs.setString(SyncConfig.syncQueueKey, queueJson);
     } catch (e) {
       log('Error saving sync queue: $e');
     }
@@ -115,7 +115,7 @@ class BidirectionalSyncService {
   Future<void> _loadLastSyncTime() async {
     try {
       final prefs = await SharedPreferences.getInstance();
-      final timestamp = prefs.getString(ApiConfig.SyncConfig.lastSyncKey);
+      final timestamp = prefs.getString(SyncConfig.lastSyncKey);
       if (timestamp != null) {
         _lastSyncTime = DateTime.parse(timestamp);
       }
@@ -128,14 +128,14 @@ class BidirectionalSyncService {
     try {
       final prefs = await SharedPreferences.getInstance();
       _lastSyncTime = DateTime.now();
-      await prefs.setString(ApiConfig.SyncConfig.lastSyncKey, _lastSyncTime!.toIso8601String());
+      await prefs.setString(SyncConfig.lastSyncKey, _lastSyncTime!.toIso8601String());
     } catch (e) {
       log('Error saving last sync time: $e');
     }
   }
 
   void _startAutoSync() {
-    Future.delayed(ApiConfig.SyncConfig.syncInterval, () async {
+    Future.delayed(SyncConfig.syncInterval, () async {
       await syncAll();
       _startAutoSync();
     });
@@ -148,7 +148,7 @@ class BidirectionalSyncService {
     required SyncDirection direction,
     required DataSource source,
     required DataSource target,
-    int priority = ApiConfig.Priority.medium,
+    int priority = Priority.medium,
   }) async {
     final operation = SyncOperation(
       id: '${entityType}_${entityId}_${DateTime.now().millisecondsSinceEpoch}',
@@ -167,7 +167,7 @@ class BidirectionalSyncService {
     await _saveSyncQueue();
     log('Queued sync operation: ${operation.id}');
 
-    if (ApiConfig.SyncConfig.enableRealtimeSync && !_isSyncing) {
+    if (SyncConfig.enableRealtimeSync && !_isSyncing) {
       await _processSyncQueue();
     }
   }
@@ -208,7 +208,7 @@ class BidirectionalSyncService {
           operation.status = SyncStatus.failed;
           operation.retryCount++;
           
-          if (operation.retryCount >= ApiConfig.SyncConfig.maxRetries) {
+          if (operation.retryCount >= SyncConfig.maxRetries) {
             _syncQueue.remove(operation);
             await _logConflict(operation);
             log('Sync operation failed after ${operation.retryCount} retries: ${operation.id}');
@@ -257,17 +257,17 @@ class BidirectionalSyncService {
 
       final responses = await UnifiedApiService.makeParallelRequests(requests: [
         {
-          'endpoint': '${ApiConfig.Endpoints.sync}?since=$lastSync',
+          'endpoint': '${Endpoints.sync}?since=$lastSync',
           'method': 'GET',
           'targetApi': 'website',
         },
         {
-          'endpoint': '${ApiConfig.Endpoints.sync}?since=$lastSync',
+          'endpoint': '${Endpoints.sync}?since=$lastSync',
           'method': 'GET',
           'targetApi': 'backend',
         },
         {
-          'endpoint': '${ApiConfig.Endpoints.sync}?since=$lastSync',
+          'endpoint': '${Endpoints.sync}?since=$lastSync',
           'method': 'GET',
           'targetApi': 'deepagent',
         },
@@ -317,7 +317,7 @@ class BidirectionalSyncService {
   Future<void> _logConflict(SyncOperation operation) async {
     try {
       final prefs = await SharedPreferences.getInstance();
-      final conflictLog = prefs.getString(ApiConfig.SyncConfig.conflictLogKey) ?? '[]';
+      final conflictLog = prefs.getString(SyncConfig.conflictLogKey) ?? '[]';
       final conflicts = jsonDecode(conflictLog) as List<dynamic>;
       
       conflicts.add({
@@ -325,7 +325,7 @@ class BidirectionalSyncService {
         'logged_at': DateTime.now().toIso8601String(),
       });
 
-      await prefs.setString(ApiConfig.SyncConfig.conflictLogKey, jsonEncode(conflicts));
+      await prefs.setString(SyncConfig.conflictLogKey, jsonEncode(conflicts));
     } catch (e) {
       log('Error logging conflict: $e');
     }
@@ -347,15 +347,15 @@ class BidirectionalSyncService {
   String _getEndpointForEntity(String entityType) {
     switch (entityType.toLowerCase()) {
       case 'business':
-        return ApiConfig.Endpoints.syncBusiness;
+        return Endpoints.syncBusiness;
       case 'review':
-        return ApiConfig.Endpoints.syncReview;
+        return Endpoints.syncReview;
       case 'user':
-        return ApiConfig.Endpoints.syncUser;
+        return Endpoints.syncUser;
       case 'category':
-        return ApiConfig.Endpoints.syncCategory;
+        return Endpoints.syncCategory;
       default:
-        return ApiConfig.Endpoints.sync;
+        return Endpoints.sync;
     }
   }
 
@@ -372,7 +372,7 @@ class BidirectionalSyncService {
   Future<List<Map<String, dynamic>>> getConflicts() async {
     try {
       final prefs = await SharedPreferences.getInstance();
-      final conflictLog = prefs.getString(ApiConfig.SyncConfig.conflictLogKey) ?? '[]';
+      final conflictLog = prefs.getString(SyncConfig.conflictLogKey) ?? '[]';
       return List<Map<String, dynamic>>.from(jsonDecode(conflictLog));
     } catch (e) {
       log('Error getting conflicts: $e');
@@ -383,7 +383,7 @@ class BidirectionalSyncService {
   Future<void> clearConflicts() async {
     try {
       final prefs = await SharedPreferences.getInstance();
-      await prefs.remove(ApiConfig.SyncConfig.conflictLogKey);
+      await prefs.remove(SyncConfig.conflictLogKey);
     } catch (e) {
       log('Error clearing conflicts: $e');
     }

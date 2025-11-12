@@ -134,8 +134,18 @@ class HomeScreen extends StatelessWidget {
                             children: [
                               Expanded(
                                 child: Container(
-                                  height: 50,
-                                  decoration: BoxDecoration(color: themeChange.getThem() ? AppThemeData.greyDark10 : AppThemeData.grey10, borderRadius: BorderRadius.circular(8)),
+                                  height: 54,
+                                  decoration: BoxDecoration(
+                                    color: Colors.white,
+                                    borderRadius: BorderRadius.circular(27),
+                                    boxShadow: [
+                                      BoxShadow(
+                                        color: AppThemeData.primary.withOpacity(0.15),
+                                        blurRadius: 20,
+                                        offset: Offset(0, 4),
+                                      ),
+                                    ],
+                                  ),
                                   child: DebouncedInkWell(
                                     onTap: () {
                                       Get.to(SearchScreen());
@@ -144,54 +154,68 @@ class HomeScreen extends StatelessWidget {
                                       keyboardType: TextInputType.text,
                                       textCapitalization: TextCapitalization.sentences,
                                       controller: controller.searchController.value,
-                                      style: TextStyle(color: themeChange.getThem() ? AppThemeData.greyDark01 : AppThemeData.grey01, fontFamily: AppThemeData.medium),
+                                      style: TextStyle(color: AppThemeData.grey01, fontFamily: AppThemeData.medium),
                                       decoration: InputDecoration(
                                         errorStyle: const TextStyle(color: Colors.red),
                                         enabled: false,
                                         suffixIcon: Padding(
-                                          padding: const EdgeInsets.all(8.0),
-                                          child: Icon(Icons.search, color: AppThemeData.red02),
+                                          padding: const EdgeInsets.all(12.0),
+                                          child: Container(
+                                            padding: EdgeInsets.all(8),
+                                            decoration: BoxDecoration(
+                                              gradient: AppThemeData.primaryGradient,
+                                              shape: BoxShape.circle,
+                                            ),
+                                            child: Icon(Icons.search_rounded, color: Colors.white, size: 20),
+                                          ),
                                         ),
                                         prefixIconConstraints: BoxConstraints(minHeight: 20, minWidth: 20),
-                                        contentPadding: EdgeInsets.symmetric(vertical: 16, horizontal: 10),
-                                        fillColor: themeChange.getThem() ? AppThemeData.greyDark10 : AppThemeData.grey10,
+                                        contentPadding: EdgeInsets.symmetric(vertical: 16, horizontal: 20),
+                                        fillColor: Colors.white,
                                         disabledBorder: OutlineInputBorder(
-                                          borderRadius: const BorderRadius.all(Radius.circular(8)),
-                                          borderSide: BorderSide(color: themeChange.getThem() ? AppThemeData.grey03 : AppThemeData.greyDark06, width: 1),
+                                          borderRadius: const BorderRadius.all(Radius.circular(27)),
+                                          borderSide: BorderSide.none,
                                         ),
                                         focusedBorder: OutlineInputBorder(
-                                          borderRadius: const BorderRadius.all(Radius.circular(8)),
-                                          borderSide: BorderSide(color: themeChange.getThem() ? AppThemeData.grey03 : AppThemeData.greyDark06, width: 1),
+                                          borderRadius: const BorderRadius.all(Radius.circular(27)),
+                                          borderSide: BorderSide.none,
                                         ),
                                         enabledBorder: OutlineInputBorder(
-                                          borderRadius: const BorderRadius.all(Radius.circular(8)),
-                                          borderSide: BorderSide(color: themeChange.getThem() ? AppThemeData.grey03 : AppThemeData.greyDark06, width: 1),
+                                          borderRadius: const BorderRadius.all(Radius.circular(27)),
+                                          borderSide: BorderSide.none,
                                         ),
                                         errorBorder: OutlineInputBorder(
-                                          borderRadius: const BorderRadius.all(Radius.circular(8)),
-                                          borderSide: BorderSide(color: themeChange.getThem() ? AppThemeData.grey03 : AppThemeData.greyDark06, width: 1),
+                                          borderRadius: const BorderRadius.all(Radius.circular(27)),
+                                          borderSide: BorderSide.none,
                                         ),
                                         border: OutlineInputBorder(
-                                          borderRadius: const BorderRadius.all(Radius.circular(8)),
-                                          borderSide: BorderSide(color: themeChange.getThem() ? AppThemeData.grey03 : AppThemeData.greyDark06, width: 1),
+                                          borderRadius: const BorderRadius.all(Radius.circular(27)),
+                                          borderSide: BorderSide.none,
                                         ),
                                         hintText: "Search for nail salons".tr,
-                                        hintStyle: TextStyle(fontSize: 14, color: themeChange.getThem() ? AppThemeData.greyDark04 : AppThemeData.grey04, fontFamily: AppThemeData.regularOpenSans),
+                                        hintStyle: TextStyle(fontSize: 14, color: AppThemeData.grey04, fontFamily: AppThemeData.regular),
                                       ),
                                     ),
                                   ),
                                 ),
                               ),
-                              SizedBox(width: 8),
+                              SizedBox(width: 12),
                               Container(
-                                height: 50,
-                                width: 50,
+                                height: 54,
+                                width: 54,
                                 decoration: BoxDecoration(
-                                  color: AppThemeData.primary300,
-                                  borderRadius: BorderRadius.circular(8),
+                                  gradient: AppThemeData.accentGradient,
+                                  borderRadius: BorderRadius.circular(27),
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: AppThemeData.accent.withOpacity(0.3),
+                                      blurRadius: 15,
+                                      offset: Offset(0, 4),
+                                    ),
+                                  ],
                                 ),
                                 child: IconButton(
-                                  icon: Icon(Icons.auto_awesome, color: Colors.white),
+                                  icon: Icon(Icons.auto_awesome_rounded, color: Colors.white, size: 24),
                                   onPressed: () {
                                     Get.to(() => const AISearchScreen());
                                   },
@@ -217,19 +241,35 @@ class HomeScreen extends StatelessWidget {
                                     'Categories'.tr,
                                     textAlign: TextAlign.start,
                                     maxLines: 1,
-                                    style: TextStyle(fontSize: 16, color: themeChange.getThem() ? AppThemeData.greyDark01 : AppThemeData.grey01, fontFamily: AppThemeData.semibold),
+                                    style: TextStyle(fontSize: 18, color: themeChange.getThem() ? AppThemeData.greyDark01 : AppThemeData.grey01, fontFamily: AppThemeData.bold),
                                   ),
                                   InkWell(
                                     onTap: () {
                                       Get.to(MoreCategoryScreen());
                                     },
                                     child: Container(
-                                      padding: EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                                      decoration: BoxDecoration(color: AppThemeData.redDark02, borderRadius: BorderRadius.circular(4)),
-                                      child: Text(
-                                        "More".tr,
-                                        textAlign: TextAlign.center,
-                                        style: TextStyle(fontFamily: AppThemeData.medium, color: themeChange.getThem() ? AppThemeData.greyDark01 : AppThemeData.grey01),
+                                      padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                                      decoration: BoxDecoration(
+                                        gradient: AppThemeData.secondaryGradient,
+                                        borderRadius: BorderRadius.circular(20),
+                                        boxShadow: [
+                                          BoxShadow(
+                                            color: AppThemeData.secondary.withOpacity(0.3),
+                                            blurRadius: 8,
+                                            offset: Offset(0, 2),
+                                          ),
+                                        ],
+                                      ),
+                                      child: Row(
+                                        children: [
+                                          Text(
+                                            "More".tr,
+                                            textAlign: TextAlign.center,
+                                            style: TextStyle(fontFamily: AppThemeData.semibold, color: Colors.white, fontSize: 13),
+                                          ),
+                                          SizedBox(width: 4),
+                                          Icon(Icons.arrow_forward_rounded, color: Colors.white, size: 16),
+                                        ],
                                       ),
                                     ),
                                   ),
@@ -253,30 +293,64 @@ class HomeScreen extends StatelessWidget {
                                         Get.to(BusinessListScreen(), arguments: {"categoryModel": categoryModel, "latLng": null, "isZipCode": false});
                                       },
                                       child: Padding(
-                                        padding: const EdgeInsets.only(right: 8, top: 10, bottom: 10),
+                                        padding: const EdgeInsets.only(right: 10, top: 10, bottom: 10),
                                         child: Container(
                                           width: 100,
                                           decoration: BoxDecoration(
-                                            border: Border.all(color: themeChange.getThem() ? AppThemeData.grey03 : AppThemeData.greyDark06),
-                                            borderRadius: BorderRadius.circular(8),
-                                            color: themeChange.getThem() ? AppThemeData.greyDark10 : AppThemeData.grey10,
+                                            gradient: LinearGradient(
+                                              begin: Alignment.topLeft,
+                                              end: Alignment.bottomRight,
+                                              colors: [
+                                                Colors.white,
+                                                themeChange.getThem() ? AppThemeData.greyDark09 : AppThemeData.grey09,
+                                              ],
+                                            ),
+                                            borderRadius: BorderRadius.circular(20),
+                                            boxShadow: [
+                                              BoxShadow(
+                                                color: AppThemeData.primary.withOpacity(0.08),
+                                                blurRadius: 15,
+                                                offset: Offset(0, 4),
+                                              ),
+                                            ],
                                           ),
                                           child: Padding(
-                                            padding: const EdgeInsets.symmetric(horizontal: 8),
+                                            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 12),
                                             child: Column(
                                               mainAxisAlignment: MainAxisAlignment.center,
                                               children: [
-                                                SizedBox(
-                                                  width: 50,
-                                                  height: 50,
-                                                  child: Center(child: NetworkImageWidget(imageUrl: categoryModel.icon.toString(), width: 45, height: 45)),
+                                                Container(
+                                                  width: 56,
+                                                  height: 56,
+                                                  decoration: BoxDecoration(
+                                                    gradient: LinearGradient(
+                                                      begin: Alignment.topLeft,
+                                                      end: Alignment.bottomRight,
+                                                      colors: [
+                                                        AppThemeData.primary.withOpacity(0.1),
+                                                        AppThemeData.secondary.withOpacity(0.1),
+                                                      ],
+                                                    ),
+                                                    borderRadius: BorderRadius.circular(16),
+                                                  ),
+                                                  child: Center(
+                                                    child: NetworkImageWidget(
+                                                      imageUrl: categoryModel.icon.toString(),
+                                                      width: 36,
+                                                      height: 36,
+                                                    ),
+                                                  ),
                                                 ),
-                                                SizedBox(height: 4),
+                                                SizedBox(height: 8),
                                                 Text(
                                                   categoryModel.name.toString(),
                                                   textAlign: TextAlign.center,
                                                   maxLines: 2,
-                                                  style: TextStyle(fontSize: 12, color: themeChange.getThem() ? AppThemeData.greyDark01 : AppThemeData.grey01, fontFamily: AppThemeData.medium),
+                                                  style: TextStyle(
+                                                    fontSize: 12,
+                                                    color: themeChange.getThem() ? AppThemeData.greyDark01 : AppThemeData.grey01,
+                                                    fontFamily: AppThemeData.semibold,
+                                                  ),
                                                 ),
                                               ],
                                             ),
@@ -341,12 +415,28 @@ class HomeScreen extends StatelessWidget {
                                                               Get.to(AllBusinessListScreen(), arguments: {'businessModels': businessList, 'categoryService': categoryModel});
                                                             },
                                                             child: Container(
-                                                              padding: EdgeInsets.symmetric(horizontal: 16, vertical: 4),
-                                                              decoration: BoxDecoration(color: AppThemeData.redDark02, borderRadius: BorderRadius.circular(4)),
-                                                              child: Text(
-                                                                "More".tr,
-                                                                textAlign: TextAlign.center,
-                                                                style: TextStyle(fontFamily: AppThemeData.medium, color: themeChange.getThem() ? AppThemeData.greyDark01 : AppThemeData.grey01),
+                                                              padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                                                              decoration: BoxDecoration(
+                                                                gradient: AppThemeData.primaryGradient,
+                                                                borderRadius: BorderRadius.circular(20),
+                                                                boxShadow: [
+                                                                  BoxShadow(
+                                                                    color: AppThemeData.primary.withOpacity(0.3),
+                                                                    blurRadius: 8,
+                                                                    offset: Offset(0, 2),
+                                                                  ),
+                                                                ],
+                                                              ),
+                                                              child: Row(
+                                                                children: [
+                                                                  Text(
+                                                                    "More".tr,
+                                                                    textAlign: TextAlign.center,
+                                                                    style: TextStyle(fontFamily: AppThemeData.semibold, color: Colors.white, fontSize: 13),
+                                                                  ),
+                                                                  SizedBox(width: 4),
+                                                                  Icon(Icons.arrow_forward_rounded, color: Colors.white, size: 16),
+                                                                ],
                                                               ),
                                                             ),
                                                           ),

@@ -4,6 +4,7 @@ import 'package:arabween/app/location_permission_screen/location_permission_scre
 import 'package:arabween/controller/onboarding/onboarding_controller.dart';
 import 'package:arabween/themes/app_them_data.dart';
 import 'package:arabween/themes/responsive.dart';
+import 'package:arabween/widgets/modern_ui/modern_button.dart';
 
 class OnboardingScreen extends StatefulWidget {
   const OnboardingScreen({super.key});
@@ -12,13 +13,34 @@ class OnboardingScreen extends StatefulWidget {
   State<OnboardingScreen> createState() => _OnboardingScreenState();
 }
 
-class _OnboardingScreenState extends State<OnboardingScreen> {
+class _OnboardingScreenState extends State<OnboardingScreen> with TickerProviderStateMixin {
   final PageController _pageController = PageController();
   final OnboardingController controller = Get.put(OnboardingController());
+  late AnimationController _iconAnimationController;
+  late Animation<double> _iconScaleAnimation;
+  late Animation<double> _iconRotationAnimation;
+
+  @override
+  void initState() {
+    super.initState();
+    _iconAnimationController = AnimationController(
+      duration: const Duration(milliseconds: 1500),
+      vsync: this,
+    )..repeat(reverse: true);
+
+    _iconScaleAnimation = Tween<double>(begin: 0.95, end: 1.05).animate(
+      CurvedAnimation(parent: _iconAnimationController, curve: Curves.easeInOut),
+    );
+
+    _iconRotationAnimation = Tween<double>(begin: -0.05, end: 0.05).animate(
+      CurvedAnimation(parent: _iconAnimationController, curve: Curves.easeInOut),
+    );
+  }
 
   @override
   void dispose() {
     _pageController.dispose();
+    _iconAnimationController.dispose();
     super.dispose();
   }
 
@@ -35,8 +57,9 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                   begin: Alignment.topLeft,
                   end: Alignment.bottomRight,
                   colors: [
-                    controller.pages[controller.currentPage.value].color.withOpacity(0.3),
-                    controller.pages[controller.currentPage.value].color.withOpacity(0.1),
+                    controller.pages[controller.currentPage.value].color.withOpacity(0.15),
+                    controller.pages[controller.currentPage.value].color.withOpacity(0.05),
+                    Colors.white,
                   ],
                 ),
               ),
@@ -52,7 +75,8 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                     children: [
                       Obx(() {
                         return controller.currentPage.value > 0
-                            ? TextButton(
+                            ? ModernIconButton(
+                                icon: Icons.arrow_back_ios_new_rounded,
                                 onPressed: () {
                                   controller.previousPage();
                                   _pageController.previousPage(
@@ -60,25 +84,13 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                                     curve: Curves.easeInOut,
                                   );
                                 },
-                                child: Row(
-                                  children: [
-                                    Icon(
-                                      Icons.arrow_back_ios,
-                                      size: 16,
-                                      color: AppThemeData.grey01,
-                                    ),
-                                    Text(
-                                      "Back".tr,
-                                      style: TextStyle(
-                                        color: AppThemeData.grey01,
-                                        fontSize: 16,
-                                        fontFamily: AppThemeData.semibold,
-                                      ),
-                                    ),
-                                  ],
-                                ),
+                                size: 48,
+                                iconSize: 20,
+                                backgroundColor: Colors.white,
+                                iconColor: AppThemeData.grey01,
+                                elevation: 2,
                               )
-                            : const SizedBox(width: 80);
+                            : const SizedBox(width: 48);
                       }),
                       TextButton(
                         onPressed: () {
@@ -88,7 +100,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                         child: Text(
                           "Skip".tr,
                           style: TextStyle(
-                            color: AppThemeData.grey01,
+                            color: AppThemeData.grey02,
                             fontSize: 16,
                             fontFamily: AppThemeData.semibold,
                           ),
@@ -125,38 +137,25 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                       const SizedBox(height: 30),
                       Obx(() {
                         final isLastPage = controller.currentPage.value == controller.pages.length - 1;
-                        return SizedBox(
+                        return ModernButton(
+                          text: isLastPage ? "Get Started".tr : "Next".tr,
+                          onPressed: () {
+                            if (isLastPage) {
+                              controller.completeOnboarding();
+                              Get.offAll(() => const LocationPermissionScreen());
+                            } else {
+                              controller.nextPage();
+                              _pageController.nextPage(
+                                duration: const Duration(milliseconds: 300),
+                                curve: Curves.easeInOut,
+                              );
+                            }
+                          },
                           width: Responsive.width(100, context),
-                          height: 56,
-                          child: ElevatedButton(
-                            onPressed: () {
-                              if (isLastPage) {
-                                controller.completeOnboarding();
-                                Get.offAll(() => const LocationPermissionScreen());
-                              } else {
-                                controller.nextPage();
-                                _pageController.nextPage(
-                                  duration: const Duration(milliseconds: 300),
-                                  curve: Curves.easeInOut,
-                                );
-                              }
-                            },
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: AppThemeData.red02,
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(12),
-                              ),
-                              elevation: 0,
-                            ),
-                            child: Text(
-                              isLastPage ? "Get Started".tr : "Next".tr,
-                              style: TextStyle(
-                                color: AppThemeData.grey10,
-                                fontSize: 18,
-                                fontFamily: AppThemeData.bold,
-                              ),
-                            ),
-                          ),
+                          height: 60,
+                          borderRadius: 30,
+                          gradient: AppThemeData.primaryGradient,
+                          icon: isLastPage ? Icons.rocket_launch_rounded : Icons.arrow_forward_rounded,
                         );
                       }),
                     ],
@@ -176,30 +175,76 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Container(
-            height: 300,
-            width: 300,
-            decoration: BoxDecoration(
-              color: Colors.white.withOpacity(0.3),
-              shape: BoxShape.circle,
-            ),
-            child: Center(
-              child: Container(
-                height: 250,
-                width: 250,
-                decoration: BoxDecoration(
-                  color: Colors.white.withOpacity(0.5),
-                  shape: BoxShape.circle,
-                ),
-                child: Center(
-                  child: Icon(
-                    _getIconForPage(page),
-                    size: 120,
-                    color: page.color,
+          AnimatedBuilder(
+            animation: _iconAnimationController,
+            builder: (context, child) {
+              return Transform.scale(
+                scale: _iconScaleAnimation.value,
+                child: Transform.rotate(
+                  angle: _iconRotationAnimation.value,
+                  child: Container(
+                    height: 320,
+                    width: 320,
+                    decoration: BoxDecoration(
+                      gradient: LinearGradient(
+                        begin: Alignment.topLeft,
+                        end: Alignment.bottomRight,
+                        colors: [
+                          page.color.withOpacity(0.2),
+                          page.color.withOpacity(0.05),
+                        ],
+                      ),
+                      shape: BoxShape.circle,
+                      boxShadow: [
+                        BoxShadow(
+                          color: page.color.withOpacity(0.3),
+                          blurRadius: 40,
+                          spreadRadius: 10,
+                        ),
+                      ],
+                    ),
+                    child: Center(
+                      child: Container(
+                        height: 260,
+                        width: 260,
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          shape: BoxShape.circle,
+                          boxShadow: [
+                            BoxShadow(
+                              color: page.color.withOpacity(0.2),
+                              blurRadius: 20,
+                              spreadRadius: 5,
+                            ),
+                          ],
+                        ),
+                        child: Center(
+                          child: Container(
+                            padding: const EdgeInsets.all(40),
+                            decoration: BoxDecoration(
+                              gradient: LinearGradient(
+                                begin: Alignment.topLeft,
+                                end: Alignment.bottomRight,
+                                colors: [
+                                  page.color.withOpacity(0.8),
+                                  page.color,
+                                ],
+                              ),
+                              shape: BoxShape.circle,
+                            ),
+                            child: Icon(
+                              _getIconForPage(page),
+                              size: 100,
+                              color: Colors.white,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
                   ),
                 ),
-              ),
-            ),
+              );
+            },
           ),
           const SizedBox(height: 50),
           Text(
@@ -207,9 +252,10 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
             textAlign: TextAlign.center,
             style: TextStyle(
               color: AppThemeData.grey01,
-              fontSize: 28,
-              fontFamily: AppThemeData.bold,
-              height: 1.3,
+              fontSize: 32,
+              fontFamily: AppThemeData.extraBold,
+              height: 1.2,
+              letterSpacing: 0.5,
             ),
           ),
           const SizedBox(height: 20),
@@ -217,10 +263,11 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
             page.description.tr,
             textAlign: TextAlign.center,
             style: TextStyle(
-              color: AppThemeData.grey02,
-              fontSize: 16,
+              color: AppThemeData.grey03,
+              fontSize: 17,
               fontFamily: AppThemeData.regular,
-              height: 1.5,
+              height: 1.6,
+              letterSpacing: 0.3,
             ),
           ),
         ],
@@ -230,11 +277,11 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
 
   IconData _getIconForPage(OnboardingPage page) {
     if (page.title.contains("Discover")) {
-      return Icons.explore;
+      return Icons.explore_rounded;
     } else if (page.title.contains("Reviews")) {
-      return Icons.star_rate_rounded;
+      return Icons.star_rounded;
     } else {
-      return Icons.people;
+      return Icons.people_rounded;
     }
   }
 
@@ -243,12 +290,22 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
       final isActive = controller.currentPage.value == index;
       return AnimatedContainer(
         duration: const Duration(milliseconds: 300),
-        margin: const EdgeInsets.symmetric(horizontal: 4),
-        height: 8,
-        width: isActive ? 24 : 8,
+        margin: const EdgeInsets.symmetric(horizontal: 5),
+        height: 10,
+        width: isActive ? 32 : 10,
         decoration: BoxDecoration(
-          color: isActive ? AppThemeData.red02 : AppThemeData.grey04,
-          borderRadius: BorderRadius.circular(4),
+          gradient: isActive ? AppThemeData.primaryGradient : null,
+          color: isActive ? null : AppThemeData.grey05,
+          borderRadius: BorderRadius.circular(5),
+          boxShadow: isActive
+              ? [
+                  BoxShadow(
+                    color: AppThemeData.primary.withOpacity(0.3),
+                    blurRadius: 8,
+                    offset: const Offset(0, 2),
+                  ),
+                ]
+              : null,
         ),
       );
     });

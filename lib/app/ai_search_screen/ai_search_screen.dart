@@ -3,7 +3,7 @@ import 'package:get/get.dart';
 import 'package:arabween/controller/ai_search_controller.dart';
 import 'package:arabween/models/business_model.dart';
 import 'package:arabween/themes/app_them_data.dart';
-import 'package:arabween/widgets/network_image_widget.dart';
+import 'package:arabween/utils/network_image_widget.dart';
 import 'package:arabween/app/business_details_screen/business_details_screen.dart';
 
 class AISearchScreen extends StatelessWidget {
@@ -17,7 +17,7 @@ class AISearchScreen extends StatelessWidget {
         return Scaffold(
           appBar: AppBar(
             title: Text('AI Search', style: TextStyle(fontFamily: AppThemeData.semibold)),
-            backgroundColor: AppThemeData.primary300,
+            backgroundColor: AppThemeData.blue01,
           ),
           body: Column(
             children: [
@@ -108,7 +108,7 @@ class AISearchScreen extends StatelessWidget {
             onPressed: () => _showAIChatDialog(context, controller),
             icon: Icon(Icons.chat_bubble_outline),
             label: Text('AI Assistant'),
-            backgroundColor: AppThemeData.primary300,
+            backgroundColor: AppThemeData.blue01,
           ),
         );
       },
@@ -122,7 +122,7 @@ class AISearchScreen extends StatelessWidget {
         leading: ClipRRect(
           borderRadius: BorderRadius.circular(8),
           child: NetworkImageWidget(
-            imageUrl: business.photo ?? '',
+            imageUrl: business.profilePhoto ?? '',
             width: 60,
             height: 60,
             fit: BoxFit.cover,
@@ -135,8 +135,8 @@ class AISearchScreen extends StatelessWidget {
         subtitle: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            if (business.categoryTitle != null)
-              Text(business.categoryTitle!),
+            if (business.category != null && business.category!.isNotEmpty)
+              Text(business.category!.first.name ?? ''),
             Row(
               children: [
                 Icon(Icons.star, size: 16, color: Colors.amber),
@@ -148,7 +148,7 @@ class AISearchScreen extends StatelessWidget {
         ),
         trailing: Icon(Icons.arrow_forward_ios, size: 16),
         onTap: () {
-          Get.to(() => BusinessDetailsScreen(businessId: business.id ?? ''));
+          Get.to(() => BusinessDetailsScreen(), arguments: {"businessModel": business});
         },
       ),
     );
@@ -156,7 +156,7 @@ class AISearchScreen extends StatelessWidget {
 
   void _showAIChatDialog(BuildContext context, AISearchController controller) {
     final messageController = TextEditingController();
-    
+
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,
@@ -190,7 +190,7 @@ class AISearchScreen extends StatelessWidget {
                         margin: EdgeInsets.symmetric(vertical: 4),
                         padding: EdgeInsets.all(12),
                         decoration: BoxDecoration(
-                          color: isUser ? AppThemeData.primary300 : Colors.grey[200],
+                          color: isUser ? AppThemeData.blue01 : Colors.grey[200],
                           borderRadius: BorderRadius.circular(12),
                         ),
                         child: Text(
@@ -224,7 +224,7 @@ class AISearchScreen extends StatelessWidget {
                     SizedBox(width: 8),
                     IconButton(
                       icon: Icon(Icons.send),
-                      color: AppThemeData.primary300,
+                      color: AppThemeData.blue01,
                       onPressed: () {
                         if (messageController.text.isNotEmpty) {
                           controller.chatWithAI(messageController.text);

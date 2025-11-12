@@ -87,9 +87,9 @@ class UnifiedApiService {
 
   static Future<Map<String, dynamic>> checkHealth() async {
     final results = await makeParallelRequests(requests: [
-      {'endpoint': ApiConfig.Endpoints.health, 'targetApi': 'deepagent'},
-      {'endpoint': ApiConfig.Endpoints.health, 'targetApi': 'website'},
-      {'endpoint': ApiConfig.Endpoints.health, 'targetApi': 'backend'},
+      {'endpoint': Endpoints.health, 'targetApi': 'deepagent'},
+      {'endpoint': Endpoints.health, 'targetApi': 'website'},
+      {'endpoint': Endpoints.health, 'targetApi': 'backend'},
     ]);
 
     return {

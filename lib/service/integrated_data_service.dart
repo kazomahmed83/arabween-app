@@ -32,7 +32,7 @@ class IntegratedDataService {
     try {
       final responses = await UnifiedApiService.makeParallelRequests(requests: [
         {
-          'endpoint': ApiConfig.Endpoints.businesses,
+          'endpoint': Endpoints.businesses,
           'method': 'GET',
           'queryParams': {
             if (categoryId != null) 'category_id': categoryId,
@@ -43,7 +43,7 @@ class IntegratedDataService {
           'targetApi': 'deepagent',
         },
         {
-          'endpoint': ApiConfig.Endpoints.businesses,
+          'endpoint': Endpoints.businesses,
           'method': 'GET',
           'queryParams': {
             if (categoryId != null) 'category_id': categoryId,
@@ -86,17 +86,17 @@ class IntegratedDataService {
     try {
       final responses = await UnifiedApiService.makeParallelRequests(requests: [
         {
-          'endpoint': '${ApiConfig.Endpoints.businesses}/$businessId',
+          'endpoint': '${Endpoints.businesses}/$businessId',
           'method': 'GET',
           'targetApi': 'deepagent',
         },
         {
-          'endpoint': '${ApiConfig.Endpoints.businesses}/$businessId',
+          'endpoint': '${Endpoints.businesses}/$businessId',
           'method': 'GET',
           'targetApi': 'website',
         },
         {
-          'endpoint': '${ApiConfig.Endpoints.businesses}/$businessId',
+          'endpoint': '${Endpoints.businesses}/$businessId',
           'method': 'GET',
           'targetApi': 'backend',
         },
@@ -129,7 +129,7 @@ class IntegratedDataService {
         direction: SyncDirection.appToCloud,
         source: DataSource.app,
         target: DataSource.website,
-        priority: ApiConfig.Priority.high,
+        priority: Priority.high,
       );
 
       await _syncService.queueSync(
@@ -139,7 +139,7 @@ class IntegratedDataService {
         direction: SyncDirection.appToCloud,
         source: DataSource.app,
         target: DataSource.backend,
-        priority: ApiConfig.Priority.high,
+        priority: Priority.high,
       );
 
       await _syncService.queueSync(
@@ -149,7 +149,7 @@ class IntegratedDataService {
         direction: SyncDirection.appToCloud,
         source: DataSource.app,
         target: DataSource.deepagent,
-        priority: ApiConfig.Priority.high,
+        priority: Priority.high,
       );
 
       await FireStoreUtils.setBusinessData(business);
@@ -172,7 +172,7 @@ class IntegratedDataService {
         direction: SyncDirection.bidirectional,
         source: DataSource.app,
         target: DataSource.website,
-        priority: ApiConfig.Priority.high,
+        priority: Priority.high,
       );
 
       await _syncService.queueSync(
@@ -182,7 +182,7 @@ class IntegratedDataService {
         direction: SyncDirection.bidirectional,
         source: DataSource.app,
         target: DataSource.backend,
-        priority: ApiConfig.Priority.high,
+        priority: Priority.high,
       );
 
       await _syncService.queueSync(
@@ -192,7 +192,7 @@ class IntegratedDataService {
         direction: SyncDirection.bidirectional,
         source: DataSource.app,
         target: DataSource.deepagent,
-        priority: ApiConfig.Priority.high,
+        priority: Priority.high,
       );
 
       await FireStoreUtils.updateBusinessData(business);
@@ -213,7 +213,7 @@ class IntegratedDataService {
         direction: SyncDirection.appToCloud,
         source: DataSource.app,
         target: DataSource.website,
-        priority: ApiConfig.Priority.high,
+        priority: Priority.high,
       );
 
       await _syncService.queueSync(
@@ -223,7 +223,7 @@ class IntegratedDataService {
         direction: SyncDirection.appToCloud,
         source: DataSource.app,
         target: DataSource.backend,
-        priority: ApiConfig.Priority.high,
+        priority: Priority.high,
       );
 
       return true;
@@ -241,7 +241,7 @@ class IntegratedDataService {
     try {
       final responses = await UnifiedApiService.makeParallelRequests(requests: [
         {
-          'endpoint': ApiConfig.Endpoints.search,
+          'endpoint': Endpoints.search,
           'method': 'POST',
           'body': {
             'query': query,
@@ -251,7 +251,7 @@ class IntegratedDataService {
           'targetApi': 'deepagent',
         },
         {
-          'endpoint': ApiConfig.Endpoints.search,
+          'endpoint': Endpoints.search,
           'method': 'POST',
           'body': {
             'query': query,
@@ -339,7 +339,7 @@ class IntegratedDataService {
       direction: SyncDirection.cloudToApp,
       source: dataSource,
       target: DataSource.app,
-      priority: ApiConfig.Priority.high,
+      priority: Priority.high,
     );
 
     if (entityType.toLowerCase() == 'business') {

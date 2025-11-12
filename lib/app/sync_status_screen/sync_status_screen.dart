@@ -95,7 +95,7 @@ class SyncStatusScreen extends StatelessWidget {
         return Scaffold(
           appBar: AppBar(
             title: Text('Sync Status', style: TextStyle(fontFamily: AppThemeData.semibold)),
-            backgroundColor: AppThemeData.primary300,
+            backgroundColor: AppThemeData.blue01,
             actions: [
               IconButton(
                 icon: Icon(Icons.refresh),
@@ -149,7 +149,7 @@ class SyncStatusScreen extends StatelessWidget {
                       subtitle: Text('${controller.failedOperations.value} operations failed'),
                       trailing: ElevatedButton(
                         onPressed: controller.retryFailed,
-                        style: ElevatedButton.styleFrom(backgroundColor: AppThemeData.primary300),
+                        style: ElevatedButton.styleFrom(backgroundColor: AppThemeData.blue01),
                         child: Text('Retry'),
                       ),
                     ),
@@ -177,7 +177,7 @@ class SyncStatusScreen extends StatelessWidget {
                   icon: Icon(Icons.sync),
                   label: Text('Sync Now'),
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: AppThemeData.primary300,
+                    backgroundColor: AppThemeData.blue01,
                     padding: EdgeInsets.symmetric(vertical: 16),
                   ),
                 ),

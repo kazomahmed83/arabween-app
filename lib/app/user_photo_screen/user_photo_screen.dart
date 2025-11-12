@@ -68,7 +68,7 @@ class UserPhotoScreen extends StatelessWidget {
             body: controller.isLoading.value
                 ? Constant.loader()
                 : controller.photosList.isEmpty
-                    ? Constant.showEmptyView(message: "Oops! You haven’t uploaded an image yet.".tr)
+                    ? Constant.showEmptyView(message: "Oops! You haven't uploaded an image yet.".tr)
                     : GridView.builder(
                         padding: EdgeInsets.all(10),
                         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(

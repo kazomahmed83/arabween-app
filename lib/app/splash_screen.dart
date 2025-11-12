@@ -114,11 +114,12 @@ class _SplashScreenState extends State<SplashScreen> with TickerProviderStateMix
                 clipBehavior: Clip.antiAlias,
                 decoration: BoxDecoration(
                   gradient: LinearGradient(
-                    begin: const Alignment(0.00, 1.00),
-                    end: const Alignment(0, -1),
+                    begin: const Alignment(-0.5, -1.0),
+                    end: const Alignment(0.5, 1.0),
                     colors: [
-                      Color.lerp(const Color(0xFFFFD54F), const Color(0xFFFFC107), _backgroundAnimation.value)!,
-                      Color.lerp(const Color(0xFFFFB300), const Color(0xFFFFC107), _backgroundAnimation.value)!,
+                      Color.lerp(AppThemeData.primary, AppThemeData.secondary, _backgroundAnimation.value)!,
+                      Color.lerp(AppThemeData.secondary, AppThemeData.yellow, _backgroundAnimation.value)!,
+                      Color.lerp(AppThemeData.yellow, AppThemeData.accent, _backgroundAnimation.value)!,
                     ],
                   ),
                 ),
@@ -142,15 +143,20 @@ class _SplashScreenState extends State<SplashScreen> with TickerProviderStateMix
                                 child: Opacity(
                                   opacity: _logoFadeAnimation.value,
                                   child: Container(
-                                    padding: const EdgeInsets.all(20),
+                                    padding: const EdgeInsets.all(24),
                                     decoration: BoxDecoration(
-                                      color: Colors.white.withOpacity(0.2),
+                                      color: Colors.white,
                                       shape: BoxShape.circle,
                                       boxShadow: [
                                         BoxShadow(
-                                          color: Colors.black.withOpacity(0.1),
-                                          blurRadius: 20,
-                                          spreadRadius: 5,
+                                          color: AppThemeData.primary.withOpacity(0.3),
+                                          blurRadius: 30,
+                                          spreadRadius: 10,
+                                        ),
+                                        BoxShadow(
+                                          color: AppThemeData.secondary.withOpacity(0.2),
+                                          blurRadius: 50,
+                                          spreadRadius: 20,
                                         ),
                                       ],
                                     ),
@@ -186,27 +192,27 @@ class _SplashScreenState extends State<SplashScreen> with TickerProviderStateMix
                                         textAlign: TextAlign.center,
                                         style: TextStyle(
                                           color: AppThemeData.grey10,
-                                          fontSize: 32,
-                                          fontFamily: AppThemeData.bold,
-                                          letterSpacing: 1.5,
+                                          fontSize: 36,
+                                          fontFamily: AppThemeData.extraBold,
+                                          letterSpacing: 2.0,
                                           shadows: [
                                             Shadow(
-                                              color: Colors.black.withOpacity(0.2),
-                                              offset: const Offset(0, 2),
-                                              blurRadius: 4,
+                                              color: Colors.black.withOpacity(0.25),
+                                              offset: const Offset(0, 3),
+                                              blurRadius: 8,
                                             ),
                                           ],
                                         ),
                                       ),
-                                      const SizedBox(height: 10),
+                                      const SizedBox(height: 12),
                                       Text(
                                         "Discover Local Businesses".tr,
                                         textAlign: TextAlign.center,
                                         style: TextStyle(
-                                          color: AppThemeData.grey10.withOpacity(0.9),
-                                          fontSize: 16,
-                                          fontFamily: AppThemeData.regular,
-                                          letterSpacing: 0.5,
+                                          color: AppThemeData.grey10.withOpacity(0.95),
+                                          fontSize: 17,
+                                          fontFamily: AppThemeData.medium,
+                                          letterSpacing: 0.8,
                                         ),
                                       ),
                                     ],
@@ -225,9 +231,9 @@ class _SplashScreenState extends State<SplashScreen> with TickerProviderStateMix
                                   width: 40,
                                   height: 40,
                                   child: CircularProgressIndicator(
-                                    strokeWidth: 3,
+                                    strokeWidth: 3.5,
                                     valueColor: AlwaysStoppedAnimation<Color>(
-                                      AppThemeData.grey10.withOpacity(0.8),
+                                      AppThemeData.grey10,
                                     ),
                                   ),
                                 ),
@@ -255,30 +261,38 @@ class CirclesPainter extends CustomPainter {
 
   @override
   void paint(Canvas canvas, Size size) {
-    final paint = Paint()
-      ..color = Colors.white.withOpacity(0.05)
+    final paint1 = Paint()
+      ..color = AppThemeData.primaryLight.withOpacity(0.15)
       ..style = PaintingStyle.fill;
 
-    final circle1Radius = 150.0 * animationValue;
-    final circle2Radius = 200.0 * animationValue;
-    final circle3Radius = 120.0 * animationValue;
+    final paint2 = Paint()
+      ..color = AppThemeData.secondaryLight.withOpacity(0.12)
+      ..style = PaintingStyle.fill;
+
+    final paint3 = Paint()
+      ..color = AppThemeData.accentLight.withOpacity(0.1)
+      ..style = PaintingStyle.fill;
+
+    final circle1Radius = 180.0 * animationValue;
+    final circle2Radius = 220.0 * animationValue;
+    final circle3Radius = 140.0 * animationValue;
 
     canvas.drawCircle(
-      Offset(size.width * 0.2, size.height * 0.3),
+      Offset(size.width * 0.15, size.height * 0.25),
       circle1Radius,
-      paint,
+      paint1,
     );
 
     canvas.drawCircle(
-      Offset(size.width * 0.8, size.height * 0.7),
+      Offset(size.width * 0.85, size.height * 0.75),
       circle2Radius,
-      paint,
+      paint2,
     );
 
     canvas.drawCircle(
-      Offset(size.width * 0.9, size.height * 0.2),
+      Offset(size.width * 0.9, size.height * 0.15),
       circle3Radius,
-      paint,
+      paint3,
     );
   }
 
